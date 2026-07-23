@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANSU TOUR & TRAVELS - Book Your Tour</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for variables and styling -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg-color: #030409;
+            --accent-color: #ffffff;
+            --loader-color: #080d1a;
+            --progress-color: #3b82f6;
+            --glow-color: rgba(59, 130, 246, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        /* Make browser date picker calendar icon visible on dark background */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) brightness(0.9) contrast(1.2);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            filter: invert(1) brightness(1.1) contrast(1.5);
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #success-ticket-outlet, #success-ticket-outlet *,
+            #tracked-ticket-outlet, #tracked-ticket-outlet * {
+                visibility: visible;
+            }
+            #success-ticket-outlet, #tracked-ticket-outlet {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            /* Reset dark background for paper printing */
+            #success-ticket-outlet > div, #tracked-ticket-outlet > div {
+                background: white !important;
+                color: black !important;
+                border-color: black !important;
+            }
+            #success-ticket-outlet span, #tracked-ticket-outlet span,
+            #success-ticket-outlet p, #tracked-ticket-outlet p {
+                color: black !important;
+            }
+        }
+
+        /* Fixed background canvas */
+        #animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            display: block;
+            pointer-events: none;
+            background-color: var(--bg-color);
+        }
+
+        /* Tech Grid Overlay */
+        .bg-grid {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Scrollable Webpage Content Overlay */
+        #content-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        /* Premium Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+            pointer-events: all;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loader-percentage {
+            font-size: 5rem;
+            font-weight: 200;
+            letter-spacing: -0.05em;
+            color: var(--accent-color);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loader-bar-container {
+            width: 280px;
+            height: 3px;
+            background-color: var(--loader-color);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        #loader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px #3b82f6;
+        }
+
+        .loader-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: #4f46e5;
+            margin-top: 10px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Fade out loader class */
+        #loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Custom scrollbar to match dark premium theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020306;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-300">
+
+    <!-- Technical Grid Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-[3] bg-grid opacity-40"></div>
+
+    <!-- Glowing Nebula-like Blur Blobs -->
+    <div class="fixed inset-0 pointer-events-none z-[2] overflow-hidden">
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-blue-600/10 blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-indigo-600/8 blur-[160px] animate-pulse" style="animation-duration: 12s;"></div>
+        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-cyan-500/8 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
+    </div>
+
+    <!-- Scrollable Webpage Content Overlay -->
+    <div id="content-container">
+        
+        <!-- Header -->
+        <header class="w-full relative z-50">
+            <!-- Top Bar -->
+            <div class="bg-slate-950/80 backdrop-blur-md text-slate-400 py-2.5 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-white/5">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="map-pin" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <span>Kolkata, India</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="mail" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <span>ansutourtravels@gmail.com</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6 mt-2 md:mt-0">
+                    <div class="flex items-center space-x-2 cursor-pointer hover:text-cyan-400 transition">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span id="header-login-btn">Agent Login - Register</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Nav -->
+            <div class="bg-[#060a16]/65 backdrop-blur-xl py-4 px-4 md:px-8 flex justify-between items-center border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 text-white p-2.5 rounded-2xl shadow-lg shadow-blue-500/25">
+                        <i data-lucide="plane" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU</span>
+                        <span class="text-[9px] font-bold text-cyan-400 tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
+                    </div>
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8 font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-cyan-400 transition">Home</a>
+                    <a href="tours.html" class="hover:text-cyan-400 transition">Tour Packages</a>
+                    <a href="destinations.html" class="hover:text-cyan-400 transition">Destinations</a>
+                    <a href="inquiry.html" class="hover:text-cyan-400 transition">Reviews & Inquiry</a>
+                    <a href="booking.html" class="text-cyan-400 border-b border-cyan-400/30 pb-0.5">Booking</a>
+                </nav>
+                
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex items-center space-x-3">
+                        <div class="bg-cyan-950/50 border border-cyan-500/20 p-2 rounded-xl text-cyan-400">
+                            <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Helpline</p>
+                            <p class="font-bold text-white text-xs">+91 73630 10254</p>
+                        </div>
+                    </div>
+                    <i data-lucide="search" class="text-slate-400 w-4 h-4 cursor-pointer hover:text-cyan-400 transition"></i>
+                    <button onclick="location.href='booking.html'" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-lg shadow-blue-500/20 tracking-wider uppercase border border-blue-400/20">
+                        Book Online
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="space-y-16 pb-24">
+            
+            <!-- Page Title Area -->
+            <section class="pt-20 pb-8 px-4 text-center">
+                <div class="bg-[#090d1f]/60 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-xl max-w-4xl mx-auto shadow-blue-500/5">
+                    <p class="text-cyan-400 font-bold mb-2 flex items-center justify-center uppercase tracking-wider text-xs">
+                        <span class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mr-2 font-bold">+</span> Step-By-Step Reservation
+                    </p>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Feel the Journey</h1>
+                    <p class="text-slate-400 text-sm max-w-xl mx-auto">Customize your dynamic tour expedition, choose your service tier, and instantly secure your reservation reference code for a trip you can truly feel.</p>
+                </div>
+            </section>
+
+            <!-- Booking Wizard Card -->
+            <section class="px-4 md:px-8 max-w-4xl mx-auto relative">
+                <!-- Navigation Tab Switcher -->
+                <div class="flex justify-center gap-4 mb-8">
+                    <button id="tab-book" onclick="switchTab('book')" class="bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300">
+                        Book a New Tour
+                    </button>
+                    <button id="tab-track" onclick="switchTab('track')" class="bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300">
+                        Track My Booking
+                    </button>
+                </div>
+
+                <!-- Booking Flow Wrapper -->
+                <div id="booking-flow-container" class="space-y-6">
+                    <!-- Step Indicators -->
+                    <div class="flex justify-between items-center mb-10 max-w-md mx-auto relative z-10 px-4">
+                        <div class="flex flex-col items-center gap-2">
+                            <div id="step-1-indicator" class="w-10 h-10 rounded-full bg-blue-600 text-white border border-blue-400 flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)] transition duration-300">1</div>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Package</span>
+                        </div>
+                        <div class="flex-1 h-[1px] bg-slate-800 mx-4" id="line-1"></div>
+                        <div class="flex flex-col items-center gap-2">
+                            <div id="step-2-indicator" class="w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300">2</div>
+                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Details</span>
+                        </div>
+                        <div class="flex-1 h-[1px] bg-slate-800 mx-4" id="line-2"></div>
+                        <div class="flex flex-col items-center gap-2">
+                            <div id="step-3-indicator" class="w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300">3</div>
+                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Billing</span>
+                        </div>
+                    </div>
+
+                <!-- Main Glass Panel -->
+                <div class="bg-[#090d1f]/75 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden" id="wizard-card">
+                    <!-- Step 1: Package Selection -->
+                    <div id="step-1-content" class="space-y-6">
+                        <h3 class="text-2xl font-bold text-white mb-4">Step 1: Choose Your Journey & Plan</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Select Package</label>
+                                <select id="tour-package" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 focus:outline-none cursor-pointer">
+                                    <option value="golden-triangle" data-price="32500">Golden Triangle Heritage (₹32,500)</option>
+                                    <option value="leh-ladakh" data-price="42000">Leh-Ladakh Expedition (₹42,000)</option>
+                                    <option value="kerala" data-price="26800">Romantic Kerala Houseboat (₹26,800)</option>
+                                    <option value="jaipur" data-price="18500">Jaipur & Desert Safaris (₹18,500)</option>
+                                    <option value="varanasi" data-price="14200">Varanasi Spiritual Ghats (₹14,200)</option>
+                                    <option value="goa" data-price="19900">Goa Beach Paradise (₹19,900)</option>
+                                    <option value="west-bengal-hills" data-price="24500">Darjeeling & Dooars Hills Scenic Retreat (₹24,500)</option>
+                                    <option value="sundarbans-kolkata" data-price="21200">Sundarbans & Kolkata Heritage Tour (₹21,200)</option>
+                                    <option value="tamil-nadu-heritage" data-price="29800">Tamil Nadu Heritage & Hills (₹29,800)</option>
+                                    <option value="hyderabad-ramoji" data-price="16500">Hyderabad Royal Legacy & Ramoji Film City (₹16,500)</option>
+                                    <option value="tripura-royal" data-price="18900">Tripura Royal Heritage & Unakoti Carvings (₹18,900)</option>
+                                    <option value="uttarakhand-devbhoomi" data-price="38500">Uttarakhand Devbhoomi & Auli Expedition (₹38,500)</option>
+                                    <option value="sikkim-explorer" data-price="27800">Sikkim Alpine Explorer (₹27,800)</option>
+                                    <option value="kashmir-paradise" data-price="34500">Kashmir Paradise Valley (₹34,500)</option>
+                                    <option value="andaman-nicobar" data-price="38800">Andaman & Nicobar Islands (₹38,800)</option>
+                                    <option value="ooty-kodai" data-price="22400">Southern Hills: Ooty & Kodaikanal (₹22,400)</option>
+                                    <option value="kolkata-digha" data-price="15500">West Bengal Explorer: Kolkata & Digha (₹15,500)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Date of Departure</label>
+                                <input type="date" id="departure-date" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-250 focus:outline-none" required />
+                            </div>
+                        </div>
+
+                        <!-- Plan Tiers Selection -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Select Package Plan Tier</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="plan-tiers-container">
+                                <!-- Budget Plan Card -->
+                                <div onclick="selectPlan('budget', 1.0)" id="plan-budget" class="cursor-pointer bg-slate-950/60 p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] text-left hover:border-blue-500/50 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-white text-sm">Budget Plan</h4>
+                                        <span class="text-[9px] bg-blue-900/40 text-blue-300 font-bold px-2 py-0.5 rounded border border-blue-500/30 uppercase">1.0x Base</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed">Basic accommodations, group transport, and self-guided touring routes.</p>
+                                </div>
+                                <!-- Standard Plan Card -->
+                                <div onclick="selectPlan('standard', 1.3)" id="plan-standard" class="cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-white text-sm">Standard Plan</h4>
+                                        <span class="text-[9px] bg-cyan-900/40 text-cyan-300 font-bold px-2 py-0.5 rounded border border-cyan-500/30 uppercase">1.3x Base</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed">3/4-star AC hotel stays, private AC sedan transit, local guide, and breakfast.</p>
+                                </div>
+                                <!-- Premium Plan Card -->
+                                <div onclick="selectPlan('premium', 1.7)" id="plan-premium" class="cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h4 class="font-bold text-white text-sm">Premium Plan</h4>
+                                        <span class="text-[9px] bg-orange-900/40 text-orange-300 font-bold px-2 py-0.5 rounded border border-orange-500/30 uppercase">1.7x Base</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-400 leading-relaxed">5-star heritage palaces/resorts, private SUV, 24/7 personal guide, meals, and VIP entry.</p>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selected-plan-tier" value="budget" />
+                            <input type="hidden" id="selected-plan-multiplier" value="1.0" />
+                        </div>
+
+                        <!-- Dynamic Inclusion Box -->
+                        <div class="bg-slate-950/50 p-5 rounded-xl border border-white/5 text-xs text-slate-400 leading-relaxed" id="plan-inclusions-box">
+                            <span class="font-bold text-white block mb-2">What's Included in Budget Plan:</span>
+                            <ul class="space-y-1.5">
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Accommodation: Clean, vetted 2-star guest houses or homestays (sharing basis).</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Transport: Shared sleeper class train transit or group tempo traveler.</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Meals: Self-funded (local food eateries guide book included).</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Sightseeing: Self-guided digital map & curated routing tips.</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Support: Standard emergency email support.</span></li>
+                            </ul>
+                        </div>
+
+
+                        <div class="flex justify-end pt-4">
+                            <button onclick="goToStep2()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase">
+                                Continue <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Contact Information -->
+                    <div id="step-2-content" class="space-y-6 hidden">
+                        <h3 class="text-2xl font-bold text-white mb-2">Step 2: Traveler Contact Details</h3>
+                        <p class="text-xs text-slate-400 mb-4">Please provide contact details and individual traveler information.</p>
+                        
+                        <!-- Primary Contact Card -->
+                        <div class="bg-slate-950/40 p-6 rounded-2xl border border-white/5 space-y-4">
+                            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="mail" class="w-4 h-4 text-cyan-400"></i>
+                                Primary Contact Information
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Email Address *</label>
+                                    <input type="email" id="traveler-email" placeholder="rajesh@example.com" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" required />
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Phone Number *</label>
+                                    <input type="tel" id="traveler-phone" placeholder="+91 99999 88888" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" required />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Special Stays / Dietary Notes (Optional)</label>
+                                <input type="text" id="traveler-notes" placeholder="Vegetarian food, twin beds etc." class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Travelers Container Section -->
+                        <div class="space-y-4">
+                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+                                Passenger Details
+                            </h5>
+                            <div id="dynamic-travelers-container" class="space-y-4">
+                                <!-- Dynamic traveler blocks will be generated here -->
+                            </div>
+                            
+                            <div class="flex justify-start pt-2">
+                                <button type="button" id="add-traveler-btn" onclick="addTravelerField()" class="flex items-center gap-2 border border-blue-500/30 hover:border-blue-500/50 bg-blue-950/20 hover:bg-blue-900/30 text-cyan-400 font-bold px-5 py-3 rounded-xl transition duration-300 text-xs tracking-wider uppercase">
+                                    <i data-lucide="plus" class="w-4 h-4 text-cyan-400"></i> Add Traveler
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between pt-4">
+                            <button onclick="backToStep1()" class="border border-white/10 hover:bg-white/5 text-slate-300 font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
+                                <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Back
+                            </button>
+                            <button onclick="goToStep3()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase">
+                                Calculate Invoice <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Billing & Confirmation -->
+                    <div id="step-3-content" class="space-y-6 hidden">
+                        <h3 class="text-2xl font-bold text-white mb-4">Step 3: Verification & Invoice</h3>                        <!-- Summary Pane -->
+                        <div class="bg-slate-950/70 p-6 rounded-2xl border border-white/5 space-y-4 text-sm text-slate-400">
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Package Choice</span>
+                                <span id="bill-package" class="font-semibold text-white">Leh-Ladakh Roadtrip</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Plan Class</span>
+                                <span id="bill-plan-tier" class="font-semibold text-cyan-400 capitalize">Budget Plan</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Departure Date</span>
+                                <span id="bill-date" class="font-semibold text-white">2026-08-15</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Per Head Rate</span>
+                                <span id="bill-per-head" class="font-semibold text-white">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">No. of Travelers</span>
+                                <span id="bill-travelers" class="font-semibold text-white">2 Adults, 1 Child</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Travelers List</span>
+                                <span id="bill-travelers-list" class="font-semibold text-white text-right max-w-[220px] truncate" title="">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Group Total Base Cost</span>
+                                <span id="bill-package-cost" class="font-semibold text-white">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2" id="bill-surcharge-row">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider" id="bill-surcharge-label">Plan Surcharge</span>
+                                <span id="bill-surcharge-cost" class="font-semibold text-orange-400">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">Subtotal</span>
+                                <span id="bill-base" class="font-semibold text-white">₹1,10,800</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="font-bold text-white text-xs uppercase tracking-wider">GST Tax (18%)</span>
+                                <span id="bill-tax" class="font-semibold text-white">₹19,944</span>
+                            </div>
+                            <div class="flex justify-between pt-2">
+                                <span class="font-bold text-white text-sm uppercase tracking-wider text-cyan-400">Total Price</span>
+                                <span id="bill-total" class="text-lg font-bold text-cyan-400">₹1,30,744</span>
+                            </div>
+                        </div>
+
+                        <!-- Select Payment Method -->
+                        <div class="bg-slate-950/40 p-6 rounded-2xl border border-white/5 space-y-6">
+                            <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
+                                Select Payment Method
+                            </h4>
+                            
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="payment-methods-container">
+                                <!-- Google Pay Option -->
+                                <div onclick="selectPaymentMethod('gpay')" id="method-gpay" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="smartphone" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Google Pay</span>
+                                </div>
+                                <!-- PhonePe Option -->
+                                <div onclick="selectPaymentMethod('phonepe')" id="method-phonepe" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-purple-600/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="smartphone" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">PhonePe</span>
+                                </div>
+                                <!-- UPI Option -->
+                                <div onclick="selectPaymentMethod('upi')" id="method-upi" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-600/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="qr-code" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">UPI ID</span>
+                                </div>
+                                <!-- Credit Card Option -->
+                                <div onclick="selectPaymentMethod('card-credit')" id="method-card-credit" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-cyan-600/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Credit Card</span>
+                                </div>
+                                <!-- Debit Card Option -->
+                                <div onclick="selectPaymentMethod('card-debit')" id="method-card-debit" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-indigo-600/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Debit Card</span>
+                                </div>
+                                <!-- Pay Later Option -->
+                                <div onclick="selectPaymentMethod('paylater')" id="method-paylater" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-600/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition duration-300">
+                                        <i data-lucide="clock" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Book Tour @ ₹0<br/><span class="text-[8px] text-amber-400 font-normal normal-case">Pay Later</span></span>
+                                </div>
+                            </div>
+                            
+                            <input type="hidden" id="selected-payment-method" value="" />
+                            
+                            <!-- Dynamic Payment Content -->
+                            <div id="payment-details-form" class="space-y-4 hidden bg-slate-950/50 p-5 rounded-xl border border-white/5 text-slate-300">
+                                <!-- Dynamic fields will go here -->
+                            </div>
+                        </div>
+
+                        <!-- Info Alerts -->
+                        <div class="flex gap-3 bg-blue-950/30 p-4 rounded-xl border border-blue-900/40 text-xs leading-relaxed text-blue-200">
+                            <i data-lucide="info" class="w-4 h-4 shrink-0 text-cyan-400"></i>
+                            <p>Upon clicking "Confirm Reservation", a booking reference ID is generated. Our operations desk will secure stays and coordinate travel logistics directly with you.</p>
+                        </div>
+
+                        <div class="flex justify-between pt-4">
+                            <button onclick="backToStep2()" class="border border-white/10 hover:bg-white/5 text-slate-300 font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
+                                <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Back
+                            </button>
+                            <button onclick="confirmBooking()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-orange-500/20 text-xs tracking-wider uppercase">
+                                Confirm Reservation <i data-lucide="check" class="w-4 h-4 inline ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Success Frame -->
+                    <div id="success-content" class="space-y-6 hidden text-center py-8">
+                        <div class="w-16 h-16 bg-cyan-950 text-cyan-400 border border-cyan-500/30 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/10">
+                            <i data-lucide="check" class="w-8 h-8"></i>
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-white">Booking Confirmed!</h3>
+                        <p class="text-slate-400 text-sm max-w-md mx-auto mb-6">Your trip reservation request has been processed. Download or print your travel boarding pass below.</p>
+                        
+                        <div class="bg-slate-950/70 p-5 rounded-2xl border border-white/5 max-w-sm mx-auto space-y-2 mb-6 hidden">
+                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block">Reference ID</span>
+                            <span id="booking-ref" class="text-xl font-bold text-cyan-400 tracking-wider">ANS-8201A</span>
+                        </div>
+
+                        <!-- Boarding Pass Container Outlet -->
+                        <div id="success-ticket-outlet" class="pt-4 text-left"></div>
+
+                        <div class="pt-6">
+                            <button onclick="location.href='index.html'" class="border border-white/10 hover:bg-white/5 text-white font-semibold px-8 py-3 rounded-full transition text-xs tracking-wider uppercase">
+                                Return to Home
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div> <!-- End of booking-flow-container -->
+
+                <!-- Track Flow Container -->
+                <div id="track-flow-container" class="bg-[#090d1f]/75 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl hidden space-y-6">
+                    <h3 class="text-2xl font-bold text-white mb-2">Track Your Reservation</h3>
+                    <p class="text-slate-400 text-xs">Enter your reservation reference number (e.g., ANS-8201A or a dynamic ref) to check verification progress and access your boarding pass ticket.</p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 items-stretch max-w-md">
+                        <input type="text" id="track-input" placeholder="Enter Ref ID (e.g. ANS-XXXXX)" class="flex-1 bg-slate-950 border border-white/5 rounded-xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-600 uppercase focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent" />
+                        <button onclick="performTracking()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase shrink-0">
+                            Track Status
+                        </button>
+                    </div>
+
+                    <!-- Tracking Result (Hidden by default) -->
+                    <div id="track-result-box" class="hidden space-y-8 pt-4">
+                        <hr class="border-white/5" />
+                        
+                        <!-- Real-time Progress Stepper -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-center bg-slate-950/40 p-6 rounded-2xl border border-white/5">
+                            <div class="flex flex-col items-center">
+                                <div id="track-step-1" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-2">Reserved</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="track-step-2" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i></div>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-2">Stays Vetted</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="track-step-3" class="w-8 h-8 rounded-full bg-slate-950 border border-white/5 text-slate-600 flex items-center justify-center font-bold text-xs"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2">Permit Ready</span>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div id="track-step-4" class="w-8 h-8 rounded-full bg-slate-950 border border-white/5 text-slate-600 flex items-center justify-center font-bold text-xs"><i data-lucide="plane" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2">Launched</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ticket Output Container -->
+                        <div id="tracked-ticket-outlet" class="text-left pt-4"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[#04060d]/90 backdrop-blur-xl text-slate-400 pt-20 pb-10 px-4 md:px-8 border-t border-white/15 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="bg-blue-600 text-white p-1.5 rounded-full shadow-lg shadow-blue-500/25">
+                            <i data-lucide="plane" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU TOUR & TRAVELS</h3>
+                    </div>
+                    <p class="mb-6 text-slate-400 text-sm">Experience absolute premium travel across India. Govt. approved logistics, high-quality stays, and custom local operations.</p>
+                    <div class="flex gap-4">
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=150" alt="Agra" class="w-full h-full object-cover" title="Agra (Taj Mahal)" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=150" alt="Ladakh" class="w-full h-full object-cover" title="Leh-Ladakh" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=150" alt="Kerala" class="w-full h-full object-cover" title="Kerala" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=150" alt="Jaipur" class="w-full h-full object-cover" title="Jaipur" />
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li><a href="index.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Home</a></li>
+                        <li><a href="destinations.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Destinations</a></li>
+                        <li><a href="tours.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Tour Packages</a></li>
+                        <li><a href="inquiry.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Reviews & Inquiry</a></li>
+                        <li><a href="booking.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Book Online</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Contact Desk</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="text-cyan-500 shrink-0 mt-1 w-5 h-5"></i>
+                            <span>Kasba, Kolkata, West Bengal, 700042</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="text-cyan-500 shrink-0 w-5 h-5"></i>
+                            <span>+91 73630 10254</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="text-cyan-500 shrink-0 w-5 h-5"></i>
+                            <span>ansutourtravels@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Adventure Newsletter</h4>
+                    <p class="mb-4 text-slate-400 text-sm">Subscribe to receive exclusive deals for India's hill stations.</p>
+                    <div class="relative mt-4">
+                        <input type="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-6 pr-14 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
+                        <button class="absolute right-1.5 top-1.5 bottom-1.5 w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white hover:from-blue-700 hover:to-cyan-600 transition shadow-md shadow-blue-500/20">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 pt-4">
+                <p>&copy; 2026 ANSU TOUR & TRAVELS. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-slate-300 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-300 transition">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+
+
+        // Wizard Steps DOM Elements
+        const step1Content = document.getElementById('step-1-content');
+        const step2Content = document.getElementById('step-2-content');
+        const step3Content = document.getElementById('step-3-content');
+        const successContent = document.getElementById('success-content');
+
+        const step1Ind = document.getElementById('step-1-indicator');
+        const step2Ind = document.getElementById('step-2-indicator');
+        const step3Ind = document.getElementById('step-3-indicator');
+
+        const line1 = document.getElementById('line-1');
+        const line2 = document.getElementById('line-2');
+
+
+
+        // Plan Selection Handler
+        function selectPlan(plan, multiplier) {
+            document.getElementById('selected-plan-tier').value = plan;
+            document.getElementById('selected-plan-multiplier').value = multiplier;
+
+            // Inclusions Database (Pointable & Reliable Specifics)
+            const inclusions = {
+                budget: {
+                    title: "What's Included in Budget Plan:",
+                    list: [
+                        "Accommodation: Clean, vetted 2-star guest houses or homestays (sharing basis).",
+                        "Transport: Shared sleeper class train transit or group tempo traveler.",
+                        "Meals: Self-funded (local food eateries guide book included).",
+                        "Sightseeing: Self-guided digital map & curated routing tips.",
+                        "Support: Standard emergency email support."
+                    ]
+                },
+                standard: {
+                    title: "What's Included in Standard Plan:",
+                    list: [
+                        "Accommodation: Selected 3/4-star AC hotel rooms (twin sharing).",
+                        "Transport: Private AC Sedan (Dezire, Etios or equivalent) for all transfers.",
+                        "Meals: Daily buffet breakfast included at hotels.",
+                        "Sightseeing: Certified regional speaking guide at major monuments.",
+                        "Support: 24/7 telephonic helpline coordinates."
+                    ]
+                },
+                premium: {
+                    title: "What's Included in Premium Plan:",
+                    list: [
+                        "Accommodation: Heritage 5-star palace hotels or premium resorts.",
+                        "Transport: Private premium SUV (Innova Crysta) with professional driver.",
+                        "Meals: All buffet meals included (Breakfast, Lunch, Dinner).",
+                        "Sightseeing: Full-time personal tour escort & VIP entries/passes.",
+                        "Bonus: Complimentary welcome drinks & heritage spa voucher."
+                    ]
+                }
+            };
+
+            // Update UI Card Classes
+            const plans = ['budget', 'standard', 'premium'];
+            plans.forEach(p => {
+                const el = document.getElementById(`plan-${p}`);
+                if (p === plan) {
+                    el.className = "cursor-pointer bg-slate-950/60 p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] text-left hover:border-blue-500/50 transition-all duration-300";
+                } else {
+                    el.className = "cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300";
+                }
+            });
+
+            // Update Inclusions Box UI (Pointable layout with checks)
+            const box = document.getElementById('plan-inclusions-box');
+            let listHtml = `<span class="font-bold text-white block mb-2">${inclusions[plan].title}</span><ul class="space-y-1.5">`;
+            inclusions[plan].list.forEach(item => {
+                listHtml += `<li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>${item}</span></li>`;
+            });
+            listHtml += '</ul>';
+            box.innerHTML = listHtml;
+            lucide.createIcons(); // Instantly load icons inside list
+        }
+
+        // Helper to generate Traveler Card HTML
+        function getTravelerCardHtml(index) {
+            const isPrimary = index === 1;
+            const labelText = isPrimary ? `Traveler #${index} (Primary)` : `Traveler #${index}`;
+            const removeBtnHtml = isPrimary ? '' : `
+                <button type="button" onclick="removeTravelerField(${index})" class="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-300 font-bold uppercase transition duration-300">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove
+                </button>
+            `;
+            
+            return `
+            <div class="bg-slate-950/60 p-5 rounded-2xl border border-white/5 space-y-4 traveler-form-card animate-fadeIn" id="traveler-card-${index}">
+                <div class="flex justify-between items-center">
+                    <h5 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="user" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        <span class="card-label">${labelText}</span>
+                    </h5>
+                    ${removeBtnHtml}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Full Name *</label>
+                        <input type="text" ${isPrimary ? 'id="traveler-name"' : ''} placeholder="e.g. Rajesh Kumar" class="traveler-name w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Age *</label>
+                        <input type="number" min="1" max="120" placeholder="e.g. 28" class="traveler-age w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Aadhaar ID No *</label>
+                        <input type="text" placeholder="12-digit Aadhaar Number" class="traveler-aadhaar w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Gender *</label>
+                        <select class="traveler-gender w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required>
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Difficulties / Notes (Optional)</label>
+                        <input type="text" placeholder="e.g. physical assistance needed" class="traveler-difficulties w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" />
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // Re-index remaining cards after removal
+        function reindexTravelers() {
+            const container = document.getElementById('dynamic-travelers-container');
+            const cards = container.querySelectorAll('.traveler-form-card');
+            
+            cards.forEach((card, idx) => {
+                const currentIdx = idx + 1;
+                card.id = `traveler-card-${currentIdx}`;
+                
+                // Update header label
+                const labelSpan = card.querySelector('.card-label');
+                const isPrimary = currentIdx === 1;
+                labelSpan.textContent = isPrimary ? `Traveler #${currentIdx} (Primary)` : `Traveler #${currentIdx}`;
+                
+                // Update Name input ID for primary traveler compatibility
+                const nameInput = card.querySelector('.traveler-name');
+                if (isPrimary) {
+                    nameInput.id = 'traveler-name';
+                } else {
+                    nameInput.removeAttribute('id');
+                }
+                
+                // Update or recreate remove button
+                const headerDiv = card.querySelector('.flex.justify-between.items-center');
+                let removeBtn = headerDiv.querySelector('button');
+                
+                if (isPrimary) {
+                    if (removeBtn) {
+                        removeBtn.remove();
+                    }
+                } else {
+                    if (!removeBtn) {
+                        // Create remove button if it doesn't exist
+                        const btnHtml = `
+                        <button type="button" onclick="removeTravelerField(${currentIdx})" class="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-300 font-bold uppercase transition duration-300">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove
+                        </button>
+                        `;
+                        headerDiv.insertAdjacentHTML('beforeend', btnHtml);
+                    } else {
+                        // Update existing remove button onclick attribute
+                        removeBtn.setAttribute('onclick', `removeTravelerField(${currentIdx})`);
+                    }
+                }
+            });
+            
+            lucide.createIcons();
+        }
+
+        // Add traveler form card
+        function addTravelerField() {
+            const container = document.getElementById('dynamic-travelers-container');
+            const currentCount = container.children.length;
+            if (currentCount >= 30) {
+                alert('Maximum limit of 30 travelers reached.');
+                return;
+            }
+            
+            const newIndex = currentCount + 1;
+            const newCardHtml = getTravelerCardHtml(newIndex);
+            
+            container.insertAdjacentHTML('beforeend', newCardHtml);
+            lucide.createIcons();
+        }
+
+        // Remove traveler form card
+        function removeTravelerField(idx) {
+            const card = document.getElementById(`traveler-card-${idx}`);
+            if (card) {
+                card.remove();
+                reindexTravelers();
+            }
+        }
+
+        // Wizard Transition Functions
+        function goToStep2() {
+            const date = document.getElementById('departure-date').value;
+            if (!date) {
+                alert('Please select a departure date.');
+                return;
+            }
+
+            const container = document.getElementById('dynamic-travelers-container');
+            if (container.children.length === 0) {
+                // Initialize with 1 primary traveler card
+                container.innerHTML = getTravelerCardHtml(1);
+                lucide.createIcons();
+            }
+            
+            step1Content.classList.add('hidden');
+            step2Content.classList.remove('hidden');
+
+            step2Ind.classList.remove('text-slate-500', 'border-white/5');
+            step2Ind.classList.add('bg-blue-600', 'text-white', 'border-blue-400', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]');
+            line1.classList.replace('bg-slate-800', 'bg-blue-600');
+        }
+
+        // Back Transition to Step 1
+        function backToStep1() {
+            step2Content.classList.add('hidden');
+            step1Content.classList.remove('hidden');
+
+            step2Ind.className = 'w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300';
+            line1.classList.replace('bg-blue-600', 'bg-slate-800');
+        }
+
+        // Go to Billing summary (Step 3)
+        function goToStep3() {
+            const email = document.getElementById('traveler-email').value.trim();
+            const phone = document.getElementById('traveler-phone').value.trim();
+
+            if (!email || !phone) {
+                alert('Please fill out Email and Phone fields.');
+                return;
+            }
+
+            // Gather and validate traveler details
+            const travelerCards = document.querySelectorAll('.traveler-form-card');
+            const travelersData = [];
+            
+            for (let i = 0; i < travelerCards.length; i++) {
+                const card = travelerCards[i];
+                const tName = card.querySelector('.traveler-name').value.trim();
+                const tAge = card.querySelector('.traveler-age').value.trim();
+                const tAadhaar = card.querySelector('.traveler-aadhaar').value.trim();
+                const tGender = card.querySelector('.traveler-gender').value;
+                const tDifficulties = card.querySelector('.traveler-difficulties').value.trim();
+                
+                if (!tName) {
+                    alert(`Please enter the Full Name for Traveler #${i + 1}.`);
+                    return;
+                }
+                if (!tAge) {
+                    alert(`Please enter the Age for Traveler #${i + 1}.`);
+                    return;
+                }
+                if (!tAadhaar) {
+                    alert(`Please enter the Aadhaar ID for Traveler #${i + 1}.`);
+                    return;
+                }
+                // Aadhaar ID validation: exactly 12 digits
+                if (!/^\d{12}$/.test(tAadhaar)) {
+                    alert(`Aadhaar ID for Traveler #${i + 1} must be exactly 12 digits.`);
+                    return;
+                }
+                if (!tGender) {
+                    alert(`Please select the Gender for Traveler #${i + 1}.`);
+                    return;
+                }
+                
+                travelersData.push({
+                    name: tName,
+                    age: parseInt(tAge),
+                    aadhaar: tAadhaar,
+                    gender: tGender,
+                    difficulties: tDifficulties || 'None'
+                });
+            }
+
+            // Save for confirmBooking usage
+            window.currentTravelersData = travelersData;
+
+            // Calculate billing totals
+            const packageSelect = document.getElementById('tour-package');
+            const selectedOpt = packageSelect.options[packageSelect.selectedIndex];
+            const packageName = selectedOpt.text.split(' (')[0];
+            const pricePerPerson = parseFloat(selectedOpt.getAttribute('data-price'));
+
+            const totalTravelers = travelersData.length;
+
+            const planMultiplier = parseFloat(document.getElementById('selected-plan-multiplier').value) || 1.0;
+            const planTier = document.getElementById('selected-plan-tier').value;
+
+            // Raw cost before plan multiplier
+            const rawCost = totalTravelers * pricePerPerson;
+            
+            // Surcharge markup calculations
+            const surchargeRate = planMultiplier - 1.0;
+            const surchargeCost = rawCost * surchargeRate;
+
+            const baseFare = rawCost + surchargeCost; // Equivalent to rawCost * planMultiplier
+            const tax = baseFare * 0.18;
+            const total = baseFare + tax;
+
+            // Populate Invoice values
+            document.getElementById('bill-package').textContent = packageName;
+            document.getElementById('bill-plan-tier').textContent = planTier.charAt(0).toUpperCase() + planTier.slice(1) + " Plan";
+            document.getElementById('bill-date').textContent = document.getElementById('departure-date').value;
+            document.getElementById('bill-travelers').textContent = `${totalTravelers} Traveler(s)`;
+            
+            // Populate travelers names list
+            const travelerNames = travelersData.map(t => t.name).join(', ');
+            const listEl = document.getElementById('bill-travelers-list');
+            listEl.textContent = travelerNames;
+            listEl.setAttribute('title', travelerNames);
+
+            // Per head breakdown calculation
+            document.getElementById('bill-per-head').textContent = `₹${pricePerPerson.toLocaleString('en-IN')} / Traveler`;
+            document.getElementById('bill-package-cost').textContent = `₹${rawCost.toLocaleString('en-IN')}`;
+
+            // Handle Plan surcharge markup rows dynamically
+            const surchargeRow = document.getElementById('bill-surcharge-row');
+            if (surchargeRate > 0) {
+                surchargeRow.classList.remove('hidden');
+                document.getElementById('bill-surcharge-label').textContent = `${planTier.charAt(0).toUpperCase() + planTier.slice(1)} Plan Surcharge (+${Math.round(surchargeRate * 100)}%)`;
+                document.getElementById('bill-surcharge-cost').textContent = `+₹${surchargeCost.toLocaleString('en-IN')}`;
+            } else {
+                surchargeRow.classList.add('hidden');
+            }
+
+            document.getElementById('bill-base').textContent = `₹${baseFare.toLocaleString('en-IN')}`;
+            document.getElementById('bill-tax').textContent = `₹${tax.toLocaleString('en-IN')}`;
+            document.getElementById('bill-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+
+            step2Content.classList.add('hidden');
+            step3Content.classList.remove('hidden');
+
+            step3Ind.classList.remove('text-slate-500', 'border-white/5');
+            step3Ind.classList.add('bg-blue-600', 'text-white', 'border-blue-400', 'shadow-[0_0_15px_rgba(59,130,246,0.3)]');
+            line2.classList.replace('bg-slate-800', 'bg-blue-600');
+        }
+
+        function backToStep2() {
+            step3Content.classList.add('hidden');
+            step2Content.classList.remove('hidden');
+
+            step3Ind.className = 'w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300';
+            line2.classList.replace('bg-blue-600', 'bg-slate-800');
+        }
+
+        // Setup formatters for payment input fields
+        function setupPhoneFormatters() {
+            const phoneInput = document.getElementById('payment-phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                });
+            }
+        }
+
+        function setupCardFormatters() {
+            const cardInput = document.getElementById('card-number');
+            const expiryInput = document.getElementById('card-expiry');
+            const cvvInput = document.getElementById('card-cvv');
+
+            if (cardInput) {
+                cardInput.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formatted += ' ';
+                        }
+                        formatted += value[i];
+                    }
+                    e.target.value = formatted;
+                });
+            }
+
+            if (expiryInput) {
+                expiryInput.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 2) {
+                        e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    } else {
+                        e.target.value = value;
+                    }
+                });
+            }
+
+            if (cvvInput) {
+                cvvInput.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                });
+            }
+        }
+
+        // Handle payment option clicks dynamically
+        function selectPaymentMethod(method) {
+            document.getElementById('selected-payment-method').value = method;
+            
+            const methods = ['gpay', 'phonepe', 'upi', 'card-credit', 'card-debit', 'paylater'];
+            methods.forEach(m => {
+                const card = document.getElementById(`method-${m}`);
+                if (m === method) {
+                    card.className = "cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
+                } else {
+                    card.className = "cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
+                }
+            });
+
+            const formContainer = document.getElementById('payment-details-form');
+            formContainer.classList.remove('hidden');
+
+            let formHtml = '';
+            if (method === 'gpay' || method === 'phonepe') {
+                const labelName = method === 'gpay' ? 'Google Pay' : 'PhonePe';
+                formHtml = `
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Enter UPI-linked Phone Number *</label>
+                    <input type="tel" id="payment-phone" placeholder="e.g. 9876543210" maxlength="10" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    <p class="text-[9px] text-slate-500">A verification request will be pushed to your ${labelName} app.</p>
+                </div>
+                `;
+            } else if (method === 'upi') {
+                formHtml = `
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">Enter UPI ID (Virtual Private Address) *</label>
+                    <input type="text" id="payment-upi-id" placeholder="e.g. username@okhdfcbank" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    <p class="text-[9px] text-slate-500">Please enter a valid UPI handle (e.g. username@ybl, name@upi).</p>
+                </div>
+                `;
+            } else if (method === 'card-credit' || method === 'card-debit') {
+                const labelName = method === 'card-credit' ? 'Credit Card' : 'Debit Card';
+                formHtml = `
+                <div class="space-y-4">
+                    <h5 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i> ${labelName} Payment details
+                    </h5>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Cardholder Name *</label>
+                        <input type="text" id="card-holder" placeholder="Rajesh Kumar" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Card Number *</label>
+                        <input type="text" id="card-number" placeholder="4111 2222 3333 4444" maxlength="19" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Expiry Date *</label>
+                            <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">CVV *</label>
+                            <input type="password" id="card-cvv" placeholder="•••" maxlength="3" class="w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                        </div>
+                    </div>
+                </div>
+                `;
+            } else if (method === 'paylater') {
+                const totalText = document.getElementById('bill-total').textContent;
+                formHtml = `
+                <div class="flex gap-3 bg-amber-950/20 p-4 rounded-xl border border-amber-900/30 text-xs leading-relaxed text-amber-200 animate-fadeIn">
+                    <i data-lucide="help-circle" class="w-4.5 h-4.5 shrink-0 text-amber-400"></i>
+                    <div>
+                        <p class="font-bold mb-1 uppercase tracking-wider text-[10px]">Book Tour with ₹0 (Pay Later)</p>
+                        <p class="text-slate-400 text-[11px] leading-relaxed">Secure your tour seat today with ₹0 down payment. An invoice with a payment link of <span class="text-white font-bold">${totalText}</span> will be emailed to your primary email address. Complete payment online up to 48 hours before your departure date.</p>
+                    </div>
+                </div>
+                `;
+            }
+
+            formContainer.innerHTML = formHtml;
+            
+            // Add automatic formatting and validation triggers
+            if (method === 'card-credit' || method === 'card-debit') {
+                setupCardFormatters();
+            } else if (method === 'gpay' || method === 'phonepe') {
+                setupPhoneFormatters();
+            }
+            
+            lucide.createIcons();
+        }
+
+        // Render dynamic Boarding Pass Ticket Layout
+        function renderBoardingPassHtml(booking) {
+            // Check if there are dynamic travelers stored
+            let travelersHtml = '';
+            if (booking.travelers && booking.travelers.length > 0) {
+                travelersHtml = `
+                <div class="col-span-2 border-t border-white/5 pt-3 mt-2">
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-2">Group Passengers Details</p>
+                    <div class="space-y-2 max-h-36 overflow-y-auto pr-1">
+                `;
+                booking.travelers.forEach((t, idx) => {
+                    travelersHtml += `
+                        <div class="flex justify-between items-center bg-slate-900/40 p-2 rounded-xl border border-white/5 text-[10px]">
+                            <div>
+                                <span class="font-bold text-white">${idx + 1}. ${t.name}</span> 
+                                <span class="text-slate-400">(${t.gender}, Age: ${t.age})</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-slate-400 block text-[9px]">Aadhaar: ${t.aadhaar}</span>
+                                ${t.difficulties && t.difficulties !== 'None' ? `<span class="text-amber-400 block text-[9px] truncate max-w-[150px]">Note: ${t.difficulties}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+                travelersHtml += `
+                    </div>
+                </div>
+                `;
+            }
+
+            return `
+            <div class="relative max-w-2xl mx-auto bg-slate-950/90 border border-dashed border-white/15 rounded-3xl overflow-hidden shadow-2xl p-6 md:p-8 flex flex-col md:flex-row items-stretch justify-between gap-6 print:bg-white print:text-black print:border-black">
+                <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-cyan-500/5 pointer-events-none"></div>
+
+                <div class="flex-1 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <div class="bg-blue-600 text-white p-1 rounded-lg">
+                                <i data-lucide="plane" class="w-4 h-4 text-white"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white tracking-widest uppercase">ANSU TRAVELS</span>
+                        </div>
+                        <span class="bg-cyan-500/20 text-cyan-400 text-[8px] font-bold px-2 py-0.5 rounded-full tracking-widest uppercase border border-cyan-500/20">BOARDING PASS</span>
+                    </div>
+
+                    <div class="flex justify-between items-center gap-4 bg-slate-900/60 p-4 rounded-xl border border-white/5">
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Departure</p>
+                            <p class="text-lg font-bold text-white leading-none">KOLKATA</p>
+                            <p class="text-[10px] text-slate-400 mt-1">CCU Hub</p>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center gap-1 justify-center">
+                            <i data-lucide="plane" class="w-4 h-4 text-cyan-400 rotate-90"></i>
+                            <div class="w-full h-[1px] bg-slate-800 relative">
+                                <div class="absolute w-1.5 h-1.5 bg-cyan-400 rounded-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                            </div>
+                            <span class="text-[8px] text-slate-500 font-bold uppercase tracking-widest">Confirmed Expedition</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Destination</p>
+                            <p class="text-lg font-bold text-white leading-none uppercase truncate max-w-[150px]">${booking.packageName}</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Permit Vetted</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-y-4 gap-x-6 text-xs border-t border-slate-900 pt-4">
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Passenger Name</p>
+                            <p class="font-bold text-white mt-0.5 truncate max-w-[180px]">${booking.name}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Permit Reference</p>
+                            <p class="font-bold text-cyan-400 mt-0.5 tracking-wide">${booking.ref}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Date of Launch</p>
+                            <p class="font-semibold text-white mt-0.5">${booking.date}</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Plan & Service Tier</p>
+                            <p class="font-bold text-orange-400 mt-0.5 capitalize">${booking.planTier} Class</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Travelers Group</p>
+                            <p class="font-semibold text-white mt-0.5">${booking.totalTravelers || booking.adults || 1} Traveler(s)</p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Calculated Total</p>
+                            <p class="font-bold text-white mt-0.5">₹${parseFloat(booking.total).toLocaleString('en-IN')}</p>
+                        </div>
+                        <div class="col-span-2 bg-slate-900/60 p-3 rounded-xl border border-white/5 flex justify-between items-center text-[10px]">
+                            <div>
+                                <span class="block text-[8px] text-slate-500 font-bold uppercase tracking-wider">Payment Status</span>
+                                <span class="font-bold ${booking.paymentMethod === 'paylater' ? 'text-amber-400' : 'text-emerald-400'} uppercase">
+                                    ${booking.paymentMethod === 'paylater' ? 'PAY LATER (PENDING)' : 'PAID'}
+                                </span>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[8px] text-slate-500 font-bold uppercase tracking-wider">Transaction Info</span>
+                                <span class="text-slate-200 font-semibold">${booking.paymentDetails || 'N/A'}</span>
+                            </div>
+                        </div>
+                        ${travelersHtml}
+                    </div>
+                </div>
+
+                <div class="w-full md:w-48 md:border-l md:border-dashed md:border-white/10 md:pl-6 flex flex-col justify-between items-center text-center gap-4 print:border-black">
+                    <div class="w-full">
+                        <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Seat Class</p>
+                        <p class="text-xl font-extrabold text-white mt-1 capitalize">${booking.planTier}</p>
+                        <span class="text-[8px] text-slate-400 block mt-0.5">GATE CLOSES 48H BEFORE LAUNCH</span>
+                    </div>
+
+                    <div class="bg-white p-2 rounded-xl border border-white/10 shadow-lg flex items-center justify-center w-28 h-28 shrink-0">
+                        <svg class="w-full h-full text-slate-950" viewBox="0 0 100 100" fill="currentColor">
+                            <rect x="5" y="5" width="25" height="25" fill="none" stroke="currentColor" stroke-width="6"/>
+                            <rect x="11" y="11" width="13" height="13" fill="currentColor"/>
+                            <rect x="70" y="5" width="25" height="25" fill="none" stroke="currentColor" stroke-width="6"/>
+                            <rect x="76" y="11" width="13" height="13" fill="currentColor"/>
+                            <rect x="5" y="70" width="25" height="25" fill="none" stroke="currentColor" stroke-width="6"/>
+                            <rect x="11" y="76" width="13" height="13" fill="currentColor"/>
+                            <rect x="40" y="10" width="8" height="20" fill="currentColor"/>
+                            <rect x="50" y="30" width="15" height="8" fill="currentColor"/>
+                            <rect x="10" y="40" width="20" height="8" fill="currentColor"/>
+                            <rect x="40" y="50" width="12" height="12" fill="currentColor"/>
+                            <rect x="60" y="50" width="8" height="25" fill="currentColor"/>
+                            <rect x="75" y="40" width="15" height="8" fill="currentColor"/>
+                            <rect x="40" y="75" width="20" height="8" fill="currentColor"/>
+                            <rect x="75" y="75" width="12" height="12" fill="currentColor"/>
+                            <rect x="52" y="15" width="8" height="8" fill="currentColor"/>
+                        </svg>
+                    </div>
+
+                    <button onclick="window.print()" class="text-xs border border-white/10 hover:bg-white/5 text-slate-400 font-bold px-4 py-2 rounded-xl transition duration-300 w-full uppercase tracking-wider flex items-center justify-center gap-1.5 print:hidden">
+                        <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Ticket
+                    </button>
+                </div>
+            </div>`;
+        }
+
+        function confirmBooking() {
+            const method = document.getElementById('selected-payment-method').value;
+            if (!method) {
+                alert('Please select a payment method to confirm your booking.');
+                return;
+            }
+
+            // Validate based on selected method
+            let paymentDetailsText = '';
+            if (method === 'gpay' || method === 'phonepe') {
+                const phoneInput = document.getElementById('payment-phone').value.trim();
+                if (!phoneInput || phoneInput.length !== 10) {
+                    alert('Please enter a valid 10-digit UPI phone number.');
+                    return;
+                }
+                const label = method === 'gpay' ? 'Google Pay' : 'PhonePe';
+                paymentDetailsText = `Paid via ${label} (Phone: ${phoneInput})`;
+            } else if (method === 'upi') {
+                const upiInput = document.getElementById('payment-upi-id').value.trim();
+                if (!upiInput || !upiInput.includes('@')) {
+                    alert('Please enter a valid UPI ID (e.g. username@upi).');
+                    return;
+                }
+                paymentDetailsText = `Paid via UPI ID (${upiInput})`;
+            } else if (method === 'card-credit' || method === 'card-debit') {
+                const holder = document.getElementById('card-holder').value.trim();
+                const cardNum = document.getElementById('card-number').value.replace(/\s/g, '');
+                const expiry = document.getElementById('card-expiry').value.trim();
+                const cvv = document.getElementById('card-cvv').value.trim();
+
+                if (!holder) {
+                    alert('Please enter the cardholder name.');
+                    return;
+                }
+                if (!cardNum || cardNum.length < 15 || cardNum.length > 16) {
+                    alert('Please enter a valid 15 or 16-digit card number.');
+                    return;
+                }
+                if (!expiry || !expiry.includes('/') || expiry.length !== 5) {
+                    alert('Please enter a valid expiry date in MM/YY format.');
+                    return;
+                }
+                if (!cvv || cvv.length !== 3) {
+                    alert('Please enter a valid 3-digit CVV number.');
+                    return;
+                }
+                const label = method === 'card-credit' ? 'Credit Card' : 'Debit Card';
+                paymentDetailsText = `Paid via ${label} (Ending: ${cardNum.substring(cardNum.length - 4)})`;
+            } else if (method === 'paylater') {
+                paymentDetailsText = 'Pay Later (Booked for ₹0)';
+            }
+
+            // Generate random reference ID
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let ref = 'ANS-';
+            for (let i = 0; i < 5; i++) {
+                ref += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('booking-ref').textContent = ref;
+
+            const name = document.getElementById('traveler-name').value;
+            const email = document.getElementById('traveler-email').value;
+            const phone = document.getElementById('traveler-phone').value;
+            const packageName = document.getElementById('bill-package').textContent;
+            const date = document.getElementById('departure-date').value;
+            const planTier = document.getElementById('selected-plan-tier').value;
+            const totalTravelers = window.currentTravelersData ? window.currentTravelersData.length : 1;
+            const totalText = document.getElementById('bill-total').textContent;
+            const total = parseFloat(totalText.replace(/[^\d]/g, '')) || 0;
+
+            const bookingRecord = {
+                ref: ref,
+                name: name,
+                email: email,
+                phone: phone,
+                packageName: packageName,
+                date: date,
+                planTier: planTier,
+                adults: totalTravelers,
+                kids: 0,
+                totalTravelers: totalTravelers,
+                total: total,
+                travelers: window.currentTravelersData || [],
+                paymentMethod: method,
+                paymentDetails: paymentDetailsText
+            };
+
+            // Save to localStorage
+            let bookings = JSON.parse(localStorage.getItem('ansubookings') || '[]');
+            bookings.push(bookingRecord);
+            localStorage.setItem('ansubookings', JSON.stringify(bookings));
+
+            // Render success boarding pass ticket
+            document.getElementById('success-ticket-outlet').innerHTML = renderBoardingPassHtml(bookingRecord);
+            lucide.createIcons();
+
+            step3Content.classList.add('hidden');
+            successContent.classList.remove('hidden');
+        }
+
+        // Tab Switcher Functions
+        function switchTab(tab) {
+            const btnBook = document.getElementById('tab-book');
+            const btnTrack = document.getElementById('tab-track');
+            const flowContainer = document.getElementById('booking-flow-container');
+            const trackContainer = document.getElementById('track-flow-container');
+
+            if (tab === 'book') {
+                btnBook.className = "bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300";
+                btnTrack.className = "bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300";
+                flowContainer.classList.remove('hidden');
+                trackContainer.classList.add('hidden');
+            } else {
+                btnTrack.className = "bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300";
+                btnBook.className = "bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300";
+                flowContainer.classList.add('hidden');
+                trackContainer.classList.remove('hidden');
+            }
+        }
+
+        // Seeded Mock Booking for tracking demonstration
+        const mockBooking = {
+            ref: 'ANS-8201A',
+            name: 'Aarav Sen',
+            email: 'aarav@example.com',
+            phone: '7363010254',
+            packageName: 'Leh-Ladakh Expedition',
+            date: '2026-08-15',
+            planTier: 'premium',
+            adults: 2,
+            kids: 1,
+            total: 130744
+        };
+
+        // Lookup Reservation Tracking
+        function performTracking() {
+            const inputVal = document.getElementById('track-input').value.trim().toUpperCase();
+            if (!inputVal) {
+                alert('Please enter a Reference ID.');
+                return;
+            }
+
+            let foundBooking = null;
+            if (inputVal === 'ANS-8201A') {
+                foundBooking = mockBooking;
+            } else {
+                const bookings = JSON.parse(localStorage.getItem('ansubookings') || '[]');
+                foundBooking = bookings.find(b => b.ref.toUpperCase() === inputVal);
+            }
+
+            const resultBox = document.getElementById('track-result-box');
+            const outlet = document.getElementById('tracked-ticket-outlet');
+
+            if (foundBooking) {
+                resultBox.classList.remove('hidden');
+                outlet.innerHTML = renderBoardingPassHtml(foundBooking);
+                
+                // Add active look to tracking status steps
+                const step2 = document.getElementById('track-step-2');
+                const step3 = document.getElementById('track-step-3');
+                const step4 = document.getElementById('track-step-4');
+
+                step2.className = "w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs";
+                step2.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i>';
+                
+                step3.className = "w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs";
+                step3.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i>';
+
+                lucide.createIcons();
+            } else {
+                resultBox.classList.add('hidden');
+                alert('Reference ID not found. Stored bookings are saved on this browser local storage. Try lookup "ANS-8201A" for demo.');
+            }
+        }
+
+        // Set default minimum date to today
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('departure-date').setAttribute('min', todayStr);
+
+        // Initialization
+        lucide.createIcons();
+
+        // URL Parameters Parser for package auto-selection
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const packageId = params.get('package');
+            if (packageId) {
+                const selectEl = document.getElementById('tour-package');
+                if (selectEl) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value === packageId) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        })();
+
+        // Check for Custom AI Trip details
+        (function() {
+            const aiTripData = sessionStorage.getItem('customAITrip');
+            if (aiTripData) {
+                try {
+                    const trip = JSON.parse(aiTripData);
+                    const selectEl = document.getElementById('tour-package');
+                    
+                    // Tier Multipliers mapping
+                    const tierMultipliers = { budget: 1.0, standard: 1.5, premium: 2.2 };
+                    const tierMultiplier = tierMultipliers[trip.tier] || 1.5;
+                    
+                    // Divide price by multiplier so subsequent multipliers in booking engine compute correctly
+                    const basePriceForBooking = trip.price / tierMultiplier;
+                    
+                    if (selectEl) {
+                        // Create a new option for the custom AI trip and insert it at the top
+                        const opt = document.createElement('option');
+                        opt.value = 'custom-ai';
+                        opt.setAttribute('data-price', basePriceForBooking);
+                        opt.textContent = `AI Customized: ${trip.name} (₹${trip.price.toLocaleString('en-IN')} / Person)`;
+                        opt.selected = true;
+                        selectEl.insertBefore(opt, selectEl.firstChild);
+                        selectEl.selectedIndex = 0;
+                    }
+                    
+                    // Auto-select plan tier and multiplier
+                    selectPlan(trip.tier, tierMultiplier);
+                    
+                    // Pre-fill the dynamic traveler fields based on passenger count
+                    const passengers = parseInt(trip.passengers) || 1;
+                    const container = document.getElementById('dynamic-travelers-container');
+                    if (container) {
+                        let cardsHtml = '';
+                        for (let i = 1; i <= passengers; i++) {
+                            cardsHtml += getTravelerCardHtml(i);
+                        }
+                        container.innerHTML = cardsHtml;
+                    }
+                    
+                    // Inject a status toast alert at the top of Step 1 form to welcome the user
+                    const step1Container = document.getElementById('step-1-content');
+                    if (step1Container) {
+                        const alertHtml = `
+                        <div class="mb-6 flex gap-3 bg-cyan-950/30 p-4 rounded-xl border border-cyan-900/40 text-xs leading-relaxed text-cyan-200 animate-fadeIn">
+                            <i data-lucide="sparkles" class="w-4 h-4 shrink-0 text-cyan-400"></i>
+                            <div>
+                                <p class="font-bold mb-0.5">AI Customized Trip Loaded!</p>
+                                <p class="text-slate-400">We have automatically loaded your customized itinerary for <strong class="text-white">${trip.destinations}</strong> for <strong class="text-white">${passengers} ${passengers > 1 ? 'travelers' : 'traveler'}</strong> at the pre-calculated rate of ₹${trip.price.toLocaleString('en-IN')} per head on the ${trip.tier} plan class.</p>
+                            </div>
+                        </div>
+                        `;
+                        step1Container.insertAdjacentHTML('afterbegin', alertHtml);
+                    }
+                    
+                    // Clear the session storage so it doesn't persist forever on subsequent visits
+                    sessionStorage.removeItem('customAITrip');
+                    
+                    // Re-run lucide icons to display the sparkles icon
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error("Error parsing custom AI trip data:", e);
+                }
+            }
+        })();
+    <script src="supabase-auth.js"></script>
+</body>
+</html>

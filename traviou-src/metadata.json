@@ -1,0 +1,9 @@
+{
+  "name": "Traviou Travel Agency",
+  "description": "A modern travel agency landing page with destination listings, tour types, and booking features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
+

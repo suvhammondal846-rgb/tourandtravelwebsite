@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANSU TOUR & TRAVELS - Indian Destinations</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for variables and styling -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg-color: #030409;
+            --accent-color: #ffffff;
+            --loader-color: #080d1a;
+            --progress-color: #3b82f6;
+            --glow-color: rgba(59, 130, 246, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        /* Fixed background canvas */
+        #animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            display: block;
+            pointer-events: none;
+            background-color: var(--bg-color);
+        }
+
+        /* Tech Grid Overlay */
+        .bg-grid {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Scrollable Webpage Content Overlay */
+        #content-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        /* Premium Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+            pointer-events: all;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loader-percentage {
+            font-size: 5rem;
+            font-weight: 200;
+            letter-spacing: -0.05em;
+            color: var(--accent-color);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loader-bar-container {
+            width: 280px;
+            height: 3px;
+            background-color: var(--loader-color);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        #loader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px #3b82f6;
+        }
+
+        .loader-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: #4f46e5;
+            margin-top: 10px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Fade out loader class */
+        #loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Custom scrollbar to match dark premium theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020306;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-300">
+
+    <!-- Technical Grid Overlay -->
+    <div class="fixed inset-0 pointer-events-none z-[3] bg-grid opacity-40"></div>
+
+    <!-- Glowing Nebula-like Blur Blobs -->
+    <div class="fixed inset-0 pointer-events-none z-[2] overflow-hidden">
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-blue-600/10 blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-indigo-600/8 blur-[160px] animate-pulse" style="animation-duration: 12s;"></div>
+        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-cyan-500/8 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
+    </div>
+
+    <!-- Scrollable Webpage Content Overlay -->
+    <div id="content-container">
+        
+        <!-- Header -->
+        <header class="w-full relative z-50">
+            <!-- Top Bar -->
+            <div class="bg-slate-950/80 backdrop-blur-md text-slate-400 py-2.5 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-white/5">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="map-pin" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <span>Kolkata, India</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="mail" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <span>ansutourtravels@gmail.com</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6 mt-2 md:mt-0">
+                    <div class="flex items-center space-x-2 cursor-pointer hover:text-cyan-400 transition">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span id="header-login-btn">Agent Login - Register</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Nav -->
+            <div class="bg-[#060a16]/65 backdrop-blur-xl py-4 px-4 md:px-8 flex justify-between items-center border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-gradient-to-tr from-blue-600 to-cyan-500 text-white p-2.5 rounded-2xl shadow-lg shadow-blue-500/25">
+                        <i data-lucide="plane" class="w-5 h-5"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU</span>
+                        <span class="text-[9px] font-bold text-cyan-400 tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
+                    </div>
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8 font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-cyan-400 transition">Home</a>
+                    <a href="tours.html" class="hover:text-cyan-400 transition">Tour Packages</a>
+                    <a href="destinations.html" class="text-cyan-400 border-b border-cyan-400/30 pb-0.5">Destinations</a>
+                    <a href="inquiry.html" class="hover:text-cyan-400 transition">Reviews & Inquiry</a>
+                    <a href="booking.html" class="hover:text-cyan-400 transition">Booking</a>
+                </nav>
+                
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex items-center space-x-3">
+                        <div class="bg-cyan-950/50 border border-cyan-500/20 p-2 rounded-xl text-cyan-400">
+                            <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Helpline</p>
+                            <p class="font-bold text-white text-xs">+91 73630 10254</p>
+                        </div>
+                    </div>
+                    <i data-lucide="search" class="text-slate-400 w-4 h-4 cursor-pointer hover:text-cyan-400 transition"></i>
+                    <button onclick="location.href='booking.html'" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-lg shadow-blue-500/20 tracking-wider uppercase border border-blue-400/20">
+                        Book Online
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="space-y-16 pb-24">
+            
+            <!-- Page Title Area -->
+            <section class="pt-20 pb-12 px-4 text-center">
+                <div class="bg-[#090d1f]/60 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-xl max-w-4xl mx-auto shadow-blue-500/5">
+                    <p class="text-cyan-400 font-bold mb-2 flex items-center justify-center uppercase tracking-wider text-xs">
+                        <span class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mr-2 font-bold">+</span> Explore
+                    </p>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">India's States & Territories</h1>
+                    <p class="text-slate-400 text-sm max-w-xl mx-auto">Explore regional details, sightseeing centers, and customized tour packages for India's major tourism hubs.</p>
+                </div>
+            </section>
+
+            <!-- Destinations Card Grid -->
+            <section class="px-4 md:px-8 max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Uttar Pradesh -->
+                    <div onclick="showDetails('uttar-pradesh')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400" alt="Taj Mahal" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                15+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Uttar Pradesh</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Explore the historical monuments of Agra, spiritual ghats of Varanasi & Ayodhya, holy Prayagraj, and sacred Mathura-Vrindavan.</p>
+                    </div>
+
+                    <!-- Rajasthan -->
+                    <div onclick="showDetails('rajasthan')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=400" alt="Jaipur" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                18+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Rajasthan</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Visit the royal palaces of Jaipur & Udaipur, and sand dune camping in Jaisalmer.</p>
+                    </div>
+
+                    <!-- Kerala -->
+                    <div onclick="showDetails('kerala')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=400" alt="Kerala" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                20+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Kerala</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Relax in the scenic backwater houseboats of Alleppey and green hill stations of Munnar.</p>
+                    </div>
+
+                    <!-- Ladakh -->
+                    <div onclick="showDetails('ladakh')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=400" alt="Ladakh" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                12+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Ladakh</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Conquer the world's highest motorable passes and camp by the blue Pangong Lake.</p>
+                    </div>
+
+                    <!-- Goa -->
+                    <div onclick="showDetails('goa')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=400" alt="Goa" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                16+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Goa</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Enjoy pristine sand beaches, historical Portuguese churches, and local watersports.</p>
+                    </div>
+
+                    <!-- Karnataka -->
+                    <div onclick="showDetails('karnataka')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1581430872221-d1cfed5b46e3?auto=format&fit=crop&q=80&w=400" alt="Hampi" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                11+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Karnataka</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Marvel at the ruins of Hampi and pristine coffee plantations of Coorg.</p>
+                    </div>
+
+                    <!-- Himachal Pradesh -->
+                    <div onclick="showDetails('himachal-pradesh')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1599946347371-68eb71b16afc?auto=format&fit=crop&q=80&w=400" alt="Manali" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                14+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Himachal Pradesh</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Explore the snowbound valleys of Solang and historical architecture in Shimla.</p>
+                    </div>
+
+                    <!-- West Bengal -->
+                    <div onclick="showDetails('west-bengal')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=400" alt="Darjeeling" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                9+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">West Bengal</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Enjoy sunrise at Tiger Hill in Darjeeling & Kalimpong, Dooars wildlife, Sundarbans wetlands, historic Kolkata, and Digha beaches.</p>
+                    </div>
+
+                    <!-- Uttarakhand -->
+                    <div onclick="showDetails('uttarakhand')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1597075095400-b6b803cd4337?auto=format&fit=crop&q=80&w=400" alt="Uttarakhand Rishikesh" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                14+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Uttarakhand</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Experience spiritual solace in Rishikesh & Kedarnath, beautiful lakes in Nainital, and snow skiing in Auli.</p>
+                    </div>
+
+                    <!-- Tamil Nadu -->
+                    <div onclick="showDetails('tamil-nadu')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=400" alt="Tamil Nadu Temple" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                12+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Tamil Nadu</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Explore Dravidian temple wonders of Madurai & Mahabalipuram, scenic Ooty & Kodaikanal hills, and Kanyakumari's confluence.</p>
+                    </div>
+
+                    <!-- Telangana -->
+                    <div onclick="showDetails('telangana')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1605007493699-af65834f8a00?auto=format&fit=crop&q=80&w=400" alt="Hyderabad Charminar" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                8+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Telangana</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Visit the iconic Charminar, the historic Golconda Fort, and the cinematic wonders of Ramoji Film City in Hyderabad.</p>
+                    </div>
+
+                    <!-- Tripura -->
+                    <div onclick="showDetails('tripura')" class="bg-[#0b1026]/70 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-md hover:shadow-cyan-500/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center text-center cursor-pointer group">
+                        <div class="w-full h-72 rounded-full overflow-hidden mb-6 relative group-hover:scale-105 transition duration-500 shadow-lg border-4 border-slate-900 shadow-cyan-500/5">
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&q=80&w=400" alt="Tripura Palace" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" />
+                            <div class="absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
+                            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap shadow-md shadow-blue-500/20 uppercase tracking-wider">
+                                6+ Tours
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">Tripura</h3>
+                        <p class="text-slate-500 text-xs px-2 line-clamp-2">Uncover the royal Neermahal lake palace, Ujjayanta Palace, and the mystical ancient rock-cut carvings of Unakoti.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[#04060d]/90 backdrop-blur-xl text-slate-400 pt-20 pb-10 px-4 md:px-8 border-t border-white/15 relative z-10">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="bg-blue-600 text-white p-1.5 rounded-full shadow-lg shadow-blue-500/25">
+                            <i data-lucide="plane" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU TOUR & TRAVELS</h3>
+                    </div>
+                    <p class="mb-6 text-slate-400 text-sm">Experience absolute premium travel across India. Govt. approved logistics, high-quality stays, and custom local operations.</p>
+                    <div class="flex gap-4">
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=150" alt="Agra" class="w-full h-full object-cover" title="Agra (Taj Mahal)" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=150" alt="Ladakh" class="w-full h-full object-cover" title="Leh-Ladakh" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=150" alt="Kerala" class="w-full h-full object-cover" title="Kerala" />
+                        </a>
+                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                            <img src="https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=150" alt="Jaipur" class="w-full h-full object-cover" title="Jaipur" />
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Quick Navigation</h4>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li><a href="index.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Home</a></li>
+                        <li><a href="destinations.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Destinations</a></li>
+                        <li><a href="tours.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Tour Packages</a></li>
+                        <li><a href="inquiry.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Reviews & Inquiry</a></li>
+                        <li><a href="booking.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Book Online</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Contact Desk</h4>
+                    <ul class="space-y-4 text-sm text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="text-cyan-500 shrink-0 mt-1 w-5 h-5"></i>
+                            <span>Kasba, Kolkata, West Bengal, 700042</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="text-cyan-500 shrink-0 w-5 h-5"></i>
+                            <span>+91 73630 10254</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="text-cyan-500 shrink-0 w-5 h-5"></i>
+                            <span>ansutourtravels@gmail.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Adventure Newsletter</h4>
+                    <p class="mb-4 text-slate-400 text-sm">Subscribe to receive exclusive deals for India's hill stations.</p>
+                    <div class="relative mt-4">
+                        <input type="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-6 pr-14 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
+                        <button class="absolute right-1.5 top-1.5 bottom-1.5 w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white hover:from-blue-700 hover:to-cyan-600 transition shadow-md shadow-blue-500/20">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 pt-4">
+                <p>&copy; 2026 ANSU TOUR & TRAVELS. All rights reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-slate-300 transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-slate-300 transition">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Render Lucide icons
+        lucide.createIcons();
+
+        // Destination Sights Data
+        const destinationDetails = {
+            'uttar-pradesh': {
+                name: 'Uttar Pradesh',
+                image: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800',
+                tours: '15+ Tours',
+                tagline: 'Heartland of Indian Culture & Religion',
+                description: 'Explore ancient monuments, royal history, and massive spiritual confluences alongside the holy river Ganges.',
+                places: [
+                    { name: 'Taj Mahal (Agra)', desc: 'The ultimate monument of love, built in pristine white marble.' },
+                    { name: 'Varanasi', desc: 'The oldest living spiritual city on earth, famous for its sacred river bathing ghats.' },
+                    { name: 'Ayodhya', desc: 'Historic birthplace of Lord Rama, featuring the grand Ram Mandir and Sarayu river banks.' },
+                    { name: 'Prayagraj (Allahabad)', desc: 'The holy Triveni Sangam, the confluence of three sacred rivers.' },
+                    { name: 'Mathura & Vrindavan', desc: 'The sacred land of Lord Krishna\'s birth and childhood sports.' }
+                ]
+            },
+            'rajasthan': {
+                name: 'Rajasthan',
+                image: 'https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=800',
+                tours: '18+ Tours',
+                tagline: 'Land of Kings, Forts, and Desert Dunes',
+                description: 'Step into royal history with massive desert fortresses, lakeside palaces, and colorful bazaar culture.',
+                places: [
+                    { name: 'Jaipur (Pink City)', desc: 'Capital city known for Hawa Mahal, Amer Fort, and royal heritage.' },
+                    { name: 'Udaipur (City of Lakes)', desc: 'Scenic lakeside palaces, romantic boat cruises, and gardens.' },
+                    { name: 'Jaisalmer (Golden City)', desc: 'Golden sandstone fort, camel safaris, and overnight desert dune camps.' },
+                    { name: 'Jodhpur (Blue City)', desc: 'Home to the colossal Mehrangarh Fort rising above indigo streets.' }
+                ]
+            },
+            'kerala': {
+                name: 'Kerala',
+                image: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=800',
+                tours: '20+ Tours',
+                tagline: 'God\'s Own Country',
+                description: 'Relax in tropical palm-shaded backwaters, aromatic spice plantations, and foggy hill stations.',
+                places: [
+                    { name: 'Alleppey Backwaters', desc: 'Stay in traditional luxury houseboats cruising through scenic palm canals.' },
+                    { name: 'Munnar Hills', desc: 'Vast rolling green tea plantations and cool mountain mist.' },
+                    { name: 'Wayanad', desc: 'Mist-clad waterfalls, spice farms, and prehistoric caves.' },
+                    { name: 'Kochi (Cochin)', desc: 'Historic port displaying Chinese fishing nets and spice markets.' }
+                ]
+            },
+            'ladakh': {
+                name: 'Ladakh',
+                image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800',
+                tours: '12+ Tours',
+                tagline: 'The Land of High Mountain Passes',
+                description: 'Adventure through rugged, high-altitude alpine deserts, ancient Buddhist monasteries, and crystal blue lakes.',
+                places: [
+                    { name: 'Leh Palace & Shanti Stupa', desc: 'Historic royal structure overlooking the Indus river valley.' },
+                    { name: 'Pangong Tso Lake', desc: 'Breathtaking endorheic alpine lake changing colors from blue to turquoise.' },
+                    { name: 'Nubra Valley', desc: 'Stunning cold desert valley with double-humped Bactrian camels.' },
+                    { name: 'Khardung La Pass', desc: 'One of the world\'s highest motorable mountain passes.' }
+                ]
+            },
+            'goa': {
+                name: 'Goa',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=800',
+                tours: '16+ Tours',
+                tagline: 'Sun, Sand, and Portuguese Heritage',
+                description: 'Indulge in sand beaches, exciting watersports, colonial churches, and tropical spice farms.',
+                places: [
+                    { name: 'Calangute & Baga Beaches', desc: 'Bustling beach areas offering jet skiing, parasailing, and shacks.' },
+                    { name: 'Basilica of Bom Jesus', desc: 'Famous Portuguese church housing the sacred relics of St. Francis Xavier.' },
+                    { name: 'Dudhsagar Waterfalls', desc: 'Spectacular multi-tiered waterfall cascading down jungle cliffs.' },
+                    { name: 'South Goa Beaches', desc: 'Pristine, quiet coastlines of Palolem and Patnem for peaceful stays.' }
+                ]
+            },
+            'karnataka': {
+                name: 'Karnataka',
+                image: 'https://images.unsplash.com/photo-1581430872221-d1cfed5b46e3?auto=format&fit=crop&q=80&w=800',
+                tours: '11+ Tours',
+                tagline: 'One State, Many Worlds',
+                description: 'Explore spectacular ruins of empires, green coffee valleys, and peaceful coastal beaches.',
+                places: [
+                    { name: 'Hampi Ruins', desc: 'Spectacular UNESCO world heritage site of the Vijayanagara Empire.' },
+                    { name: 'Coorg (Kodagu)', desc: 'Lush green valleys featuring coffee estates, spice walks, and elephants.' },
+                    { name: 'Mysore Palace', desc: 'Magnificent, illuminated royal palace rich with historical artifacts.' },
+                    { name: 'Gokarna Beaches', desc: 'Scenic beach trekking trails and sacred temples.' }
+                ]
+            },
+            'himachal-pradesh': {
+                name: 'Himachal Pradesh',
+                image: 'https://images.unsplash.com/photo-1599946347371-68eb71b16afc?auto=format&fit=crop&q=80&w=800',
+                tours: '14+ Tours',
+                tagline: 'The Land of Snow-Capped Slopes',
+                description: 'Escape to chilly valley towns, rapid mountain rivers, and snow-filled adventure centers.',
+                places: [
+                    { name: 'Manali & Solang Valley', desc: 'Snow-capped hub for paragliding, skiing, and trekking.' },
+                    { name: 'Shimla Ridge', desc: 'Vibrant mall road and historic British colonial architecture.' },
+                    { name: 'Dharamshala & Mcleodganj', desc: 'Home to the Dalai Lama, surrounded by forests and Tibetan culture.' },
+                    { name: 'Spiti Valley', desc: 'High-altitude cold desert valley with remote cliffside monasteries.' }
+                ]
+            },
+            'west-bengal': {
+                name: 'West Bengal',
+                image: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=800',
+                tours: '9+ Tours',
+                tagline: 'The Cultural Legacy of East India',
+                description: 'Explore dense mangrove tiger reserves, scenic Himalayan hill stations, and heritage cities.',
+                places: [
+                    { name: 'Darjeeling & Kalimpong', desc: 'Himalayan hills famous for Tiger Hill sunrise, toy train, and tea gardens.' },
+                    { name: 'Sundarbans Tiger Reserve', desc: 'Vast, river-dissected mangrove reserve home to Bengal Tigers.' },
+                    { name: 'Kolkata', desc: 'Historic metropolis boasting Victoria Memorial, street food, and heritage sites.' },
+                    { name: 'Digha Beach', desc: 'Popular flat sand coast along the warm waters of Bay of Bengal.' },
+                    { name: 'Dooars Foothills', desc: 'Lush tea gardens, national parks, and wild elephant corridors.' }
+                ]
+            },
+            'uttarakhand': {
+                name: 'Uttarakhand',
+                image: 'https://images.unsplash.com/photo-1597075095400-b6b803cd4337?auto=format&fit=crop&q=80&w=800',
+                tours: '14+ Tours',
+                tagline: 'Devbhoomi - The Land of the Gods',
+                description: 'Climb sacred pilgrim peaks, experience spiritual river prayers, and slide down snow-covered slopes.',
+                places: [
+                    { name: 'Rishikesh', desc: 'Global yoga capital on the banks of the holy Ganges.' },
+                    { name: 'Kedarnath & Badrinath', desc: 'Venerated mountain shrines of the Himalayas.' },
+                    { name: 'Nainital & Mussoorie', desc: 'Misty lakes, walking trails, and British-era hill resorts.' },
+                    { name: 'Auli Ski Slopes', desc: 'Panoramic snow skiing resort facing Mount Nanda Devi.' }
+                ]
+            },
+            'tamil-nadu': {
+                name: 'Tamil Nadu',
+                image: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800',
+                tours: '12+ Tours',
+                tagline: 'Dravidian Temples & Southern Hill Retreats',
+                description: 'Admire ancient temple towers, explore misty mountain estates, and visit the absolute tip of India.',
+                places: [
+                    { name: 'Ooty & Kodaikanal', desc: 'Picturesque hill stations with cold lakes and pine forests.' },
+                    { name: 'Madurai Meenakshi Temple', desc: 'A colossal, intricately carved historical temple complex.' },
+                    { name: 'Kanyakumari', desc: 'The southern tip where the Arabian Sea, Bay of Bengal, and Indian Ocean meet.' },
+                    { name: 'Rameswaram & Mahabalipuram', desc: 'Coastal stone temples and the historic Pamban sea bridge.' }
+                ]
+            },
+            'telangana': {
+                name: 'Telangana',
+                image: 'https://images.unsplash.com/photo-1605007493699-af65834f8a00?auto=format&fit=crop&q=80&w=800',
+                tours: '8+ Tours',
+                tagline: 'Nizami Grandeur & Modern Wonders',
+                description: 'Discover monumental architecture, historic forts, and massive cinematic studio complexes.',
+                places: [
+                    { name: 'Hyderabad & Charminar', desc: 'Historic city center built in 1591, famous for markets and pearl craft.' },
+                    { name: 'Golconda Fort', desc: 'Enormous medieval fortress complex known for acoustic marvels.' },
+                    { name: 'Ramoji Film City', desc: 'Sprawling film studio theme park full of live shows and tours.' }
+                ]
+            },
+            'tripura': {
+                name: 'Tripura',
+                image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&q=80&w=800',
+                tours: '6+ Tours',
+                tagline: 'Royal Palaces & Mysterious Rock Carvings',
+                description: 'Discover the gorgeous palaces and historical rock-carved hills of Northeast India.',
+                places: [
+                    { name: 'Ujjayanta Palace', desc: 'A stunning white palace in Agartala with beautiful gardens.' },
+                    { name: 'Neermahal', desc: 'A magnificent royal water palace built in the middle of Rudrasagar Lake.' },
+                    { name: 'Unakoti Hill', desc: 'An ancient pilgrimage site featuring colossal rock-cut carvings of Shiva.' }
+                ]
+            }
+        };
+
+        let activeStateKey = '';
+
+        function showDetails(stateKey) {
+            const data = destinationDetails[stateKey];
+            if (!data) return;
+            
+            activeStateKey = stateKey;
+            
+            // Set text & content
+            document.getElementById('modal-title').textContent = data.name;
+            document.getElementById('modal-tagline').textContent = data.tagline;
+            document.getElementById('modal-description').textContent = data.description;
+            document.getElementById('modal-image').src = data.image;
+            document.getElementById('modal-image').alt = data.name;
+            document.getElementById('modal-tours-count').textContent = data.tours;
+            
+            // Build list
+            const listEl = document.getElementById('modal-places-list');
+            listEl.innerHTML = '';
+            data.places.forEach(place => {
+                const li = document.createElement('li');
+                li.className = 'flex gap-3 items-start';
+                li.innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 shrink-0 shadow-[0_0_8px_#22d3ee]"></div>
+                    <div>
+                        <h5 class="text-sm font-bold text-white">${place.name}</h5>
+                        <p class="text-slate-500 text-xs mt-0.5 leading-relaxed">${place.desc}</p>
+                    </div>
+                `;
+                listEl.appendChild(li);
+            });
+            
+            // Re-render Lucide Icons for modal
+            lucide.createIcons();
+            
+            // Display modal
+            const modal = document.getElementById('destination-modal');
+            const card = document.getElementById('modal-card');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Animate card entrance
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 50);
+            
+            // Prevent background scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDestinationModal() {
+            const modal = document.getElementById('destination-modal');
+            const card = document.getElementById('modal-card');
+            
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+        
+        function bookSelectedState() {
+            const packageMapping = {
+                'uttar-pradesh': 'varanasi',
+                'rajasthan': 'jaipur',
+                'kerala': 'kerala',
+                'ladakh': 'leh-ladakh',
+                'goa': 'goa',
+                'west-bengal': 'west-bengal-hills',
+                'uttarakhand': 'uttarakhand-devbhoomi',
+                'tamil-nadu': 'tamil-nadu-heritage',
+                'telangana': 'hyderabad-ramoji',
+                'tripura': 'tripura-royal'
+            };
+            const packageId = packageMapping[activeStateKey];
+            if (packageId) {
+                location.href = `booking.html?package=${packageId}`;
+            } else {
+                location.href = `booking.html`;
+            }
+        }
+    </script>
+
+    <!-- Destination Detail Modal -->
+    <div id="destination-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <!-- Backdrop Blur -->
+        <div onclick="closeDestinationModal()" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md"></div>
+        
+        <!-- Modal Card -->
+        <div class="relative bg-[#090d22]/95 border border-white/10 rounded-[2.5rem] w-full max-w-3xl overflow-hidden shadow-2xl z-10 flex flex-col md:flex-row transition-all duration-300 transform scale-95 opacity-0" id="modal-card">
+            <!-- Left: Image (40% width on md screens) -->
+            <div class="w-full md:w-5/12 h-64 md:h-auto relative overflow-hidden">
+                <img id="modal-image" src="" alt="" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#090d22] via-transparent to-transparent"></div>
+                <div class="absolute top-6 left-6 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md uppercase tracking-wider" id="modal-tours-count">
+                    15+ Tours
+                </div>
+            </div>
+            
+            <!-- Right: Details (60% width on md screens) -->
+            <div class="w-full md:w-7/12 p-8 md:p-10 flex flex-col justify-between overflow-y-auto max-h-[85vh] md:max-h-[600px]" style="scrollbar-width: thin;">
+                <div>
+                    <!-- Close button -->
+                    <button onclick="closeDestinationModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white transition w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                    
+                    <span id="modal-tagline" class="text-xs font-bold text-cyan-400 uppercase tracking-widest block mb-1">Heartland of Indian Culture</span>
+                    <h2 id="modal-title" class="text-3xl font-extrabold text-white mb-2">Uttar Pradesh</h2>
+                    <p id="modal-description" class="text-slate-400 text-sm leading-relaxed mb-6">Explore the historical monuments of Agra and spiritual ghats of Varanasi.</p>
+                    
+                    <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4 border-b border-white/5 pb-2">Where to go / Sightseeing</h4>
+                    <ul id="modal-places-list" class="space-y-4">
+                        <!-- Filled by JS -->
+                    </ul>
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-white/5 flex gap-4">
+                    <button onclick="bookSelectedState()" class="flex-1 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white py-3.5 rounded-2xl font-bold transition shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase">
+                        Book State Tour
+                    </button>
+                    <button onclick="closeDestinationModal()" class="px-6 border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 py-3.5 rounded-2xl font-bold transition text-xs tracking-wider uppercase">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    <script src="supabase-auth.js"></script>
+</body>
+</html>
