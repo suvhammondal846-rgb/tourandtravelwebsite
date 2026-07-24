@@ -1287,10 +1287,22 @@
     </div>
 
     <!-- Persistent Floating AI Chat Bubble -->
-    <div id="floating-ai-bubble" onclick="openAIChatbotModal()" class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white w-14 h-14 rounded-full flex items-center justify-center cursor-pointer shadow-lg shadow-blue-500/30 hover:scale-110 transition-all duration-300 group border border-white/10">
-        <i data-lucide="sparkles" class="w-6 h-6 text-white group-hover:rotate-12 transition duration-300"></i>
+    <div id="floating-ai-bubble" onclick="openAIChatbotModal()" class="fixed bottom-6 right-6 z-40 bg-[#090d1f]/90 backdrop-blur-md hover:bg-[#0c122b] text-white w-14 h-14 rounded-full flex items-center justify-center cursor-pointer shadow-xl shadow-blue-500/20 hover:scale-110 transition-all duration-300 group border border-white/10">
+        <div class="group-hover:rotate-12 transition duration-300 flex items-center justify-center">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C12 2 12.3 8.3 14.5 10.5C16.7 12.7 23 13 23 13C23 13 16.7 13.3 14.5 15.5C12.3 17.7 12 24 12 24C12 24 11.7 17.7 9.5 15.5C7.3 13.3 1 13 1 13C1 13 7.3 12.7 9.5 10.5C11.7 8.3 12 2 12 2Z" fill="url(#bubble-gemini-grad)"/>
+                <defs>
+                    <linearGradient id="bubble-gemini-grad" x1="1" y1="2" x2="23" y2="24" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#4285F4"/>
+                        <stop offset="30%" stop-color="#9b51e0"/>
+                        <stop offset="70%" stop-color="#e91e63"/>
+                        <stop offset="100%" stop-color="#f2994a"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
         <!-- Pulsing ring effect -->
-        <span class="absolute inset-0 rounded-full border border-cyan-400/50 opacity-75 animate-ping"></span>
+        <span class="absolute inset-0 rounded-full border border-blue-500/30 opacity-75 animate-ping"></span>
     </div>
 
     <script src="supabase-auth.js"></script>
