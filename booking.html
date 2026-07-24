@@ -610,13 +610,15 @@
                         <!-- Boarding Pass Container Outlet -->
                         <div id="success-ticket-outlet" class="pt-4 text-left"></div>
 
-                        <div class="pt-6">
-                            <button onclick="location.href='index.html'" class="border border-white/10 hover:bg-white/5 text-white font-semibold px-8 py-3 rounded-full transition text-xs tracking-wider uppercase">
+                        <div class="pt-6 flex flex-wrap justify-center gap-4">
+                            <button onclick="location.href='index.html'" class="border border-white/10 hover:bg-white/5 text-white font-semibold px-8 py-3.5 rounded-full transition text-xs tracking-wider uppercase">
                                 Return to Home
+                            </button>
+                            <button onclick="window.print()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-full transition shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
+                                <i data-lucide="printer" class="w-4 h-4"></i> Print Ticket
                             </button>
                         </div>
                     </div>
-                </div>
                 </div> <!-- End of booking-flow-container -->
 
                 <!-- Track Flow Container -->
@@ -657,6 +659,12 @@
                         
                         <!-- Ticket Output Container -->
                         <div id="tracked-ticket-outlet" class="text-left pt-4"></div>
+                        
+                        <div class="flex justify-center pt-4">
+                            <button onclick="window.print()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-full transition shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
+                                <i data-lucide="printer" class="w-4 h-4"></i> Print Boarding Pass
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1011,8 +1019,10 @@
                     alert(`Please enter the Aadhaar ID for Traveler #${i + 1}.`);
                     return;
                 }
-                // Aadhaar ID validation: exactly 12 digits
-                if (!/^\d{12}$/.test(tAadhaar)) {
+                
+                // Aadhaar ID validation: exactly 12 digits (strip spaces first)
+                const cleanAadhaar = tAadhaar.replace(/\s/g, '');
+                if (!/^\d{12}$/.test(cleanAadhaar)) {
                     alert(`Aadhaar ID for Traveler #${i + 1} must be exactly 12 digits.`);
                     return;
                 }
@@ -1024,7 +1034,7 @@
                 travelersData.push({
                     name: tName,
                     age: parseInt(tAge),
-                    aadhaar: tAadhaar,
+                    aadhaar: cleanAadhaar,
                     gender: tGender,
                     difficulties: tDifficulties || 'None'
                 });
@@ -1556,6 +1566,27 @@
 
         // Initialization
         lucide.createIcons();
+
+        // Aadhaar Formatter via Event Delegation
+        const travelersContainer = document.getElementById('dynamic-travelers-container');
+        if (travelersContainer) {
+            travelersContainer.addEventListener('input', function(e) {
+                if (e.target && e.target.classList.contains('traveler-aadhaar')) {
+                    let val = e.target.value.replace(/\D/g, ''); // strip non-digits
+                    if (val.length > 12) val = val.substring(0, 12); // max 12 digits
+                    
+                    // Format as xxxx xxxx xxxx
+                    let formatted = '';
+                    for (let i = 0; i < val.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formatted += ' ';
+                        }
+                        formatted += val[i];
+                    }
+                    e.target.value = formatted;
+                }
+            });
+        }
 
         // URL Parameters Parser for package auto-selection
         (function() {

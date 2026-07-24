@@ -730,6 +730,26 @@
             lucide.createIcons();
         }
 
+        // Parse URL Query parameters for pre-filtering on page load
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const searchVal = params.get('search');
+            const regionVal = params.get('region');
+            const budgetVal = params.get('budget');
+            
+            if (searchVal) {
+                document.getElementById('search-input').value = decodeURIComponent(searchVal);
+            }
+            if (regionVal) {
+                const regionSelect = document.getElementById('region-filter');
+                if (regionSelect) regionSelect.value = decodeURIComponent(regionVal);
+            }
+            if (budgetVal) {
+                const priceSelect = document.getElementById('price-filter');
+                if (priceSelect) priceSelect.value = decodeURIComponent(budgetVal);
+            }
+        })();
+
         // Initialization
         renderTours();
 

@@ -323,8 +323,8 @@
                                 class="absolute inset-0 bg-gradient-to-t from-[#04060e] via-transparent to-transparent opacity-85">
                             </div>
                             <div class="absolute bottom-6 left-6 text-white">
-                                <span
-                                    class="bg-cyan-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase">Hot
+                                <span id="hero-slide-badge"
+                                    class="bg-cyan-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full tracking-wider uppercase transition-opacity duration-300 ease-in-out">Hot
                                     Expedition</span>
                                 <h3 id="hero-slide-title"
                                     class="text-xl font-bold mt-1 transition-opacity duration-300 ease-in-out">
@@ -340,44 +340,99 @@
                     <div
                         class="flex flex-1 items-center space-x-4 md:border-r border-slate-800 md:pr-4 w-full md:w-auto">
                         <i data-lucide="map-pin" class="text-cyan-400 w-5 h-5 shrink-0"></i>
-                        <div>
+                        <div class="w-full">
                             <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">State / Place</p>
-                            <p class="font-bold text-white text-sm">Agra, Kerala, Ladakh...</p>
+                            <select id="hero-search-state" class="bg-transparent text-white font-bold text-sm focus:outline-none cursor-pointer w-full mt-0.5">
+                                <option value="" class="bg-[#080c1b]">All States / Places</option>
+                                <option value="Sikkim" class="bg-[#080c1b]">Sikkim</option>
+                                <option value="Agra" class="bg-[#080c1b]">Agra (Taj Mahal)</option>
+                                <option value="Ladakh" class="bg-[#080c1b]">Leh-Ladakh</option>
+                                <option value="Kerala" class="bg-[#080c1b]">Kerala</option>
+                                <option value="Jaipur" class="bg-[#080c1b]">Jaipur</option>
+                                <option value="Goa" class="bg-[#080c1b]">Goa</option>
+                                <option value="Varanasi" class="bg-[#080c1b]">Varanasi</option>
+                                <option value="Darjeeling" class="bg-[#080c1b]">Darjeeling</option>
+                                <option value="Kolkata" class="bg-[#080c1b]">Kolkata</option>
+                                <option value="Tamil Nadu" class="bg-[#080c1b]">Tamil Nadu</option>
+                                <option value="Uttarakhand" class="bg-[#080c1b]">Uttarakhand</option>
+                                <option value="Andaman" class="bg-[#080c1b]">Andaman & Nicobar</option>
+                                <option value="Kashmir" class="bg-[#080c1b]">Kashmir</option>
+                            </select>
                         </div>
                     </div>
 
                     <div
                         class="flex flex-1 items-center space-x-4 md:border-r border-slate-800 md:px-4 w-full md:w-auto">
                         <i data-lucide="settings" class="text-cyan-400 w-5 h-5 shrink-0"></i>
-                        <div>
-                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Trip Category</p>
-                            <p class="font-semibold text-white text-sm">Honeymoon / Trek / Family</p>
+                        <div class="w-full">
+                            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Region</p>
+                            <select id="hero-search-region" class="bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer w-full mt-0.5">
+                                <option value="" class="bg-[#080c1b]">All Regions</option>
+                                <option value="north" class="bg-[#080c1b]">North India</option>
+                                <option value="south" class="bg-[#080c1b]">South India</option>
+                                <option value="west" class="bg-[#080c1b]">West India</option>
+                                <option value="east-northeast" class="bg-[#080c1b]">East & Northeast</option>
+                                <option value="himalayas" class="bg-[#080c1b]">Himalayas</option>
+                            </select>
                         </div>
                     </div>
 
                     <div
                         class="flex flex-1 items-center space-x-4 md:border-r border-slate-800 md:px-4 w-full md:w-auto">
                         <i data-lucide="calendar" class="text-cyan-400 w-5 h-5 shrink-0"></i>
-                        <div>
+                        <div class="w-full">
                             <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Duration</p>
-                            <p class="font-semibold text-white text-sm">3 Days - 12 Days</p>
+                            <select id="hero-search-duration" class="bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer w-full mt-0.5">
+                                <option value="" class="bg-[#080c1b]">Any Duration</option>
+                                <option value="short" class="bg-[#080c1b]">3 - 5 Days</option>
+                                <option value="medium" class="bg-[#080c1b]">6 - 8 Days</option>
+                                <option value="long" class="bg-[#080c1b]">9+ Days</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="flex flex-1 items-center space-x-4 md:px-4 w-full md:w-auto">
                         <i data-lucide="indian-rupee" class="text-cyan-400 w-5 h-5 shrink-0"></i>
-                        <div>
+                        <div class="w-full">
                             <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider">Budget Range</p>
-                            <p class="font-semibold text-white text-sm">₹15,000 - ₹85,000</p>
+                            <select id="hero-search-budget" class="bg-transparent text-white font-semibold text-sm focus:outline-none cursor-pointer w-full mt-0.5">
+                                <option value="" class="bg-[#080c1b]">Any Budget</option>
+                                <option value="budget" class="bg-[#080c1b]">Under ₹20,000</option>
+                                <option value="mid" class="bg-[#080c1b]">₹20,000 - ₹40,000</option>
+                                <option value="luxury" class="bg-[#080c1b]">Over ₹40,000</option>
+                            </select>
                         </div>
                     </div>
 
-                    <button onclick="location.href='tours.html'"
+                    <button onclick="executeHeroSearch()"
                         class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-8 py-4 rounded-2xl font-bold transition w-full md:w-auto shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase">
                         Search Tour
                     </button>
                 </div>
             </section>
+
+            <!-- Premium Stats Counter Section -->
+            <section class="px-4 max-w-6xl mx-auto py-10 relative z-10">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 bg-[#090d1f]/40 backdrop-blur-xl border border-white/5 rounded-3xl p-8 text-center shadow-2xl">
+                    <div class="space-y-1.5">
+                        <span class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-sans block animate-pulse" id="stat-travelers">0</span>
+                        <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest block">Happy Travelers</span>
+                    </div>
+                    <div class="space-y-1.5 border-l border-white/5">
+                        <span class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-sans block animate-pulse" id="stat-states">0</span>
+                        <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest block">Covered States</span>
+                    </div>
+                    <div class="space-y-1.5 border-l border-white/5">
+                        <span class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-sans block animate-pulse" id="stat-rating">0.0</span>
+                        <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest block">Average Rating</span>
+                    </div>
+                    <div class="space-y-1.5 border-l border-white/5">
+                        <span class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 font-sans block animate-pulse" id="stat-tailored">0%</span>
+                        <span class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-widest block">Custom Stays</span>
+                    </div>
+                </div>
+            </section>
+
             <!-- Interactive Section Hubs Grid -->
             <section class="w-full px-4 md:px-8 py-16 relative z-10">
                 <div
@@ -611,37 +666,44 @@
         // Render Lucide icons
         lucide.createIcons();
 
-        // Hero Section Image Slideshow (Rotates every 0.5s)
+        // Hero Section Image Slideshow (Rotates every 4s)
         const heroSlides = [
             {
                 img: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800",
-                title: "Leh-Ladakh Roadtrip"
+                title: "Leh-Ladakh Roadtrip",
+                badge: "Hot Expedition"
             },
             {
                 img: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=800",
-                title: "Taj Mahal, Agra"
+                title: "Taj Mahal, Agra",
+                badge: "Heritage Tour"
             },
             {
                 img: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=800",
-                title: "Kerala Backwaters"
+                title: "Kerala Backwaters",
+                badge: "Tropical Escape"
             },
             {
                 img: "https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=800",
-                title: "Jaipur Palace"
+                title: "Jaipur Palace",
+                badge: "Royal Desert"
             },
             {
                 img: "https://images.unsplash.com/photo-1561361058-c24cecae35ca?auto=format&fit=crop&q=80&w=800",
-                title: "Varanasi Ghats"
+                title: "Varanasi Ghats",
+                badge: "Spiritual Journey"
             },
             {
-                img: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&q=80&w=800",
-                title: "Darjeeling Hills"
+                img: "https://images.unsplash.com/photo-1557972589-f5596857cbac?auto=format&fit=crop&q=80&w=800",
+                title: "Darjeeling Hills",
+                badge: "Scenic Hills"
             }
         ];
 
         let slideIndex = 0;
         const slideImg = document.getElementById('hero-slide-image');
         const slideTitle = document.getElementById('hero-slide-title');
+        const slideBadge = document.getElementById('hero-slide-badge');
 
         if (slideImg && slideTitle) {
             setInterval(() => {
@@ -650,14 +712,69 @@
                 // Add fade transition
                 slideImg.style.opacity = 0;
                 slideTitle.style.opacity = 0;
+                if (slideBadge) slideBadge.style.opacity = 0;
 
                 setTimeout(() => {
                     slideImg.src = heroSlides[slideIndex].img;
                     slideTitle.textContent = heroSlides[slideIndex].title;
+                    if (slideBadge) slideBadge.textContent = heroSlides[slideIndex].badge;
                     slideImg.style.opacity = 1;
                     slideTitle.style.opacity = 1;
+                    if (slideBadge) slideBadge.style.opacity = 1;
                 }, 300);
-            }, 2000);
+            }, 4000);
+        }
+
+        // Stats Counter Animation
+        function animateStats() {
+            const stats = [
+                { id: 'stat-travelers', end: 15280, suffix: '+', duration: 1500, decimals: 0 },
+                { id: 'stat-states', end: 12, suffix: '+', duration: 1500, decimals: 0 },
+                { id: 'stat-rating', end: 4.9, suffix: '/5', duration: 1500, decimals: 1 },
+                { id: 'stat-tailored', end: 100, suffix: '%', duration: 1500, decimals: 0 }
+            ];
+            
+            stats.forEach(stat => {
+                const el = document.getElementById(stat.id);
+                if (!el) return;
+                
+                let start = 0;
+                const range = stat.end - start;
+                const increment = stat.end / (stat.duration / 16);
+                let current = start;
+                
+                // Remove pulse animation after loading starts
+                el.classList.remove('animate-pulse');
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= stat.end) {
+                        clearInterval(timer);
+                        el.textContent = stat.end.toLocaleString('en-IN', { minimumFractionDigits: stat.decimals, maximumFractionDigits: stat.decimals }) + stat.suffix;
+                    } else {
+                        el.textContent = current.toLocaleString('en-IN', { minimumFractionDigits: stat.decimals, maximumFractionDigits: stat.decimals }) + stat.suffix;
+                    }
+                }, 16);
+            });
+        }
+
+        // Run stats counter animation on page load
+        window.addEventListener('load', animateStats);
+
+        // Execute Hero Dropdown Search redirection to tours.html
+        function executeHeroSearch() {
+            const state = document.getElementById('hero-search-state').value;
+            const region = document.getElementById('hero-search-region').value;
+            const budget = document.getElementById('hero-search-budget').value;
+            
+            let query = `tours.html?`;
+            const params = [];
+            if (state) params.push(`search=${encodeURIComponent(state)}`);
+            if (region) params.push(`region=${encodeURIComponent(region)}`);
+            if (budget) params.push(`budget=${encodeURIComponent(budget)}`);
+            
+            query += params.join('&');
+            location.href = query;
         }
 
 
@@ -1165,6 +1282,14 @@
             </div>
         </div>
     </div>
+
+    <!-- Persistent Floating AI Chat Bubble -->
+    <div id="floating-ai-bubble" onclick="openAIChatbotModal()" class="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white w-14 h-14 rounded-full flex items-center justify-center cursor-pointer shadow-lg shadow-blue-500/30 hover:scale-110 transition-all duration-300 group border border-white/10">
+        <i data-lucide="sparkles" class="w-6 h-6 text-white group-hover:rotate-12 transition duration-300"></i>
+        <!-- Pulsing ring effect -->
+        <span class="absolute inset-0 rounded-full border border-cyan-400/50 opacity-75 animate-ping"></span>
+    </div>
+
     <script src="supabase-auth.js"></script>
 </body>
 
