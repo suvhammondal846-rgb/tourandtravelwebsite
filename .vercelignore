@@ -1,0 +1,13 @@
+# Ignore build/src directories that are not part of the static site
+traviou-src
+deploy
+frames
+tourandtravelwebsite
+frames_jpg_30fps.zip
+traviou-travel-agency.zip
+deploy - Shortcut.lnk
+
+# Ignore local server files
+server.js
+server.ps1
+test-syntax.js

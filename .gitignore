@@ -1,0 +1,14 @@
+# Ignore local server & scratch files
+server.js
+test-syntax.js
+deploy - Shortcut.lnk
+deploy/
+frames/
+frames_jpg_30fps.zip
+traviou-travel-agency.zip
+
+# Ignore React build directories
+traviou-src/node_modules/
+traviou-src/dist/
+traviou-src/package-lock.json
+traviou-src/server.js

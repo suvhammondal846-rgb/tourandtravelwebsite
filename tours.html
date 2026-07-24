@@ -665,10 +665,8 @@
                     if (priceVal === 'luxury' && pkg.price <= 40000) return false;
                 }
                 
-                // Default view rule: if no search or filter is active, only show "hot" packages
-                if (!isFilterActive && !pkg.isHot) {
-                    return false;
-                }
+                // Show all packages by default when no search or filter is active
+                // (no-op, let it fall through to return true)
                 
                 return true;
             });
@@ -739,6 +737,7 @@
         document.getElementById('search-input').addEventListener('input', renderTours);
         document.getElementById('region-filter').addEventListener('change', renderTours);
         document.getElementById('price-filter').addEventListener('change', renderTours);
+    </script>
     <script src="supabase-auth.js"></script>
 </body>
 </html>
