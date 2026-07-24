@@ -758,8 +758,11 @@
             });
         }
 
-        // Run stats counter animation on page load
-        window.addEventListener('load', animateStats);
+        // Run stats counter animation and render Lucide icons on page load
+        window.addEventListener('load', () => {
+            animateStats();
+            lucide.createIcons();
+        });
 
         // Execute Hero Dropdown Search redirection to tours.html (Refreshed commit to trigger webhook v2)
         function executeHeroSearch() {
