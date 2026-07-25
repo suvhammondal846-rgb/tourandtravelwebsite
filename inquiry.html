@@ -92,6 +92,30 @@
             border-color: rgba(212, 166, 74, 0.3) !important;
         }
 
+        /* Header, navigation, and top bar contrast fixes */
+        header nav a {
+            color: var(--color-navy) !important;
+        }
+        header nav a:hover, header nav a.text-brand-terracotta {
+            color: var(--color-terracotta) !important;
+        }
+        
+        header .bg-brand-navy {
+            color: var(--color-cream) !important;
+        }
+        header .bg-brand-navy span,
+        header .bg-brand-navy a {
+            color: var(--color-cream) !important;
+        }
+        header .bg-brand-navy .cursor-pointer:hover, 
+        header .bg-brand-navy .cursor-pointer:hover span {
+            color: var(--color-gold) !important;
+        }
+        
+        header p.text-brand-navy {
+            color: var(--color-navy) !important;
+        }
+
         body {
             background-color: var(--bg-color);
             overflow-x: hidden;
