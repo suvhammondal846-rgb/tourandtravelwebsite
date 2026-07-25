@@ -22,46 +22,46 @@ function initSupabaseAuth() {
     // Dynamic Injection of Authentication Modal
     if (!document.getElementById('login-modal')) {
         const modalHtml = `
-        <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm hidden transition-all duration-300">
-            <div class="bg-white border border-slate-200 w-full max-w-sm rounded-[2rem] shadow-2xl p-8 relative text-slate-800 font-sans z-[60]">
-                <button onclick="closeLoginModal()" class="absolute top-6 right-6 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-100 transition duration-200">
+        <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-brand-navy/60 backdrop-blur-sm hidden transition-all duration-300">
+            <div class="bg-white border border-brand-navy/5 w-full max-w-sm rounded-[2rem] shadow-2xl p-8 relative text-brand-slate font-sans z-[60]">
+                <button onclick="closeLoginModal()" class="absolute top-6 right-6 text-brand-slate hover:text-brand-navy p-1.5 rounded-lg hover:bg-brand-cream transition duration-200">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
                 <div class="text-center space-y-2 mb-6">
-                    <h3 id="login-title" class="text-2xl font-bold tracking-tight text-slate-850">Welcome Back</h3>
-                    <p id="login-subtitle" class="text-slate-450 text-xs">Enter your details to sign in</p>
+                    <h3 id="login-title" class="text-2xl font-serif font-bold tracking-tight text-brand-navy">Welcome Back</h3>
+                    <p id="login-subtitle" class="text-brand-slate text-xs">Enter your details to sign in</p>
                 </div>
                 <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-4">
                     <div id="signup-name-field" class="hidden">
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Your Name</label>
-                        <input type="text" id="login-name" placeholder="e.g. Suvham" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition duration-200" />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1">Your Name</label>
+                        <input type="text" id="login-name" placeholder="e.g. Suvham" class="w-full bg-brand-cream/50 border border-brand-navy/10 rounded-xl px-4 py-2.5 text-brand-navy placeholder-brand-slate/40 text-xs focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20 focus:border-brand-terracotta transition duration-200" />
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Email Address</label>
-                        <input type="email" id="login-email" required placeholder="e.g. suvham@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition duration-200" />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1">Email Address</label>
+                        <input type="email" id="login-email" required placeholder="e.g. suvham@gmail.com" class="w-full bg-brand-cream/50 border border-brand-navy/10 rounded-xl px-4 py-2.5 text-brand-navy placeholder-brand-slate/40 text-xs focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20 focus:border-brand-terracotta transition duration-200" />
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Password</label>
-                        <input type="password" id="login-password" required placeholder="Minimum 6 characters" minlength="6" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 placeholder-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-400 transition duration-200" />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" id="login-password" required placeholder="Minimum 6 characters" minlength="6" class="w-full bg-brand-cream/50 border border-brand-navy/10 rounded-xl px-4 py-2.5 text-brand-navy placeholder-brand-slate/40 text-xs focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20 focus:border-brand-terracotta transition duration-200" />
                     </div>
                     
-                    <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition duration-300 shadow-md shadow-blue-500/10 text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 mt-2">
+                    <button type="submit" id="auth-submit-btn" class="w-full bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold py-3.5 rounded-xl transition duration-300 shadow-md shadow-brand-terracotta/10 text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 mt-2">
                         <span>Sign In</span>
                     </button>
                     
-                    <p class="text-center text-[11px] text-slate-400 mt-2">
+                    <p class="text-center text-[11px] text-brand-slate mt-2">
                         <span id="auth-toggle-text">Don't have an account?</span> 
-                        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-blue-600 hover:underline font-bold">Sign Up</a>
+                        <a href="javascript:void(0)" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-brand-terracotta hover:underline font-bold">Sign Up</a>
                     </p>
                 </form>
 
                 <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-                    <div class="relative flex justify-center text-xs"><span class="bg-white px-2 text-slate-400 font-bold uppercase tracking-wider">Or</span></div>
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-brand-navy/10"></div></div>
+                    <div class="relative flex justify-center text-xs"><span class="bg-white px-2 text-brand-slate font-bold uppercase tracking-wider">Or</span></div>
                 </div>
 
                 <!-- Google OAuth Login -->
-                <button onclick="handleGoogleLogin()" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 transition duration-200 text-xs flex items-center justify-center gap-2 shadow-sm">
+                <button onclick="handleGoogleLogin()" class="w-full bg-white hover:bg-brand-cream border border-brand-navy/10 text-brand-navy font-semibold py-2.5 rounded-xl transition duration-200 text-xs flex items-center justify-center gap-2 shadow-sm">
                     <svg class="w-4 h-4" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -206,7 +206,7 @@ function updateAuthUI(session) {
         const name = session.user.user_metadata.display_name || session.user.email.split('@')[0];
         
         if (headerBtn) {
-            headerBtn.innerHTML = `<span class="text-cyan-400 font-bold">Hello, ${name}</span> | <span onclick="handleLogout(); event.stopPropagation();" class="hover:underline text-[10px] text-slate-400 font-normal ml-1">Logout</span>`;
+            headerBtn.innerHTML = `<span class="text-brand-terracotta font-bold">Hello, ${name}</span> | <span onclick="handleLogout(); event.stopPropagation();" class="hover:text-brand-terracotta text-[10px] text-brand-slate font-normal ml-1">Logout</span>`;
             const parent = headerBtn.parentElement;
             if (parent) parent.removeAttribute('onclick');
         }

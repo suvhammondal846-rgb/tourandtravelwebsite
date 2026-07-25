@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANSU TOUR & TRAVELS - India Tour Packages</title>
     <!-- Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +19,18 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0C1A30',
+                            terracotta: '#C86A55',
+                            gold: '#C5A059',
+                            cream: '#FCFAF6',
+                            charcoal: '#1E293B',
+                            slate: '#5C6880',
+                        }
                     }
                 }
             }
@@ -30,37 +42,16 @@
     
     <style>
         :root {
-            --bg-color: #030409;
-            --accent-color: #ffffff;
-            --loader-color: #080d1a;
-            --progress-color: #3b82f6;
-            --glow-color: rgba(59, 130, 246, 0.25);
+            --bg-color: #FCFAF6;
+            --accent-color: #0C1A30;
+            --loader-color: #F3EFE9;
+            --progress-color: #C86A55;
+            --glow-color: rgba(200, 106, 85, 0.1);
         }
 
         body {
             background-color: var(--bg-color);
             overflow-x: hidden;
-        }
-
-        /* Fixed background canvas */
-        #animation-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            display: block;
-            pointer-events: none;
-            background-color: var(--bg-color);
-        }
-
-        /* Tech Grid Overlay */
-        .bg-grid {
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
         }
 
         /* Scrollable Webpage Content Overlay */
@@ -103,7 +94,7 @@
             color: var(--accent-color);
             line-height: 1;
             font-variant-numeric: tabular-nums;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            background: linear-gradient(135deg, #0C1A30 30%, #C5A059 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -121,19 +112,19 @@
         #loader-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            background: linear-gradient(90deg, #C5A059, #C86A55);
             transition: width 0.1s ease-out;
-            box-shadow: 0 0 10px #3b82f6;
+            box-shadow: 0 0 10px rgba(200, 106, 85, 0.15);
         }
 
         .loader-text {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5em;
-            color: #4f46e5;
+            color: #C86A55;
             margin-top: 10px;
             font-weight: 600;
-            text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+            text-shadow: 0 0 10px rgba(200, 106, 85, 0.1);
         }
 
         /* Fade out loader class */
@@ -142,124 +133,127 @@
             visibility: hidden;
         }
 
-        /* Custom scrollbar to match dark premium theme */
+        /* Custom scrollbar to match premium theme */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #020306;
+            background: #FCFAF6;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #E8E2D9;
             border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(12, 26, 48, 0.05);
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+            background: #D5CDBE;
         }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-300">
+<body class="font-sans antialiased text-brand-charcoal bg-brand-cream">
 
-    <!-- Technical Grid Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-[3] bg-grid opacity-40"></div>
-
-    <!-- Glowing Nebula-like Blur Blobs -->
+    <!-- Glowing Soft Warm Blur Blobs -->
     <div class="fixed inset-0 pointer-events-none z-[2] overflow-hidden">
-        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-blue-600/10 blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
-        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-indigo-600/8 blur-[160px] animate-pulse" style="animation-duration: 12s;"></div>
-        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-cyan-500/8 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-brand-terracotta/5 blur-[150px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-brand-gold/5 blur-[180px] animate-pulse" style="animation-duration: 12s;"></div>
+        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-brand-navy/3 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
     </div>
 
     <!-- Scrollable Webpage Content Overlay -->
     <div id="content-container">
         
-        <!-- Header -->
-        <header class="w-full relative z-50">
+        <!-- Header (Polished Sticky Glass Navbar) -->
+        <header class="w-full sticky top-0 z-50 bg-brand-cream/80 backdrop-blur-md border-b border-brand-navy/10 shadow-sm transition-all duration-300">
             <!-- Top Bar -->
-            <div class="bg-slate-950/80 backdrop-blur-md text-slate-400 py-2.5 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-white/5">
+            <div class="bg-brand-navy text-brand-cream/70 py-2 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-brand-cream/5">
                 <div class="flex items-center space-x-6">
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="map-pin" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <i data-lucide="map-pin" class="text-brand-gold w-3.5 h-3.5"></i>
                         <span>Kolkata, India</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="mail" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <i data-lucide="mail" class="text-brand-gold w-3.5 h-3.5"></i>
                         <span>ansutourtravels@gmail.com</span>
                     </div>
                 </div>
                 <div class="flex items-center space-x-6 mt-2 md:mt-0">
-                    <div class="flex items-center space-x-2 cursor-pointer hover:text-cyan-400 transition">
+                    <div class="flex items-center space-x-2 cursor-pointer hover:text-brand-gold transition" onclick="openLoginModal()">
                         <i data-lucide="user" class="w-3.5 h-3.5"></i>
                         <span id="header-login-btn">Agent Login - Register</span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
                     </div>
                 </div>
             </div>
             
             <!-- Main Nav -->
-            <div class="bg-[#060a16]/65 backdrop-blur-xl py-4 px-4 md:px-8 flex justify-between items-center border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
-                <div class="flex items-center space-x-3">
+            <div class="py-4 px-4 md:px-8 flex justify-between items-center max-w-7xl mx-auto w-full">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="location.href='index.html'">
                     <div class="relative flex items-center justify-center shrink-0">
-                                <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Sleek luxury circle border -->
-                                    <circle cx="50" cy="50" r="44" stroke="url(#luxury-gold)" stroke-width="1.5" opacity="0.8"/>
-                                    <!-- Golden Abstract A Monogram / Mountain Crest -->
-                                    <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#luxury-gold)" filter="url(#luxury-gold-shadow)"/>
-                                    <!-- Inner Soaring Crest -->
-                                    <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#luxury-gold-light)"/>
-                                    <!-- Bottom elegant dot -->
-                                    <circle cx="50" cy="65" r="3" fill="url(#luxury-gold)"/>
-                                    <defs>
-                                        <linearGradient id="luxury-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="#dfba6b"/>
-                                            <stop offset="50%" stop-color="#b89047"/>
-                                            <stop offset="100%" stop-color="#dfba6b"/>
-                                        </linearGradient>
-                                        <linearGradient id="luxury-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="#f8e8c9"/>
-                                            <stop offset="100%" stop-color="#dfba6b"/>
-                                        </linearGradient>
-                                        <filter id="luxury-gold-shadow" x="15" y="10" width="70" height="70" filterUnits="userSpaceOnUse">
-                                            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#dfba6b" flood-opacity="0.25"/>
-                                        </filter>
-                                    </defs>
-                                </svg>
-                            </div>
+                        <svg class="w-9 h-9" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="url(#nav-gold)" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#nav-gold)"/>
+                            <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#nav-gold-light)"/>
+                            <circle cx="50" cy="65" r="3" fill="url(#nav-gold)"/>
+                            <defs>
+                                <linearGradient id="nav-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#C5A059"/>
+                                    <stop offset="100%" stop-color="#8E6A27"/>
+                                </linearGradient>
+                                <linearGradient id="nav-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#FCFAF6"/>
+                                    <stop offset="100%" stop-color="#C5A059"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
                     <div class="flex flex-col">
-                        <span class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU</span>
-                        <span class="text-[9px] font-bold text-[#dfba6b] tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
+                        <span class="text-lg font-black text-brand-navy tracking-tight leading-none">ANSU</span>
+                        <span class="text-[8px] font-bold text-brand-gold tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
                     </div>
                 </div>
                 
-                <nav class="hidden lg:flex items-center space-x-8 font-medium text-slate-300">
-                    <a href="index.html" class="hover:text-[#dfba6b] transition">Home</a>
-                    <a href="tours.html" class="text-[#dfba6b] border-b border-[#dfba6b]/40 pb-0.5">Tour Packages</a>
-                    <a href="destinations.html" class="hover:text-[#dfba6b] transition">Destinations</a>
-                    <a href="inquiry.html" class="hover:text-[#dfba6b] transition">Reviews & Inquiry</a>
-                    <a href="booking.html" class="hover:text-[#dfba6b] transition">Booking</a>
+                <nav class="hidden lg:flex items-center space-x-8 font-semibold text-brand-slate">
+                    <a href="index.html" class="hover:text-brand-navy transition">Home</a>
+                    <a href="tours.html" class="text-brand-terracotta border-b-2 border-brand-terracotta/40 pb-0.5">Tour Packages</a>
+                    <a href="destinations.html" class="hover:text-brand-navy transition">Destinations</a>
+                    <a href="inquiry.html" class="hover:text-brand-navy transition">Reviews & Inquiry</a>
+                    <a href="booking.html" class="hover:text-brand-navy transition">Booking</a>
+                    <a href="track-booking.html" class="hover:text-brand-navy transition">Track Booking</a>
                 </nav>
                 
                 <div class="flex items-center space-x-6">
-                    <div class="hidden md:flex items-center space-x-3">
-                        <div class="bg-cyan-950/50 border border-cyan-500/20 p-2 rounded-xl text-cyan-400">
+                    <div class="hidden md:flex items-center space-x-3 border-r border-brand-navy/10 pr-6">
+                        <div class="bg-brand-terracotta/10 p-2 rounded-xl text-brand-terracotta">
                             <i data-lucide="phone-call" class="w-4 h-4"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Helpline</p>
-                            <p class="font-bold text-white text-xs">+91 73630 10254</p>
+                            <p class="text-[8px] text-brand-slate uppercase tracking-widest font-bold">Helpline</p>
+                            <p class="font-bold text-brand-navy text-xs">+91 73630 10254</p>
                         </div>
                     </div>
-                    <i data-lucide="search" class="text-slate-400 w-4 h-4 cursor-pointer hover:text-cyan-400 transition"></i>
-                    <button onclick="location.href='booking.html'" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-lg shadow-blue-500/20 tracking-wider uppercase border border-blue-400/20">
+                    <button onclick="location.href='booking.html'" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-md shadow-brand-terracotta/20 tracking-wider uppercase">
                         Book Online
                     </button>
+                    <!-- Mobile Hamburger -->
+                    <button class="lg:hidden text-brand-navy" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
                 </div>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden lg:hidden border-t border-brand-navy/10 bg-brand-cream/95 backdrop-blur-md px-4 py-6 space-y-4">
+                <a href="index.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Home</a>
+                <a href="tours.html" class="block font-bold text-brand-terracotta">Tour Packages</a>
+                <a href="destinations.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Destinations</a>
+                <a href="inquiry.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Reviews & Inquiry</a>
+                <a href="booking.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Booking</a>
+                <a href="track-booking.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Track Booking</a>
             </div>
         </header>
 
@@ -277,15 +271,15 @@
                 </div>
             </section>
 
-            <!-- Filters Bar (Glassmorphism) -->
+            <!-- Filters Bar (Polished Ivory Card) -->
             <section class="px-4 max-w-6xl mx-auto">
-                <div class="bg-[#090d1f]/75 backdrop-blur-xl rounded-3xl p-6 border border-white/10 shadow-lg flex flex-wrap gap-4 items-center justify-between">
+                <div class="bg-white rounded-3xl p-6 border border-brand-navy/5 shadow-md flex flex-wrap gap-4 items-center justify-between">
                     <div class="flex flex-wrap gap-4 items-center flex-1">
-                        <div class="flex items-center bg-slate-950/60 px-4 py-2.5 rounded-full border border-white/5 w-full sm:w-auto">
-                            <i data-lucide="search" class="text-gray-400 w-4 h-4 mr-2"></i>
-                            <input type="text" id="search-input" placeholder="Search tours, states or spots..." class="bg-transparent focus:outline-none text-sm text-slate-300 w-full sm:w-48 placeholder-slate-650" />
+                        <div class="flex items-center bg-brand-cream/80 px-4 py-2.5 rounded-full border border-brand-navy/10 w-full sm:w-auto">
+                            <i data-lucide="search" class="text-brand-slate w-4 h-4 mr-2"></i>
+                            <input type="text" id="search-input" placeholder="Search tours, states or spots..." class="bg-transparent focus:outline-none text-sm text-brand-navy w-full sm:w-48 placeholder-brand-slate/40" />
                         </div>
-                        <select id="region-filter" class="bg-slate-950/60 px-4 py-2.5 rounded-full border border-white/5 text-sm text-slate-400 focus:outline-none cursor-pointer">
+                        <select id="region-filter" class="bg-brand-cream/80 px-4 py-2.5 rounded-full border border-brand-navy/10 text-sm text-brand-slate focus:outline-none cursor-pointer">
                             <option value="">All Regions</option>
                             <option value="north">North India</option>
                             <option value="south">South India</option>
@@ -293,14 +287,14 @@
                             <option value="east-northeast">East & Northeast India</option>
                             <option value="himalayas">Himalayas</option>
                         </select>
-                        <select id="price-filter" class="bg-slate-950/60 px-4 py-2.5 rounded-full border border-white/5 text-sm text-slate-400 focus:outline-none cursor-pointer">
+                        <select id="price-filter" class="bg-brand-cream/80 px-4 py-2.5 rounded-full border border-brand-navy/10 text-sm text-brand-slate focus:outline-none cursor-pointer">
                             <option value="">Price Range</option>
                             <option value="budget">Under ₹20,000</option>
                             <option value="mid">₹20,000 - ₹40,000</option>
                             <option value="luxury">Over ₹40,000</option>
                         </select>
                     </div>
-                    <div id="packages-count" class="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                    <div id="packages-count" class="text-xs text-brand-slate font-bold uppercase tracking-wider">
                         12 Tour Packages Available
                     </div>
                 </div>
@@ -313,101 +307,62 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-[#04060d]/90 backdrop-blur-xl text-slate-400 pt-20 pb-10 px-4 md:px-8 border-t border-white/15 relative z-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-8">
+        <footer class="bg-brand-navy text-brand-cream/80 pt-16 pb-8 px-4 md:px-8 border-t border-brand-navy/5 relative z-10 w-full mt-16">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-b border-brand-cream/10 pb-8 mb-6">
                 <div>
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="relative flex items-center justify-center shrink-0">
-                            <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Sleek luxury circle border -->
-                                <circle cx="50" cy="50" r="44" stroke="url(#footer-luxury-gold)" stroke-width="1.5" opacity="0.8"/>
-                                <!-- Golden Abstract A Monogram / Mountain Crest -->
-                                <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#footer-luxury-gold)" filter="url(#footer-luxury-gold-shadow)"/>
-                                <!-- Inner Soaring Crest -->
-                                <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#footer-luxury-gold-light)"/>
-                                <!-- Bottom elegant dot -->
-                                <circle cx="50" cy="65" r="3" fill="url(#footer-luxury-gold)"/>
-                                <defs>
-                                    <linearGradient id="footer-luxury-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#dfba6b"/>
-                                        <stop offset="50%" stop-color="#b89047"/>
-                                        <stop offset="100%" stop-color="#dfba6b"/>
-                                    </linearGradient>
-                                    <linearGradient id="footer-luxury-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#f8e8c9"/>
-                                        <stop offset="100%" stop-color="#dfba6b"/>
-                                    </linearGradient>
-                                    <filter id="footer-luxury-gold-shadow" x="15" y="10" width="70" height="70" filterUnits="userSpaceOnUse">
-                                        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#dfba6b" flood-opacity="0.25"/>
-                                    </filter>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU TOUR & TRAVELS</h3>
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="#C5A059" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="#C5A059"/>
+                            <circle cx="50" cy="65" r="3" fill="#C5A059"/>
+                        </svg>
+                        <span class="text-lg font-black text-brand-cream leading-none tracking-tight">ANSU TOUR & TRAVELS</span>
                     </div>
-                    <p class="mb-6 text-slate-400 text-sm">Experience absolute premium travel across India. Govt. approved logistics, high-quality stays, and custom local operations.</p>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Crafting premium customized tour packages and luxury retreats across India's most majestic natural landscapes.</p>
                     <div class="flex gap-4">
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=150" alt="Agra" class="w-full h-full object-cover" title="Agra (Taj Mahal)" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=150" alt="Ladakh" class="w-full h-full object-cover" title="Leh-Ladakh" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=150" alt="Kerala" class="w-full h-full object-cover" title="Kerala" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=150" alt="Jaipur" class="w-full h-full object-cover" title="Jaipur" />
                         </a>
                     </div>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Quick Navigation</h4>
-                    <ul class="space-y-3 text-sm font-medium">
-                        <li><a href="index.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Home</a></li>
-                        <li><a href="destinations.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Destinations</a></li>
-                        <li><a href="tours.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Tour Packages</a></li>
-                        <li><a href="inquiry.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Reviews & Inquiry</a></li>
-                        <li><a href="booking.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Book Online</a></li>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Quick Links</h4>
+                    <ul class="space-y-3 text-xs">
+                        <li><a href="index.html" class="hover:text-brand-gold transition">Home</a></li>
+                        <li><a href="tours.html" class="hover:text-brand-gold transition">Tour Packages</a></li>
+                        <li><a href="destinations.html" class="hover:text-brand-gold transition">Destinations</a></li>
+                        <li><a href="booking.html" class="hover:text-brand-gold transition">Book Online</a></li>
+                        <li><a href="track-booking.html" class="hover:text-brand-gold transition">Track Booking</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Contact Desk</h4>
-                    <ul class="space-y-4 text-sm text-slate-400">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="map-pin" class="text-cyan-500 shrink-0 mt-1 w-5 h-5"></i>
-                            <span>Kasba, Kolkata, West Bengal, 700042</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="phone" class="text-cyan-500 shrink-0 w-5 h-5"></i>
-                            <span>+91 73630 10254</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="mail" class="text-cyan-500 shrink-0 w-5 h-5"></i>
-                            <span>ansutourtravels@gmail.com</span>
-                        </li>
-                    </ul>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Contact Desk</h4>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Salt Lake Sector V, Near Karunamoyee Metro station, Kolkata, West Bengal - 700091</p>
+                    <p class="text-xs font-bold text-brand-cream">Call: +91 73630 10254</p>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Adventure Newsletter</h4>
-                    <p class="mb-4 text-slate-400 text-sm">Subscribe to receive exclusive deals for India's hill stations.</p>
-                    <div class="relative mt-4">
-                        <input type="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-6 pr-14 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
-                        <button class="absolute right-1.5 top-1.5 bottom-1.5 w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white hover:from-blue-700 hover:to-cyan-600 transition shadow-md shadow-blue-500/20">
-                            <i data-lucide="send" class="w-4 h-4"></i>
-                        </button>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Newsletter</h4>
+                    <p class="text-xs text-brand-cream/60 mb-4">Subscribe to our newsletter to receive hidden travel offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Address" class="w-full bg-brand-cream/10 border border-brand-cream/10 rounded-l-xl px-4 py-2 text-brand-cream placeholder-brand-cream/40 text-xs focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold" />
+                        <button class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-4 rounded-r-xl transition"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
             </div>
-            
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 pt-4">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-brand-cream/40 gap-4">
                 <p>&copy; 2026 ANSU TOUR & TRAVELS. All rights reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-slate-300 transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-300 transition">Terms of Service</a>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand-cream transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-cream transition">Terms of Service</a>
                 </div>
             </div>
         </footer>
@@ -530,7 +485,7 @@
                 price: 24500,
                 rating: 4.8,
                 reviews: 182,
-                image: 'https://images.unsplash.com/photo-1557972589-f5596857cbac?auto=format&fit=crop&q=80&w=600',
+                image: 'https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&q=80&w=600',
                 badge: 'HILL STATION',
                 isHot: false,
                 region: 'east-northeast',
@@ -728,38 +683,38 @@
             } else {
                 filtered.forEach(pkg => {
                     const card = document.createElement('div');
-                    card.className = "bg-[#0c122e]/60 backdrop-blur-md rounded-[2rem] overflow-hidden shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-2 transition-all duration-500 group border border-white/10 flex flex-col justify-between hover:border-cyan-500/30";
+                    card.className = "bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500 group border border-brand-navy/5 flex flex-col justify-between hover:border-brand-terracotta/30";
                     card.innerHTML = `
                         <div class="relative h-64 overflow-hidden">
                             <img src="${pkg.image}" alt="${pkg.title}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" />
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#04060d]/80 via-transparent to-transparent opacity-90"></div>
-                            <div class="absolute top-4 left-4 bg-gradient-to-r from-cyan-600/95 to-blue-600/95 backdrop-blur-md text-white text-[9px] font-black px-3 py-1 rounded-xl shadow-lg border border-white/15 tracking-widest uppercase">
+                            <div class="absolute inset-0 bg-gradient-to-t from-brand-navy/50 via-transparent to-transparent opacity-85"></div>
+                            <div class="absolute top-4 left-4 bg-brand-terracotta text-white text-[9px] font-bold px-3 py-1 rounded-full shadow-md tracking-wider uppercase">
                                 ${pkg.badge}
                             </div>
                         </div>
                         <div class="p-6 flex-1 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-center mb-4">
-                                    <div class="flex items-center gap-1.5 text-orange-400 text-xs bg-orange-500/5 border border-orange-500/10 px-2.5 py-1 rounded-xl">
-                                        <i data-lucide="star" class="w-3.5 h-3.5 fill-orange-400 text-orange-400"></i>
-                                        <span class="font-extrabold">${pkg.rating}</span>
-                                        <span class="text-slate-400">(${pkg.reviews})</span>
+                                    <div class="flex items-center gap-1.5 text-brand-gold text-xs bg-brand-gold/5 border border-brand-gold/10 px-2.5 py-1 rounded-xl">
+                                        <i data-lucide="star" class="w-3.5 h-3.5 fill-brand-gold text-brand-gold"></i>
+                                        <span class="font-extrabold text-brand-navy">${pkg.rating}</span>
+                                        <span class="text-brand-slate">(${pkg.reviews})</span>
                                     </div>
-                                    <div class="bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 px-3 py-1 rounded-xl text-lg font-black tracking-tight">₹${pkg.price.toLocaleString('en-IN')}</div>
+                                    <div class="bg-brand-navy/5 border border-brand-navy/10 text-brand-navy px-3 py-1 rounded-xl text-base font-bold tracking-tight">₹${pkg.price.toLocaleString('en-IN')}</div>
                                 </div>
-                                <h3 class="text-lg font-bold text-white mb-3 line-clamp-2 hover:text-cyan-400 cursor-pointer transition leading-snug" onclick="location.href='booking.html?package=${pkg.id}'">${pkg.title}</h3>
-                                <p class="text-slate-400 text-xs line-clamp-3 mb-4 leading-relaxed">${pkg.desc}</p>
-                                <div class="flex items-center gap-2 text-slate-300 text-xs mb-5 bg-white/5 border border-white/5 rounded-xl px-3 py-2 w-fit">
-                                    <i data-lucide="map-pin" class="w-4 h-4 text-cyan-400"></i> 
+                                <h3 class="text-lg font-serif font-bold text-brand-navy mb-3 line-clamp-2 hover:text-brand-terracotta cursor-pointer transition leading-snug" onclick="location.href='booking.html?package=${pkg.id}'">${pkg.title}</h3>
+                                <p class="text-brand-slate text-xs line-clamp-3 mb-4 leading-relaxed">${pkg.desc}</p>
+                                <div class="flex items-center gap-2 text-brand-slate text-xs mb-5 bg-brand-navy/5 border border-brand-navy/5 rounded-xl px-3 py-2 w-fit">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-brand-terracotta"></i> 
                                     <span class="font-medium">${pkg.location}</span>
                                 </div>
                             </div>
-                            <div class="border-t border-white/10 pt-4 flex justify-between items-center">
-                                <div class="flex items-center gap-1.5 text-slate-300 bg-white/5 px-3 py-1.5 rounded-xl border border-white/5 text-xs">
-                                    <i data-lucide="clock" class="text-cyan-400 w-4 h-4"></i> 
+                            <div class="border-t border-brand-navy/5 pt-4 flex justify-between items-center">
+                                <div class="flex items-center gap-1.5 text-brand-slate bg-brand-navy/5 px-3 py-1.5 rounded-xl border border-brand-navy/5 text-xs">
+                                    <i data-lucide="clock" class="text-brand-terracotta w-4 h-4"></i> 
                                     <span class="font-bold">${pkg.duration}</span>
                                 </div>
-                                <button onclick="location.href='booking.html?package=${pkg.id}'" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-lg shadow-blue-500/25 hover:shadow-cyan-500/35 active:scale-95 transition-all text-xs">
+                                <button onclick="location.href='booking.html?package=${pkg.id}'" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 shadow-md shadow-brand-terracotta/20 active:scale-95 transition-all text-xs">
                                     Book Online <i data-lucide="chevron-right" class="w-4 h-4"></i>
                                 </button>
                             </div>

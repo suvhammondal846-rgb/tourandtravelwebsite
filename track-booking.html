@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Booking - ANSU TOUR & TRAVELS</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config for variables and styling -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0C1A30',
+                            terracotta: '#C86A55',
+                            gold: '#C5A059',
+                            cream: '#FCFAF6',
+                            charcoal: '#1E293B',
+                            slate: '#5C6880',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --bg-color: #FCFAF6;
+            --accent-color: #0C1A30;
+            --loader-color: #F3EFE9;
+            --progress-color: #C86A55;
+            --glow-color: rgba(200, 106, 85, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+        }
+
+        /* Scrollable Webpage Content Overlay */
+        #content-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            background-color: transparent;
+        }
+
+        /* Premium Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+            pointer-events: all;
+        }
+
+        .loader-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loader-percentage {
+            font-size: 5rem;
+            font-weight: 200;
+            letter-spacing: -0.05em;
+            color: var(--accent-color);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            background: linear-gradient(135deg, #0C1A30 30%, #C5A059 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .loader-bar-container {
+            width: 280px;
+            height: 3px;
+            background-color: var(--loader-color);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        #loader-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #C5A059, #C86A55);
+            transition: width 0.1s ease-out;
+            box-shadow: 0 0 10px rgba(200, 106, 85, 0.15);
+        }
+
+        .loader-text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5em;
+            color: #C86A55;
+            margin-top: 10px;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(200, 106, 85, 0.1);
+        }
+
+        /* Fade out loader class */
+        #loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Custom scrollbar to match premium theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FCFAF6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8E2D9;
+            border-radius: 4px;
+            border: 1px solid rgba(12, 26, 48, 0.05);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D5CDBE;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-brand-charcoal bg-brand-cream">
+
+    <!-- Premium Loader -->
+    <div id="loader">
+        <div class="loader-content">
+            <span class="loader-percentage" id="loader-percentage">00</span>
+            <div class="loader-bar-container">
+                <div id="loader-bar"></div>
+            </div>
+            <span class="loader-text">Loading Journey</span>
+        </div>
+    </div>
+
+    <!-- Glowing Soft Warm Blur Blobs -->
+    <div class="fixed inset-0 pointer-events-none z-[2] overflow-hidden">
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-brand-terracotta/5 blur-[150px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-brand-gold/5 blur-[180px] animate-pulse" style="animation-duration: 12s;"></div>
+        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-brand-navy/3 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
+    </div>
+
+    <!-- Scrollable Webpage Content Overlay -->
+    <div id="content-container">
+        
+        <!-- Header (Polished Sticky Glass Navbar) -->
+        <header class="w-full sticky top-0 z-50 bg-brand-cream/80 backdrop-blur-md border-b border-brand-navy/10 shadow-sm transition-all duration-300">
+            <!-- Top Bar -->
+            <div class="bg-brand-navy text-brand-cream/70 py-2 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-brand-cream/5">
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="map-pin" class="text-brand-gold w-3.5 h-3.5"></i>
+                        <span>Kolkata, India</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="mail" class="text-brand-gold w-3.5 h-3.5"></i>
+                        <span>ansutourtravels@gmail.com</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6 mt-2 md:mt-0">
+                    <div class="flex items-center space-x-2 cursor-pointer hover:text-brand-gold transition">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                        <span id="header-login-btn">Agent Login - Register</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Nav -->
+            <div class="py-4 px-4 md:px-8 flex justify-between items-center max-w-7xl mx-auto w-full">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="location.href='index.html'">
+                    <div class="relative flex items-center justify-center shrink-0">
+                        <svg class="w-9 h-9" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="url(#nav-gold)" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#nav-gold)"/>
+                            <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#nav-gold-light)"/>
+                            <circle cx="50" cy="65" r="3" fill="url(#nav-gold)"/>
+                            <defs>
+                                <linearGradient id="nav-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#C5A059"/>
+                                    <stop offset="100%" stop-color="#8E6A27"/>
+                                </linearGradient>
+                                <linearGradient id="nav-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#FCFAF6"/>
+                                    <stop offset="100%" stop-color="#C5A059"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-lg font-black text-brand-navy tracking-tight leading-none">ANSU</span>
+                        <span class="text-[8px] font-bold text-brand-gold tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
+                    </div>
+                </div>
+                
+                <nav class="hidden lg:flex items-center space-x-8 font-semibold text-brand-slate">
+                    <a href="index.html" class="hover:text-brand-navy transition">Home</a>
+                    <a href="tours.html" class="hover:text-brand-navy transition">Tour Packages</a>
+                    <a href="destinations.html" class="hover:text-brand-navy transition">Destinations</a>
+                    <a href="inquiry.html" class="hover:text-brand-navy transition">Reviews & Inquiry</a>
+                    <a href="booking.html" class="hover:text-brand-navy transition">Booking</a>
+                    <a href="track-booking.html" class="text-brand-terracotta border-b-2 border-brand-terracotta/40 pb-0.5">Track Booking</a>
+                </nav>
+                
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:flex items-center space-x-3 border-r border-brand-navy/10 pr-6">
+                        <div class="bg-brand-terracotta/10 p-2 rounded-xl text-brand-terracotta">
+                            <i data-lucide="phone-call" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <p class="text-[8px] text-brand-slate uppercase tracking-widest font-bold">Helpline</p>
+                            <p class="font-bold text-brand-navy text-xs">+91 73630 10254</p>
+                        </div>
+                    </div>
+                    <button onclick="location.href='booking.html'" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-md shadow-brand-terracotta/20 tracking-wider uppercase">
+                        Book Online
+                    </button>
+                    <!-- Mobile Hamburger -->
+                    <button class="lg:hidden text-brand-navy" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden lg:hidden border-t border-brand-navy/10 bg-brand-cream/95 backdrop-blur-md px-4 py-6 space-y-4">
+                <a href="index.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Home</a>
+                <a href="tours.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Tour Packages</a>
+                <a href="destinations.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Destinations</a>
+                <a href="inquiry.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Reviews & Inquiry</a>
+                <a href="booking.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Booking</a>
+                <a href="track-booking.html" class="block font-bold text-brand-terracotta">Track Booking</a>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 relative">
+            
+            <!-- Header Section -->
+            <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+                <span class="text-brand-terracotta font-semibold mb-2 inline-flex items-center uppercase tracking-widest text-xs">
+                    <span class="w-4 h-4 rounded-full bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mr-2 text-[10px] font-bold">+</span> Booking Desk
+                </span>
+                <h1 class="text-4xl md:text-5xl font-serif text-brand-navy mb-4 leading-tight">Track Your Journey</h1>
+                <p class="text-brand-slate text-sm">Stay updated on your upcoming retreat. Enter your booking credentials below to review your live status, timeline, and invoice details.</p>
+            </div>
+            
+            <!-- Grid Container for lookup and results -->
+            <div class="max-w-3xl mx-auto space-y-8">
+                
+                <!-- Form Lookup Card -->
+                <div class="bg-white border border-brand-navy/5 shadow-[0_10px_40px_rgba(12,26,48,0.03)] rounded-[2rem] p-6 md:p-10 relative">
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-serif text-brand-navy font-bold">Verification Details</h2>
+                        <p class="text-brand-slate text-xs mt-1">Please enter your unique booking code (e.g., ANS-849201) along with your registered email address.</p>
+                    </div>
+                    
+                    <form id="tracker-form" onsubmit="handleTrackBooking(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-bold text-brand-navy uppercase tracking-wider mb-2">Booking ID</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-brand-slate">
+                                        <i data-lucide="hash" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="track-id" required placeholder="ANS-XXXXXX" class="w-full bg-brand-cream/50 border border-brand-navy/10 rounded-2xl pl-11 pr-4 py-3.5 text-brand-navy placeholder-brand-slate/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20 focus:border-brand-terracotta transition duration-200" />
+                                </div>
+                                <p id="error-id" class="text-rose-500 text-[10px] mt-1.5 hidden"></p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-[10px] font-bold text-brand-navy uppercase tracking-wider mb-2">Email Address</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-brand-slate">
+                                        <i data-lucide="mail" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="email" id="track-email" required placeholder="e.g. client@gmail.com" class="w-full bg-brand-cream/50 border border-brand-navy/10 rounded-2xl pl-11 pr-4 py-3.5 text-brand-navy placeholder-brand-slate/50 text-sm focus:outline-none focus:ring-2 focus:ring-brand-terracotta/20 focus:border-brand-terracotta transition duration-200" />
+                                </div>
+                                <p id="error-email" class="text-rose-500 text-[10px] mt-1.5 hidden"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" id="track-submit-btn" class="bg-brand-navy hover:bg-brand-navy/95 text-white font-bold px-8 py-4 rounded-full transition duration-300 shadow-md shadow-brand-navy/15 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                                <i data-lucide="search" class="w-4 h-4"></i>
+                                <span>Track Journey</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Results Card -->
+                <div id="results-card" class="bg-white border border-brand-navy/5 shadow-[0_15px_50px_rgba(12,26,48,0.04)] rounded-[2.5rem] p-6 md:p-10 relative hidden transition-all duration-500 transform translate-y-4 opacity-0">
+                    
+                    <!-- Header and Status Badge -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-brand-navy/5 pb-6 mb-8">
+                        <div>
+                            <span class="text-[10px] font-bold text-brand-slate uppercase tracking-widest block">Live Status Report</span>
+                            <h3 id="result-destination" class="text-2xl font-serif text-brand-navy font-bold mt-1">Leh-Ladakh Roadtrip</h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="result-status-badge" class="px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase border">Confirmed</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Form Details -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-bold text-brand-slate uppercase tracking-wider block">Booking Reference</span>
+                            <span id="result-id" class="text-sm font-bold text-brand-navy block">ANS-849201</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-bold text-brand-slate uppercase tracking-wider block">Travelers Count</span>
+                            <span id="result-travelers" class="text-sm font-bold text-brand-navy block">2 Adults</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-bold text-brand-slate uppercase tracking-wider block">Travel Window</span>
+                            <span id="result-dates" class="text-xs font-bold text-brand-navy block leading-tight">Aug 15 - Aug 20, 2026</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-bold text-brand-slate uppercase tracking-wider block">Total Amount</span>
+                            <span id="result-price" class="text-sm font-black text-brand-terracotta block">₹35,000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Horizontal Progress Tracker -->
+                    <div class="mb-10 pt-4">
+                        <h4 class="text-xs font-bold text-brand-navy uppercase tracking-widest mb-6">Booking Timeline</h4>
+                        <div class="relative flex flex-col md:flex-row justify-between items-center gap-8 md:gap-0">
+                            
+                            <!-- Connecting Line (Desktop) -->
+                            <div class="absolute hidden md:block top-4 left-[10%] right-[10%] h-0.5 bg-brand-cream z-0">
+                                <div id="progress-line" class="h-full bg-brand-terracotta transition-all duration-1000" style="width: 25%;"></div>
+                            </div>
+                            
+                            <!-- Timeline Nodes -->
+                            <div class="flex flex-row md:flex-col items-center gap-4 md:gap-2 z-10 w-full md:w-auto text-left md:text-center select-none" id="step-booked">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 bg-brand-terracotta text-white border-brand-terracotta shadow-md">
+                                    1
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider leading-none">Booked</span>
+                                    <span class="text-[8px] text-brand-slate/60 mt-1 hidden md:block">Request Filed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-row md:flex-col items-center gap-4 md:gap-2 z-10 w-full md:w-auto text-left md:text-center select-none" id="step-confirmed">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 bg-brand-cream border-brand-navy/10 text-brand-slate">
+                                    2
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-brand-slate uppercase tracking-wider leading-none">Confirmed</span>
+                                    <span class="text-[8px] text-brand-slate/60 mt-1 hidden md:block">Seats Secured</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-row md:flex-col items-center gap-4 md:gap-2 z-10 w-full md:w-auto text-left md:text-center select-none" id="step-payment">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 bg-brand-cream border-brand-navy/10 text-brand-slate">
+                                    3
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-brand-slate uppercase tracking-wider leading-none">Paid</span>
+                                    <span class="text-[8px] text-brand-slate/60 mt-1 hidden md:block">Receipt Generated</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-row md:flex-col items-center gap-4 md:gap-2 z-10 w-full md:w-auto text-left md:text-center select-none" id="step-scheduled">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 bg-brand-cream border-brand-navy/10 text-brand-slate">
+                                    4
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-brand-slate uppercase tracking-wider leading-none">Scheduled</span>
+                                    <span class="text-[8px] text-brand-slate/60 mt-1 hidden md:block">Itinerary Active</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-row md:flex-col items-center gap-4 md:gap-2 z-10 w-full md:w-auto text-left md:text-center select-none" id="step-completed">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300 bg-brand-cream border-brand-navy/10 text-brand-slate">
+                                    5
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] font-bold text-brand-slate uppercase tracking-wider leading-none">Completed</span>
+                                    <span class="text-[8px] text-brand-slate/60 mt-1 hidden md:block">Trip Concluded</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 border-t border-brand-navy/5 pt-6 mt-6 justify-between items-center">
+                        <button onclick="downloadMockInvoice()" class="w-full sm:w-auto border border-brand-navy/10 text-brand-navy hover:bg-brand-cream font-bold px-6 py-3 rounded-full transition duration-300 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Download Invoice
+                        </button>
+                        <button onclick="openSupportDesk()" class="w-full sm:w-auto bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-6 py-3 rounded-full transition duration-300 text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm shadow-brand-terracotta/10">
+                            <i data-lucide="message-circle" class="w-4 h-4"></i>
+                            Contact Support
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Error State -->
+                <div id="error-card" class="bg-white border border-brand-navy/5 shadow-md rounded-[2rem] p-6 md:p-8 text-center space-y-6 hidden transition-all duration-300 transform translate-y-2 opacity-0">
+                    <div class="w-16 h-16 bg-rose-500/10 border border-rose-500/25 rounded-full flex items-center justify-center mx-auto text-rose-500">
+                        <i data-lucide="alert-circle" class="w-8 h-8"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-xl font-serif font-bold text-brand-navy">Booking Not Found</h3>
+                        <p class="text-brand-slate text-xs max-w-md mx-auto">We couldn't locate any records matching that Booking ID and Email combination. Please double check the fields and try again.</p>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-4 pt-2">
+                        <button onclick="resetTrackerForm()" class="border border-brand-navy/10 text-brand-navy hover:bg-brand-cream px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition">
+                            Modify Search
+                        </button>
+                        <a href="https://wa.me/917363010254" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition">
+                            <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+                            WhatsApp Support
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-brand-navy text-brand-cream/80 pt-16 pb-8 px-4 md:px-8 border-t border-brand-navy/5 relative z-10 w-full">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-b border-brand-cream/10 pb-8 mb-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="#C5A059" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="#C5A059"/>
+                            <circle cx="50" cy="65" r="3" fill="#C5A059"/>
+                        </svg>
+                        <span class="text-lg font-black text-brand-cream leading-none tracking-tight">ANSU TOUR & TRAVELS</span>
+                    </div>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Crafting premium customized tour packages and luxury retreats across India's most majestic natural landscapes.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Quick Links</h4>
+                    <ul class="space-y-3 text-xs">
+                        <li><a href="index.html" class="hover:text-brand-gold transition">Home</a></li>
+                        <li><a href="tours.html" class="hover:text-brand-gold transition">Tour Packages</a></li>
+                        <li><a href="destinations.html" class="hover:text-brand-gold transition">Destinations</a></li>
+                        <li><a href="booking.html" class="hover:text-brand-gold transition">Book Online</a></li>
+                        <li><a href="track-booking.html" class="hover:text-brand-gold transition">Track Booking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Contact Desk</h4>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Salt Lake Sector V, Near Karunamoyee Metro station, Kolkata, West Bengal - 700091</p>
+                    <p class="text-xs font-bold text-brand-cream">Call: +91 73630 10254</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Newsletter</h4>
+                    <p class="text-xs text-brand-cream/60 mb-4">Subscribe to our newsletter to receive hidden travel offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Address" class="w-full bg-brand-cream/10 border border-brand-cream/10 rounded-l-xl px-4 py-2 text-brand-cream placeholder-brand-cream/40 text-xs focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold" />
+                        <button class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-4 rounded-r-xl transition"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-brand-cream/40 gap-4">
+                <p>&copy; 2026 ANSU TOUR & TRAVELS. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand-cream transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-cream transition">Terms of Service</a>
+                </div>
+            </div>
+        </footer>
+        
+    </div>
+
+    <script>
+        // Premium Loader Logic
+        window.addEventListener('DOMContentLoaded', () => {
+            let percentage = 0;
+            const percentageEl = document.getElementById('loader-percentage');
+            const barEl = document.getElementById('loader-bar');
+            const loaderEl = document.getElementById('loader');
+            
+            const interval = setInterval(() => {
+                percentage += Math.floor(Math.random() * 15) + 5;
+                if (percentage >= 100) {
+                    percentage = 100;
+                    clearInterval(interval);
+                    barEl.style.width = '100%';
+                    percentageEl.textContent = '100';
+                    setTimeout(() => {
+                        loaderEl.classList.add('loaded');
+                        document.body.style.overflow = 'auto';
+                    }, 400);
+                } else {
+                    barEl.style.width = percentage + '%';
+                    percentageEl.textContent = percentage.toString().padStart(2, '0');
+                }
+            }, 50);
+        });
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Mock Booking Database
+        const MOCK_BOOKINGS = [
+            {
+                id: "ANS-849201",
+                name: "Suvham Sen",
+                email: "suvham@gmail.com",
+                phone: "9876543210",
+                destination: "Leh-Ladakh Roadtrip",
+                dates: "Aug 15 - Aug 20, 2026",
+                status: "Confirmed",
+                statusColor: "text-emerald-700 bg-emerald-50 border-emerald-200/50",
+                stepIndex: 2,
+                amountPaid: 35000,
+                travelers: "2 Adults"
+            },
+            {
+                id: "ANS-103948",
+                name: "Aditi Roy",
+                email: "aditi@gmail.com",
+                phone: "8765432109",
+                destination: "Kerala Backwaters Scenic Cruise",
+                dates: "Sep 10 - Sep 16, 2026",
+                status: "Payment Received",
+                statusColor: "text-blue-700 bg-blue-50 border-blue-200/50",
+                stepIndex: 3,
+                amountPaid: 28000,
+                travelers: "3 Adults"
+            },
+            {
+                id: "ANS-294810",
+                name: "Rohan Sharma",
+                email: "rohan@gmail.com",
+                phone: "7654321098",
+                destination: "Jaipur Palace Heritage Tour",
+                dates: "Oct 05 - Oct 09, 2026",
+                status: "Pending Verification",
+                statusColor: "text-amber-700 bg-amber-50 border-amber-200/50",
+                stepIndex: 1,
+                amountPaid: 12000,
+                travelers: "1 Adult"
+            },
+            {
+                id: "ANS-948302",
+                name: "Priya Patel",
+                email: "priya@gmail.com",
+                phone: "6543210987",
+                destination: "Varanasi Ghats & Temples Tour",
+                dates: "Nov 12 - Nov 16, 2026",
+                status: "Cancelled",
+                statusColor: "text-rose-700 bg-rose-50 border-rose-200/50",
+                stepIndex: 0,
+                amountPaid: 0,
+                travelers: "4 Adults"
+            },
+            {
+                id: "ANS-748392",
+                name: "Amit Kumar",
+                email: "amit@gmail.com",
+                phone: "9876543211",
+                destination: "Darjeeling & Dooars Hills Scenic Retreat",
+                dates: "Jul 01 - Jul 06, 2026",
+                status: "Completed",
+                statusColor: "text-slate-700 bg-slate-100 border-slate-200",
+                stepIndex: 5,
+                amountPaid: 24500,
+                travelers: "2 Adults"
+            }
+        ];
+
+        // Track Booking Logic
+        function handleTrackBooking(e) {
+            e.preventDefault();
+            
+            // Hide previous results
+            const resultsCard = document.getElementById('results-card');
+            const errorCard = document.getElementById('error-card');
+            resultsCard.classList.add('hidden');
+            resultsCard.classList.remove('translate-y-0', 'opacity-100');
+            errorCard.classList.add('hidden');
+            errorCard.classList.remove('translate-y-0', 'opacity-100');
+
+            const idInput = document.getElementById('track-id').value.trim();
+            const emailInput = document.getElementById('track-email').value.trim().toLowerCase();
+            
+            const errorId = document.getElementById('error-id');
+            const errorEmail = document.getElementById('error-email');
+            errorId.classList.add('hidden');
+            errorEmail.classList.add('hidden');
+
+            let isValid = true;
+            
+            // Basic formatting validations
+            const idRegex = /^ANS-\d{6}$/;
+            if (!idRegex.test(idInput)) {
+                errorId.textContent = "ID must match format ANS-XXXXXX (6 digits)";
+                errorId.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Show loading spinner simulation on submit button
+                const btn = document.getElementById('track-submit-btn');
+                const originalContent = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = `<svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Searching...`;
+
+                setTimeout(() => {
+                    // Restore button
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+
+                    // Lookup matching booking record
+                    const record = MOCK_BOOKINGS.find(b => b.id === idInput && b.email.toLowerCase() === emailInput);
+                    
+                    if (record) {
+                        // Populate results
+                        document.getElementById('result-destination').textContent = record.destination;
+                        document.getElementById('result-id').textContent = record.id;
+                        document.getElementById('result-travelers').textContent = record.travelers;
+                        document.getElementById('result-dates').textContent = record.dates;
+                        document.getElementById('result-price').textContent = `₹${record.amountPaid.toLocaleString('en-IN')}`;
+                        
+                        const statusBadge = document.getElementById('result-status-badge');
+                        statusBadge.textContent = record.status;
+                        statusBadge.className = `px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase border ${record.statusColor}`;
+
+                        // Setup progress line and active steps
+                        const steps = ['step-booked', 'step-confirmed', 'step-payment', 'step-scheduled', 'step-completed'];
+                        const stepIndex = record.stepIndex; // 1 to 5
+
+                        // Reset all steps to inactive
+                        steps.forEach((sId, idx) => {
+                            const stepNode = document.getElementById(sId);
+                            const circle = stepNode.querySelector('div');
+                            const label = stepNode.querySelector('span');
+                            
+                            // Clean classes
+                            circle.className = "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-300";
+                            label.className = "text-[10px] font-bold uppercase tracking-wider leading-none";
+
+                            if (idx + 1 <= stepIndex) {
+                                // Mark completed or active
+                                circle.classList.add('bg-brand-terracotta', 'border-brand-terracotta', 'text-white', 'shadow-md');
+                                label.classList.add('text-brand-navy');
+                            } else {
+                                // Mark pending
+                                circle.classList.add('bg-brand-cream', 'border-brand-navy/10', 'text-brand-slate');
+                                label.classList.add('text-brand-slate');
+                            }
+                        });
+
+                        // Calculate desktop progress bar percentage
+                        let percentage = 0;
+                        if (stepIndex > 1) {
+                            percentage = ((stepIndex - 1) / (steps.length - 1)) * 100;
+                        }
+                        document.getElementById('progress-line').style.width = `${percentage}%`;
+
+                        // Show Results Card
+                        resultsCard.classList.remove('hidden');
+                        setTimeout(() => {
+                            resultsCard.classList.add('translate-y-0', 'opacity-100');
+                        }, 50);
+
+                    } else {
+                        // Show Error Card
+                        errorCard.classList.remove('hidden');
+                        setTimeout(() => {
+                            errorCard.classList.add('translate-y-0', 'opacity-100');
+                        }, 50);
+                    }
+                }, 1000);
+            }
+        }
+
+        // Reset search form
+        function resetTrackerForm() {
+            document.getElementById('tracker-form').reset();
+            const errorCard = document.getElementById('error-card');
+            errorCard.classList.add('hidden');
+            errorCard.classList.remove('translate-y-0', 'opacity-100');
+        }
+
+        // Simulated invoice alert
+        function downloadMockInvoice() {
+            alert('Your official receipt & booking invoice PDF is being generated and will download shortly.');
+        }
+
+        // WhatsApp / Support trigger
+        function openSupportDesk() {
+            window.open('https://wa.me/917363010254', '_blank');
+        }
+    </script>
+</body>
+</html>

@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANSU TOUR & TRAVELS - Book Your Tour</title>
     <!-- Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +19,18 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Fraunces', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0C1A30',
+                            terracotta: '#C86A55',
+                            gold: '#C5A059',
+                            cream: '#FCFAF6',
+                            charcoal: '#1E293B',
+                            slate: '#5C6880',
+                        }
                     }
                 }
             }
@@ -30,11 +42,11 @@
     
     <style>
         :root {
-            --bg-color: #030409;
-            --accent-color: #ffffff;
-            --loader-color: #080d1a;
-            --progress-color: #3b82f6;
-            --glow-color: rgba(59, 130, 246, 0.25);
+            --bg-color: #FCFAF6;
+            --accent-color: #0C1A30;
+            --loader-color: #F3EFE9;
+            --progress-color: #C86A55;
+            --glow-color: rgba(200, 106, 85, 0.1);
         }
 
         body {
@@ -42,9 +54,8 @@
             overflow-x: hidden;
         }
 
-        /* Make browser date picker calendar icon visible on dark background */
+        /* Make browser date picker calendar icon visible on light background */
         input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1) brightness(0.9) contrast(1.2);
             cursor: pointer;
             padding: 4px;
             border-radius: 6px;
@@ -52,8 +63,7 @@
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator:hover {
-            filter: invert(1) brightness(1.1) contrast(1.5);
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(12, 26, 48, 0.05);
         }
 
         @media print {
@@ -80,27 +90,6 @@
             #success-ticket-outlet p, #tracked-ticket-outlet p {
                 color: black !important;
             }
-        }
-
-        /* Fixed background canvas */
-        #animation-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            display: block;
-            pointer-events: none;
-            background-color: var(--bg-color);
-        }
-
-        /* Tech Grid Overlay */
-        .bg-grid {
-            background-size: 50px 50px;
-            background-image: 
-                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
         }
 
         /* Scrollable Webpage Content Overlay */
@@ -143,7 +132,7 @@
             color: var(--accent-color);
             line-height: 1;
             font-variant-numeric: tabular-nums;
-            background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+            background: linear-gradient(135deg, #0C1A30 30%, #C5A059 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -161,19 +150,19 @@
         #loader-bar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+            background: linear-gradient(90deg, #C5A059, #C86A55);
             transition: width 0.1s ease-out;
-            box-shadow: 0 0 10px #3b82f6;
+            box-shadow: 0 0 10px rgba(200, 106, 85, 0.15);
         }
 
         .loader-text {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5em;
-            color: #4f46e5;
+            color: #C86A55;
             margin-top: 10px;
             font-weight: 600;
-            text-shadow: 0 0 10px rgba(79, 70, 229, 0.3);
+            text-shadow: 0 0 10px rgba(200, 106, 85, 0.1);
         }
 
         /* Fade out loader class */
@@ -182,124 +171,127 @@
             visibility: hidden;
         }
 
-        /* Custom scrollbar to match dark premium theme */
+        /* Custom scrollbar to match premium theme */
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #020306;
+            background: #FCFAF6;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #E8E2D9;
             border-radius: 4px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid rgba(12, 26, 48, 0.05);
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
+            background: #D5CDBE;
         }
     </style>
 </head>
-<body class="font-sans antialiased text-slate-300">
+<body class="font-sans antialiased text-brand-charcoal bg-brand-cream">
 
-    <!-- Technical Grid Overlay -->
-    <div class="fixed inset-0 pointer-events-none z-[3] bg-grid opacity-40"></div>
-
-    <!-- Glowing Nebula-like Blur Blobs -->
+    <!-- Glowing Soft Warm Blur Blobs -->
     <div class="fixed inset-0 pointer-events-none z-[2] overflow-hidden">
-        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-blue-600/10 blur-[130px] animate-pulse" style="animation-duration: 8s;"></div>
-        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-indigo-600/8 blur-[160px] animate-pulse" style="animation-duration: 12s;"></div>
-        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-cyan-500/8 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
+        <div class="absolute top-[10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-brand-terracotta/5 blur-[150px] animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute bottom-[25%] right-[5%] w-[45vw] h-[45vw] rounded-full bg-brand-gold/5 blur-[180px] animate-pulse" style="animation-duration: 12s;"></div>
+        <div class="absolute top-[60%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-brand-navy/3 blur-[120px] animate-pulse" style="animation-duration: 10s;"></div>
     </div>
 
     <!-- Scrollable Webpage Content Overlay -->
     <div id="content-container">
         
-        <!-- Header -->
-        <header class="w-full relative z-50">
+        <!-- Header (Polished Sticky Glass Navbar) -->
+        <header class="w-full sticky top-0 z-50 bg-brand-cream/80 backdrop-blur-md border-b border-brand-navy/10 shadow-sm transition-all duration-300">
             <!-- Top Bar -->
-            <div class="bg-slate-950/80 backdrop-blur-md text-slate-400 py-2.5 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-white/5">
+            <div class="bg-brand-navy text-brand-cream/70 py-2 px-4 md:px-8 text-xs flex flex-col md:flex-row justify-between items-center border-b border-brand-cream/5">
                 <div class="flex items-center space-x-6">
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="map-pin" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <i data-lucide="map-pin" class="text-brand-gold w-3.5 h-3.5"></i>
                         <span>Kolkata, India</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="mail" class="text-cyan-500 w-3.5 h-3.5"></i>
+                        <i data-lucide="mail" class="text-brand-gold w-3.5 h-3.5"></i>
                         <span>ansutourtravels@gmail.com</span>
                     </div>
                 </div>
                 <div class="flex items-center space-x-6 mt-2 md:mt-0">
-                    <div class="flex items-center space-x-2 cursor-pointer hover:text-cyan-400 transition">
+                    <div class="flex items-center space-x-2 cursor-pointer hover:text-brand-gold transition" onclick="openLoginModal()">
                         <i data-lucide="user" class="w-3.5 h-3.5"></i>
                         <span id="header-login-btn">Agent Login - Register</span>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
-                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-cyan-400 transition"></i>
+                        <i data-lucide="facebook" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="twitter" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="instagram" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
+                        <i data-lucide="linkedin" class="w-3.5 h-3.5 cursor-pointer hover:text-brand-gold transition"></i>
                     </div>
                 </div>
             </div>
             
             <!-- Main Nav -->
-            <div class="bg-[#060a16]/65 backdrop-blur-xl py-4 px-4 md:px-8 flex justify-between items-center border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.4)]">
-                <div class="flex items-center space-x-3">
+            <div class="py-4 px-4 md:px-8 flex justify-between items-center max-w-7xl mx-auto w-full">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="location.href='index.html'">
                     <div class="relative flex items-center justify-center shrink-0">
-                                <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Sleek luxury circle border -->
-                                    <circle cx="50" cy="50" r="44" stroke="url(#luxury-gold)" stroke-width="1.5" opacity="0.8"/>
-                                    <!-- Golden Abstract A Monogram / Mountain Crest -->
-                                    <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#luxury-gold)" filter="url(#luxury-gold-shadow)"/>
-                                    <!-- Inner Soaring Crest -->
-                                    <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#luxury-gold-light)"/>
-                                    <!-- Bottom elegant dot -->
-                                    <circle cx="50" cy="65" r="3" fill="url(#luxury-gold)"/>
-                                    <defs>
-                                        <linearGradient id="luxury-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="#dfba6b"/>
-                                            <stop offset="50%" stop-color="#b89047"/>
-                                            <stop offset="100%" stop-color="#dfba6b"/>
-                                        </linearGradient>
-                                        <linearGradient id="luxury-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
-                                            <stop offset="0%" stop-color="#f8e8c9"/>
-                                            <stop offset="100%" stop-color="#dfba6b"/>
-                                        </linearGradient>
-                                        <filter id="luxury-gold-shadow" x="15" y="10" width="70" height="70" filterUnits="userSpaceOnUse">
-                                            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#dfba6b" flood-opacity="0.25"/>
-                                        </filter>
-                                    </defs>
-                                </svg>
-                            </div>
+                        <svg class="w-9 h-9" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="url(#nav-gold)" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#nav-gold)"/>
+                            <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#nav-gold-light)"/>
+                            <circle cx="50" cy="65" r="3" fill="url(#nav-gold)"/>
+                            <defs>
+                                <linearGradient id="nav-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#C5A059"/>
+                                    <stop offset="100%" stop-color="#8E6A27"/>
+                                </linearGradient>
+                                <linearGradient id="nav-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#FCFAF6"/>
+                                    <stop offset="100%" stop-color="#C5A059"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
                     <div class="flex flex-col">
-                        <span class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU</span>
-                        <span class="text-[9px] font-bold text-[#dfba6b] tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
+                        <span class="text-lg font-black text-brand-navy tracking-tight leading-none">ANSU</span>
+                        <span class="text-[8px] font-bold text-brand-gold tracking-[0.25em] mt-0.5 uppercase">Tour & Travels</span>
                     </div>
                 </div>
                 
-                <nav class="hidden lg:flex items-center space-x-8 font-medium text-slate-300">
-                    <a href="index.html" class="hover:text-[#dfba6b] transition">Home</a>
-                    <a href="tours.html" class="hover:text-[#dfba6b] transition">Tour Packages</a>
-                    <a href="destinations.html" class="hover:text-[#dfba6b] transition">Destinations</a>
-                    <a href="inquiry.html" class="hover:text-[#dfba6b] transition">Reviews & Inquiry</a>
-                    <a href="booking.html" class="text-[#dfba6b] border-b border-[#dfba6b]/40 pb-0.5">Booking</a>
+                <nav class="hidden lg:flex items-center space-x-8 font-semibold text-brand-slate">
+                    <a href="index.html" class="hover:text-brand-navy transition">Home</a>
+                    <a href="tours.html" class="hover:text-brand-navy transition">Tour Packages</a>
+                    <a href="destinations.html" class="hover:text-brand-navy transition">Destinations</a>
+                    <a href="inquiry.html" class="hover:text-brand-navy transition">Reviews & Inquiry</a>
+                    <a href="booking.html" class="text-brand-terracotta border-b-2 border-brand-terracotta/40 pb-0.5">Booking</a>
+                    <a href="track-booking.html" class="hover:text-brand-navy transition">Track Booking</a>
                 </nav>
                 
                 <div class="flex items-center space-x-6">
-                    <div class="hidden md:flex items-center space-x-3">
-                        <div class="bg-cyan-950/50 border border-cyan-500/20 p-2 rounded-xl text-cyan-400">
+                    <div class="hidden md:flex items-center space-x-3 border-r border-brand-navy/10 pr-6">
+                        <div class="bg-brand-terracotta/10 p-2 rounded-xl text-brand-terracotta">
                             <i data-lucide="phone-call" class="w-4 h-4"></i>
                         </div>
                         <div>
-                            <p class="text-[9px] text-slate-500 uppercase tracking-widest font-bold">Helpline</p>
-                            <p class="font-bold text-white text-xs">+91 73630 10254</p>
+                            <p class="text-[8px] text-brand-slate uppercase tracking-widest font-bold">Helpline</p>
+                            <p class="font-bold text-brand-navy text-xs">+91 73630 10254</p>
                         </div>
                     </div>
-                    <i data-lucide="search" class="text-slate-400 w-4 h-4 cursor-pointer hover:text-cyan-400 transition"></i>
-                    <button onclick="location.href='booking.html'" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-lg shadow-blue-500/20 tracking-wider uppercase border border-blue-400/20">
+                    <button onclick="location.href='booking.html'" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-5 py-2.5 rounded-full font-bold text-xs transition shadow-md shadow-brand-terracotta/20 tracking-wider uppercase">
                         Book Online
                     </button>
+                    <!-- Mobile Hamburger -->
+                    <button class="lg:hidden text-brand-navy" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
                 </div>
+            </div>
+            
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden lg:hidden border-t border-brand-navy/10 bg-brand-cream/95 backdrop-blur-md px-4 py-6 space-y-4">
+                <a href="index.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Home</a>
+                <a href="tours.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Tour Packages</a>
+                <a href="destinations.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Destinations</a>
+                <a href="inquiry.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Reviews & Inquiry</a>
+                <a href="booking.html" class="block font-bold text-brand-terracotta">Booking</a>
+                <a href="track-booking.html" class="block font-bold text-brand-navy hover:text-brand-terracotta">Track Booking</a>
             </div>
         </header>
 
@@ -308,12 +300,12 @@
             
             <!-- Page Title Area -->
             <section class="pt-20 pb-8 px-4 text-center">
-                <div class="bg-[#090d1f]/60 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-xl max-w-4xl mx-auto shadow-blue-500/5">
-                    <p class="text-cyan-400 font-bold mb-2 flex items-center justify-center uppercase tracking-wider text-xs">
-                        <span class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mr-2 font-bold">+</span> Step-By-Step Reservation
+                <div class="bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] border border-brand-navy/5 shadow-md max-w-4xl mx-auto">
+                    <p class="text-brand-terracotta font-bold mb-2 flex items-center justify-center uppercase tracking-wider text-xs">
+                        <span class="w-5 h-5 rounded-full bg-brand-terracotta/10 border border-brand-terracotta/20 text-brand-terracotta flex items-center justify-center mr-2 font-bold">+</span> Step-By-Step Reservation
                     </p>
-                    <h1 class="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-[#dfba6b] via-[#f8e8c9] to-[#b89047] bg-clip-text text-transparent mb-4 leading-tight">Feel the Journey</h1>
-                    <p class="text-slate-400 text-sm max-w-xl mx-auto">Customize your dynamic tour expedition, choose your service tier, and instantly secure your reservation reference code for a trip you can truly feel.</p>
+                    <h1 class="text-4xl md:text-5xl font-serif font-semibold text-brand-navy mb-4 leading-tight">Feel the Journey</h1>
+                    <p class="text-brand-slate text-sm max-w-xl mx-auto">Customize your dynamic tour expedition, choose your service tier, and instantly secure your reservation reference code for a trip you can truly feel.</p>
                 </div>
             </section>
 
@@ -321,10 +313,10 @@
             <section class="px-4 md:px-8 max-w-4xl mx-auto relative">
                 <!-- Navigation Tab Switcher -->
                 <div class="flex justify-center gap-4 mb-8">
-                    <button id="tab-book" onclick="switchTab('book')" class="bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300">
+                    <button id="tab-book" onclick="switchTab('book')" class="bg-brand-terracotta text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-md shadow-brand-terracotta/20 transition-all duration-300">
                         Book a New Tour
                     </button>
-                    <button id="tab-track" onclick="switchTab('track')" class="bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300">
+                    <button id="tab-track" onclick="location.href='track-booking.html'" class="bg-white border border-brand-navy/10 text-brand-slate font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-brand-terracotta/30 transition-all duration-300">
                         Track My Booking
                     </button>
                 </div>
@@ -334,31 +326,31 @@
                     <!-- Step Indicators -->
                     <div class="flex justify-between items-center mb-10 max-w-md mx-auto relative z-10 px-4">
                         <div class="flex flex-col items-center gap-2">
-                            <div id="step-1-indicator" class="w-10 h-10 rounded-full bg-blue-600 text-white border border-blue-400 flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(59,130,246,0.3)] transition duration-300">1</div>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Package</span>
+                            <div id="step-1-indicator" class="w-10 h-10 rounded-full bg-brand-terracotta text-white flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(200,106,85,0.3)] transition duration-300">1</div>
+                            <span class="text-[10px] text-brand-terracotta font-bold uppercase tracking-wider">Package</span>
                         </div>
-                        <div class="flex-1 h-[1px] bg-slate-800 mx-4" id="line-1"></div>
+                        <div class="flex-1 h-[1px] bg-brand-navy/10 mx-4" id="line-1"></div>
                         <div class="flex flex-col items-center gap-2">
-                            <div id="step-2-indicator" class="w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300">2</div>
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Details</span>
+                            <div id="step-2-indicator" class="w-10 h-10 rounded-full bg-white text-brand-slate border border-brand-navy/10 flex items-center justify-center font-bold text-sm transition duration-300">2</div>
+                            <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider">Details</span>
                         </div>
-                        <div class="flex-1 h-[1px] bg-slate-800 mx-4" id="line-2"></div>
+                        <div class="flex-1 h-[1px] bg-brand-navy/10 mx-4" id="line-2"></div>
                         <div class="flex flex-col items-center gap-2">
-                            <div id="step-3-indicator" class="w-10 h-10 rounded-full bg-slate-950 text-slate-500 border border-white/5 flex items-center justify-center font-bold text-sm transition duration-300">3</div>
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Billing</span>
+                            <div id="step-3-indicator" class="w-10 h-10 rounded-full bg-white text-brand-slate border border-brand-navy/10 flex items-center justify-center font-bold text-sm transition duration-300">3</div>
+                            <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider">Billing</span>
                         </div>
                     </div>
 
                 <!-- Main Glass Panel -->
-                <div class="bg-[#090d1f]/75 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl relative overflow-hidden" id="wizard-card">
+                <div class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-brand-navy/5 shadow-xl relative overflow-hidden" id="wizard-card">
                     <!-- Step 1: Package Selection -->
                     <div id="step-1-content" class="space-y-6">
-                        <h3 class="text-2xl font-bold text-white mb-4">Step 1: Choose Your Journey & Plan</h3>
+                        <h3 class="text-2xl font-serif font-bold text-brand-navy mb-4">Step 1: Choose Your Journey & Plan</h3>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Select Package</label>
-                                <select id="tour-package" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 focus:outline-none cursor-pointer">
+                                <label class="block text-xs font-bold text-brand-slate uppercase tracking-wider mb-2">Select Package</label>
+                                <select id="tour-package" class="w-full bg-white border border-brand-navy/10 rounded-2xl px-5 py-3.5 text-sm text-brand-navy focus:outline-none cursor-pointer">
                                     <option value="golden-triangle" data-price="32500">Golden Triangle Heritage (₹32,500)</option>
                                     <option value="leh-ladakh" data-price="42000">Leh-Ladakh Expedition (₹42,000)</option>
                                     <option value="kerala" data-price="26800">Romantic Kerala Houseboat (₹26,800)</option>
@@ -379,38 +371,38 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Date of Departure</label>
-                                <input type="date" id="departure-date" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-250 focus:outline-none" required />
+                                <label class="block text-xs font-bold text-brand-slate uppercase tracking-wider mb-2">Date of Departure</label>
+                                <input type="date" id="departure-date" class="w-full bg-white border border-brand-navy/10 rounded-2xl px-5 py-3.5 text-sm text-brand-navy focus:outline-none" required />
                             </div>
                         </div>
 
                         <!-- Plan Tiers Selection -->
                         <div>
-                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Select Package Plan Tier</label>
+                            <label class="block text-xs font-bold text-brand-slate uppercase tracking-wider mb-3">Select Package Plan Tier</label>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="plan-tiers-container">
                                 <!-- Budget Plan Card -->
-                                <div onclick="selectPlan('budget', 1.0)" id="plan-budget" class="cursor-pointer bg-slate-950/60 p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] text-left hover:border-blue-500/50 transition-all duration-300">
+                                <div onclick="selectPlan('budget', 1.0)" id="plan-budget" class="cursor-pointer bg-brand-cream p-5 rounded-2xl border border-brand-terracotta/40 shadow-[0_0_15px_rgba(200,106,85,0.15)] text-left hover:border-brand-terracotta/50 transition-all duration-300">
                                     <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-white text-sm">Budget Plan</h4>
-                                        <span class="text-[9px] bg-blue-900/40 text-blue-300 font-bold px-2 py-0.5 rounded border border-blue-500/30 uppercase">1.0x Base</span>
+                                        <h4 class="font-bold text-brand-navy text-sm">Budget Plan</h4>
+                                        <span class="text-[9px] bg-brand-navy/5 text-brand-navy font-bold px-2 py-0.5 rounded border border-brand-navy/10 uppercase">1.0x Base</span>
                                     </div>
-                                    <p class="text-[11px] text-slate-400 leading-relaxed">Basic accommodations, group transport, and self-guided touring routes.</p>
+                                    <p class="text-[11px] text-brand-slate leading-relaxed">Basic accommodations, group transport, and self-guided touring routes.</p>
                                 </div>
                                 <!-- Standard Plan Card -->
-                                <div onclick="selectPlan('standard', 1.3)" id="plan-standard" class="cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300">
+                                <div onclick="selectPlan('standard', 1.3)" id="plan-standard" class="cursor-pointer bg-white p-5 rounded-2xl border border-brand-navy/5 text-left hover:border-brand-terracotta/20 transition-all duration-300">
                                     <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-white text-sm">Standard Plan</h4>
-                                        <span class="text-[9px] bg-cyan-900/40 text-cyan-300 font-bold px-2 py-0.5 rounded border border-cyan-500/30 uppercase">1.3x Base</span>
+                                        <h4 class="font-bold text-brand-navy text-sm">Standard Plan</h4>
+                                        <span class="text-[9px] bg-brand-gold/10 text-brand-gold font-bold px-2 py-0.5 rounded border border-brand-gold/20 uppercase">1.3x Base</span>
                                     </div>
-                                    <p class="text-[11px] text-slate-400 leading-relaxed">3/4-star AC hotel stays, private AC sedan transit, local guide, and breakfast.</p>
+                                    <p class="text-[11px] text-brand-slate leading-relaxed">3/4-star AC hotel stays, private AC sedan transit, local guide, and breakfast.</p>
                                 </div>
                                 <!-- Premium Plan Card -->
-                                <div onclick="selectPlan('premium', 1.7)" id="plan-premium" class="cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300">
+                                <div onclick="selectPlan('premium', 1.7)" id="plan-premium" class="cursor-pointer bg-white p-5 rounded-2xl border border-brand-navy/5 text-left hover:border-brand-terracotta/20 transition-all duration-300">
                                     <div class="flex justify-between items-start mb-2">
-                                        <h4 class="font-bold text-white text-sm">Premium Plan</h4>
-                                        <span class="text-[9px] bg-orange-900/40 text-orange-300 font-bold px-2 py-0.5 rounded border border-orange-500/30 uppercase">1.7x Base</span>
+                                        <h4 class="font-bold text-brand-navy text-sm">Premium Plan</h4>
+                                        <span class="text-[9px] bg-brand-terracotta/10 text-brand-terracotta font-bold px-2 py-0.5 rounded border border-brand-terracotta/20 uppercase">1.7x Base</span>
                                     </div>
-                                    <p class="text-[11px] text-slate-400 leading-relaxed">5-star heritage palaces/resorts, private SUV, 24/7 personal guide, meals, and VIP entry.</p>
+                                    <p class="text-[11px] text-brand-slate leading-relaxed">5-star heritage palaces/resorts, private SUV, 24/7 personal guide, meals, and VIP entry.</p>
                                 </div>
                             </div>
                             <input type="hidden" id="selected-plan-tier" value="budget" />
@@ -418,20 +410,20 @@
                         </div>
 
                         <!-- Dynamic Inclusion Box -->
-                        <div class="bg-slate-950/50 p-5 rounded-xl border border-white/5 text-xs text-slate-400 leading-relaxed" id="plan-inclusions-box">
-                            <span class="font-bold text-white block mb-2">What's Included in Budget Plan:</span>
+                        <div class="bg-brand-cream/50 p-5 rounded-xl border border-brand-navy/5 text-xs text-brand-slate leading-relaxed" id="plan-inclusions-box">
+                            <span class="font-bold text-brand-navy block mb-2">What's Included in Budget Plan:</span>
                             <ul class="space-y-1.5">
-                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Accommodation: Clean, vetted 2-star guest houses or homestays (sharing basis).</span></li>
-                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Transport: Shared sleeper class train transit or group tempo traveler.</span></li>
-                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Meals: Self-funded (local food eateries guide book included).</span></li>
-                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Sightseeing: Self-guided digital map & curated routing tips.</span></li>
-                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>Support: Standard emergency email support.</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">Accommodation: Clean, vetted 2-star guest houses or homestays (sharing basis).</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">Transport: Shared sleeper class train transit or group tempo traveler.</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">Meals: Self-funded (local food eateries guide book included).</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">Sightseeing: Self-guided digital map & curated routing tips.</span></li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">Support: Standard emergency email support.</span></li>
                             </ul>
                         </div>
 
 
                         <div class="flex justify-end pt-4">
-                            <button onclick="goToStep2()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase">
+                            <button onclick="goToStep2()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase">
                                 Continue <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
                             </button>
                         </div>
@@ -439,35 +431,35 @@
 
                     <!-- Step 2: Contact Information -->
                     <div id="step-2-content" class="space-y-6 hidden">
-                        <h3 class="text-2xl font-bold text-white mb-2">Step 2: Traveler Contact Details</h3>
-                        <p class="text-xs text-slate-400 mb-4">Please provide contact details and individual traveler information.</p>
+                        <h3 class="text-2xl font-serif font-bold text-brand-navy mb-2">Step 2: Traveler Contact Details</h3>
+                        <p class="text-xs text-brand-slate mb-4">Please provide contact details and individual traveler information.</p>
                         
                         <!-- Primary Contact Card -->
-                        <div class="bg-slate-950/40 p-6 rounded-2xl border border-white/5 space-y-4">
-                            <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="mail" class="w-4 h-4 text-cyan-400"></i>
+                        <div class="bg-brand-cream/80 p-6 rounded-2xl border border-brand-navy/5 space-y-4">
+                            <h4 class="text-xs font-bold text-brand-navy uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="mail" class="w-4 h-4 text-brand-terracotta"></i>
                                 Primary Contact Information
                             </h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Email Address *</label>
-                                    <input type="email" id="traveler-email" placeholder="rajesh@example.com" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" required />
+                                    <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-2">Email Address *</label>
+                                    <input type="email" id="traveler-email" placeholder="rajesh@example.com" class="w-full bg-white border border-brand-navy/10 rounded-2xl px-5 py-3.5 text-sm text-brand-navy placeholder-brand-slate/30 focus:outline-none focus:ring-2 focus:ring-brand-terracotta" required />
                                 </div>
                                 <div>
-                                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Phone Number *</label>
-                                    <input type="tel" id="traveler-phone" placeholder="+91 99999 88888" class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" required />
+                                    <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-2">Phone Number *</label>
+                                    <input type="tel" id="traveler-phone" placeholder="+91 99999 88888" class="w-full bg-white border border-brand-navy/10 rounded-2xl px-5 py-3.5 text-sm text-brand-navy placeholder-brand-slate/30 focus:outline-none focus:ring-2 focus:ring-brand-terracotta" required />
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Special Stays / Dietary Notes (Optional)</label>
-                                <input type="text" id="traveler-notes" placeholder="Vegetarian food, twin beds etc." class="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-650 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+                                <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-2">Special Stays / Dietary Notes (Optional)</label>
+                                <input type="text" id="traveler-notes" placeholder="Vegetarian food, twin beds etc." class="w-full bg-white border border-brand-navy/10 rounded-2xl px-5 py-3.5 text-sm text-brand-navy placeholder-brand-slate/30 focus:outline-none focus:ring-2 focus:ring-brand-terracotta" />
                             </div>
                         </div>
 
                         <!-- Dynamic Travelers Container Section -->
                         <div class="space-y-4">
-                            <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+                            <h5 class="text-xs font-bold text-brand-slate uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="users" class="w-4 h-4 text-brand-terracotta"></i>
                                 Passenger Details
                             </h5>
                             <div id="dynamic-travelers-container" class="space-y-4">
@@ -475,17 +467,17 @@
                             </div>
                             
                             <div class="flex justify-start pt-2">
-                                <button type="button" id="add-traveler-btn" onclick="addTravelerField()" class="flex items-center gap-2 border border-blue-500/30 hover:border-blue-500/50 bg-blue-950/20 hover:bg-blue-900/30 text-cyan-400 font-bold px-5 py-3 rounded-xl transition duration-300 text-xs tracking-wider uppercase">
-                                    <i data-lucide="plus" class="w-4 h-4 text-cyan-400"></i> Add Traveler
+                                <button type="button" id="add-traveler-btn" onclick="addTravelerField()" class="flex items-center gap-2 border border-brand-navy/10 hover:border-brand-terracotta bg-white text-brand-terracotta font-bold px-5 py-3 rounded-xl transition duration-300 text-xs tracking-wider uppercase">
+                                    <i data-lucide="plus" class="w-4 h-4 text-brand-terracotta"></i> Add Traveler
                                 </button>
                             </div>
                         </div>
 
                         <div class="flex justify-between pt-4">
-                            <button onclick="backToStep1()" class="border border-white/10 hover:bg-white/5 text-slate-300 font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
+                            <button onclick="backToStep1()" class="border border-brand-navy/10 hover:bg-brand-navy/5 text-brand-slate font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
                                 <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Back
                             </button>
-                            <button onclick="goToStep3()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase">
+                            <button onclick="goToStep3()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase">
                                 Calculate Invoice <i data-lucide="arrow-right" class="w-4 h-4 inline ml-1"></i>
                             </button>
                         </div>
@@ -493,125 +485,126 @@
 
                     <!-- Step 3: Billing & Confirmation -->
                     <div id="step-3-content" class="space-y-6 hidden">
-                        <h3 class="text-2xl font-bold text-white mb-4">Step 3: Verification & Invoice</h3>                        <!-- Summary Pane -->
-                        <div class="bg-slate-950/70 p-6 rounded-2xl border border-white/5 space-y-4 text-sm text-slate-400">
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Package Choice</span>
-                                <span id="bill-package" class="font-semibold text-white">Leh-Ladakh Roadtrip</span>
+                        <h3 class="text-2xl font-serif font-bold text-brand-navy mb-4">Step 3: Verification & Invoice</h3>
+                        <!-- Summary Pane -->
+                        <div class="bg-brand-cream/80 p-6 rounded-2xl border border-brand-navy/5 space-y-4 text-sm text-brand-slate">
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Package Choice</span>
+                                <span id="bill-package" class="font-semibold text-brand-navy">Leh-Ladakh Roadtrip</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Plan Class</span>
-                                <span id="bill-plan-tier" class="font-semibold text-cyan-400 capitalize">Budget Plan</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Plan Class</span>
+                                <span id="bill-plan-tier" class="font-semibold text-brand-terracotta capitalize">Budget Plan</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Departure Date</span>
-                                <span id="bill-date" class="font-semibold text-white">2026-08-15</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Departure Date</span>
+                                <span id="bill-date" class="font-semibold text-brand-navy">2026-08-15</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Per Head Rate</span>
-                                <span id="bill-per-head" class="font-semibold text-white">-</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Per Head Rate</span>
+                                <span id="bill-per-head" class="font-semibold text-brand-navy">-</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">No. of Travelers</span>
-                                <span id="bill-travelers" class="font-semibold text-white">2 Adults, 1 Child</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">No. of Travelers</span>
+                                <span id="bill-travelers" class="font-semibold text-brand-navy">2 Adults, 1 Child</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Travelers List</span>
-                                <span id="bill-travelers-list" class="font-semibold text-white text-right max-w-[220px] truncate" title="">-</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Travelers List</span>
+                                <span id="bill-travelers-list" class="font-semibold text-brand-navy text-right max-w-[220px] truncate" title="">-</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Group Total Base Cost</span>
-                                <span id="bill-package-cost" class="font-semibold text-white">-</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Group Total Base Cost</span>
+                                <span id="bill-package-cost" class="font-semibold text-brand-navy">-</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2" id="bill-surcharge-row">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider" id="bill-surcharge-label">Plan Surcharge</span>
-                                <span id="bill-surcharge-cost" class="font-semibold text-orange-400">-</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2" id="bill-surcharge-row">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider" id="bill-surcharge-label">Plan Surcharge</span>
+                                <span id="bill-surcharge-cost" class="font-semibold text-brand-terracotta">-</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">Subtotal</span>
-                                <span id="bill-base" class="font-semibold text-white">₹1,10,800</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">Subtotal</span>
+                                <span id="bill-base" class="font-semibold text-brand-navy">₹1,10,800</span>
                             </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="font-bold text-white text-xs uppercase tracking-wider">GST Tax (18%)</span>
-                                <span id="bill-tax" class="font-semibold text-white">₹19,944</span>
+                            <div class="flex justify-between border-b border-brand-navy/5 pb-2">
+                                <span class="font-bold text-brand-navy text-xs uppercase tracking-wider">GST Tax (18%)</span>
+                                <span id="bill-tax" class="font-semibold text-brand-navy">₹19,944</span>
                             </div>
                             <div class="flex justify-between pt-2">
-                                <span class="font-bold text-white text-sm uppercase tracking-wider text-cyan-400">Total Price</span>
-                                <span id="bill-total" class="text-lg font-bold text-cyan-400">₹1,30,744</span>
+                                <span class="font-bold text-brand-navy text-sm uppercase tracking-wider">Total Price</span>
+                                <span id="bill-total" class="text-lg font-bold text-brand-terracotta">₹1,30,744</span>
                             </div>
                         </div>
 
                         <!-- Select Payment Method -->
-                        <div class="bg-slate-950/40 p-6 rounded-2xl border border-white/5 space-y-6">
-                            <h4 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="shield-check" class="w-4 h-4 text-cyan-400"></i>
+                        <div class="bg-brand-cream/80 p-6 rounded-2xl border border-brand-navy/5 space-y-6">
+                            <h4 class="text-sm font-bold text-brand-navy uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-brand-terracotta"></i>
                                 Select Payment Method
                             </h4>
                             
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="payment-methods-container">
                                 <!-- Google Pay Option -->
-                                <div onclick="selectPaymentMethod('gpay')" id="method-gpay" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-600/10 flex items-center justify-center text-blue-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('gpay')" id="method-gpay" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="smartphone" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Google Pay</span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">Google Pay</span>
                                 </div>
                                 <!-- PhonePe Option -->
-                                <div onclick="selectPaymentMethod('phonepe')" id="method-phonepe" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-purple-600/10 flex items-center justify-center text-purple-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('phonepe')" id="method-phonepe" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="smartphone" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">PhonePe</span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">PhonePe</span>
                                 </div>
                                 <!-- UPI Option -->
-                                <div onclick="selectPaymentMethod('upi')" id="method-upi" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-600/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('upi')" id="method-upi" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="qr-code" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">UPI ID</span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">UPI ID</span>
                                 </div>
                                 <!-- Credit Card Option -->
-                                <div onclick="selectPaymentMethod('card-credit')" id="method-card-credit" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-cyan-600/10 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('card-credit')" id="method-card-credit" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="credit-card" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Credit Card</span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">Credit Card</span>
                                 </div>
                                 <!-- Debit Card Option -->
-                                <div onclick="selectPaymentMethod('card-debit')" id="method-card-debit" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-indigo-600/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('card-debit')" id="method-card-debit" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="credit-card" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Debit Card</span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">Debit Card</span>
                                 </div>
                                 <!-- Pay Later Option -->
-                                <div onclick="selectPaymentMethod('paylater')" id="method-paylater" class="cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
-                                    <div class="w-8 h-8 rounded-lg bg-amber-600/10 flex items-center justify-center text-amber-400 group-hover:scale-110 transition duration-300">
+                                <div onclick="selectPaymentMethod('paylater')" id="method-paylater" class="cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 transition duration-300 flex flex-col items-center justify-center text-center gap-2 group">
+                                    <div class="w-8 h-8 rounded-lg bg-brand-navy/5 flex items-center justify-center text-brand-navy group-hover:scale-110 transition duration-300">
                                         <i data-lucide="clock" class="w-5 h-5"></i>
                                     </div>
-                                    <span class="text-[10px] font-bold text-white uppercase tracking-wider">Book Tour @ ₹0<br/><span class="text-[8px] text-amber-400 font-normal normal-case">Pay Later</span></span>
+                                    <span class="text-[10px] font-bold text-brand-navy uppercase tracking-wider">Book Tour @ ₹0<br/><span class="text-[8px] text-brand-terracotta font-normal normal-case">Pay Later</span></span>
                                 </div>
                             </div>
                             
                             <input type="hidden" id="selected-payment-method" value="" />
                             
                             <!-- Dynamic Payment Content -->
-                            <div id="payment-details-form" class="space-y-4 hidden bg-slate-950/50 p-5 rounded-xl border border-white/5 text-slate-300">
+                            <div id="payment-details-form" class="space-y-4 hidden bg-brand-cream/50 p-5 rounded-xl border border-brand-navy/5 text-brand-slate text-xs">
                                 <!-- Dynamic fields will go here -->
                             </div>
                         </div>
 
                         <!-- Info Alerts -->
-                        <div class="flex gap-3 bg-blue-950/30 p-4 rounded-xl border border-blue-900/40 text-xs leading-relaxed text-blue-200">
-                            <i data-lucide="info" class="w-4 h-4 shrink-0 text-cyan-400"></i>
+                        <div class="flex gap-3 bg-brand-cream p-4 rounded-xl border border-brand-navy/5 text-xs leading-relaxed text-brand-slate">
+                            <i data-lucide="info" class="w-4 h-4 shrink-0 text-brand-terracotta"></i>
                             <p>Upon clicking "Confirm Reservation", a booking reference ID is generated. Our operations desk will secure stays and coordinate travel logistics directly with you.</p>
                         </div>
 
                         <div class="flex justify-between pt-4">
-                            <button onclick="backToStep2()" class="border border-white/10 hover:bg-white/5 text-slate-300 font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
+                            <button onclick="backToStep2()" class="border border-brand-navy/10 hover:bg-brand-navy/5 text-brand-slate font-bold px-8 py-3.5 rounded-xl transition text-xs tracking-wider uppercase">
                                 <i data-lucide="arrow-left" class="w-4 h-4 inline mr-1"></i> Back
                             </button>
-                            <button onclick="confirmBooking()" class="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-orange-500/20 text-xs tracking-wider uppercase">
+                            <button onclick="confirmBooking()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase">
                                 Confirm Reservation <i data-lucide="check" class="w-4 h-4 inline ml-1"></i>
                             </button>
                         </div>
@@ -619,25 +612,25 @@
 
                     <!-- Success Frame -->
                     <div id="success-content" class="space-y-6 hidden text-center py-8">
-                        <div class="w-16 h-16 bg-cyan-950 text-cyan-400 border border-cyan-500/30 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/10">
+                        <div class="w-16 h-16 bg-brand-cream text-brand-terracotta border border-brand-terracotta/30 rounded-full flex items-center justify-center mx-auto shadow-md">
                             <i data-lucide="check" class="w-8 h-8"></i>
                         </div>
-                        <h3 class="text-3xl font-extrabold text-white">Booking Confirmed!</h3>
-                        <p class="text-slate-400 text-sm max-w-md mx-auto mb-6">Your trip reservation request has been processed. Download or print your travel boarding pass below.</p>
+                        <h3 class="text-3xl font-serif font-bold text-brand-navy">Booking Confirmed!</h3>
+                        <p class="text-brand-slate text-sm max-w-md mx-auto mb-6">Your trip reservation request has been processed. Download or print your travel boarding pass below.</p>
                         
-                        <div class="bg-slate-950/70 p-5 rounded-2xl border border-white/5 max-w-sm mx-auto space-y-2 mb-6 hidden">
-                            <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest block">Reference ID</span>
-                            <span id="booking-ref" class="text-xl font-bold text-cyan-400 tracking-wider">ANS-8201A</span>
+                        <div class="bg-brand-cream p-5 rounded-2xl border border-brand-navy/5 max-w-sm mx-auto space-y-2 mb-6 hidden">
+                            <span class="text-[10px] text-brand-slate font-bold uppercase tracking-widest block">Reference ID</span>
+                            <span id="booking-ref" class="text-xl font-bold text-brand-terracotta tracking-wider">ANS-8201A</span>
                         </div>
 
                         <!-- Boarding Pass Container Outlet -->
                         <div id="success-ticket-outlet" class="pt-4 text-left"></div>
 
                         <div class="pt-6 flex flex-wrap justify-center gap-4">
-                            <button onclick="location.href='index.html'" class="border border-white/10 hover:bg-white/5 text-white font-semibold px-8 py-3.5 rounded-full transition text-xs tracking-wider uppercase">
+                            <button onclick="location.href='index.html'" class="border border-brand-navy/10 hover:bg-brand-navy/5 text-brand-slate font-semibold px-8 py-3.5 rounded-full transition text-xs tracking-wider uppercase">
                                 Return to Home
                             </button>
-                            <button onclick="window.print()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-full transition shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
+                            <button onclick="window.print()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-full transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
                                 <i data-lucide="printer" class="w-4 h-4"></i> Print Ticket
                             </button>
                         </div>
@@ -645,38 +638,38 @@
                 </div> <!-- End of booking-flow-container -->
 
                 <!-- Track Flow Container -->
-                <div id="track-flow-container" class="bg-[#090d1f]/75 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl hidden space-y-6">
-                    <h3 class="text-2xl font-bold text-white mb-2">Track Your Reservation</h3>
-                    <p class="text-slate-400 text-xs">Enter your reservation reference number (e.g., ANS-8201A or a dynamic ref) to check verification progress and access your boarding pass ticket.</p>
+                <div id="track-flow-container" class="bg-white p-8 md:p-12 rounded-[2.5rem] border border-brand-navy/5 shadow-2xl hidden space-y-6">
+                    <h3 class="text-2xl font-serif font-bold text-brand-navy mb-2">Track Your Reservation</h3>
+                    <p class="text-brand-slate text-xs">Enter your reservation reference number (e.g., ANS-8201A or a dynamic ref) to check verification progress and access your boarding pass ticket.</p>
                     
                     <div class="flex flex-col sm:flex-row gap-4 items-stretch max-w-md">
-                        <input type="text" id="track-input" placeholder="Enter Ref ID (e.g. ANS-XXXXX)" class="flex-1 bg-slate-950 border border-white/5 rounded-xl px-5 py-3.5 text-sm text-slate-200 placeholder-slate-600 uppercase focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-transparent" />
-                        <button onclick="performTracking()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-blue-500/20 text-xs tracking-wider uppercase shrink-0">
+                        <input type="text" id="track-input" placeholder="Enter Ref ID (e.g. ANS-XXXXX)" class="flex-1 bg-white border border-brand-navy/10 rounded-xl px-5 py-3.5 text-sm text-brand-navy placeholder-brand-slate/40 uppercase focus:outline-none focus:ring-1 focus:ring-brand-terracotta" />
+                        <button onclick="performTracking()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-xl transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase shrink-0">
                             Track Status
                         </button>
                     </div>
 
                     <!-- Tracking Result (Hidden by default) -->
                     <div id="track-result-box" class="hidden space-y-8 pt-4">
-                        <hr class="border-white/5" />
+                        <hr class="border-brand-navy/5" />
                         
                         <!-- Real-time Progress Stepper -->
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-center bg-slate-950/40 p-6 rounded-2xl border border-white/5">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 max-w-2xl mx-auto text-center bg-brand-cream p-6 rounded-2xl border border-brand-navy/5">
                             <div class="flex flex-col items-center">
-                                <div id="track-step-1" class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs"><i data-lucide="check" class="w-4 h-4"></i></div>
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-2">Reserved</span>
+                                <div id="track-step-1" class="w-8 h-8 rounded-full bg-brand-terracotta text-white flex items-center justify-center font-bold text-xs"><i data-lucide="check" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider mt-2">Reserved</span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <div id="track-step-2" class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i></div>
-                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-2">Stays Vetted</span>
+                                <div id="track-step-2" class="w-8 h-8 rounded-full bg-brand-gold text-white flex items-center justify-center font-bold text-xs"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i></div>
+                                <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider mt-2">Stays Vetted</span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <div id="track-step-3" class="w-8 h-8 rounded-full bg-slate-950 border border-white/5 text-slate-600 flex items-center justify-center font-bold text-xs"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
-                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2">Permit Ready</span>
+                                <div id="track-step-3" class="w-8 h-8 rounded-full bg-white border border-brand-navy/10 text-brand-slate flex items-center justify-center font-bold text-xs"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider mt-2">Permit Ready</span>
                             </div>
                             <div class="flex flex-col items-center">
-                                <div id="track-step-4" class="w-8 h-8 rounded-full bg-slate-950 border border-white/5 text-slate-600 flex items-center justify-center font-bold text-xs"><i data-lucide="plane" class="w-4 h-4"></i></div>
-                                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-2">Launched</span>
+                                <div id="track-step-4" class="w-8 h-8 rounded-full bg-white border border-brand-navy/10 text-brand-slate flex items-center justify-center font-bold text-xs"><i data-lucide="plane" class="w-4 h-4"></i></div>
+                                <span class="text-[10px] text-brand-slate font-bold uppercase tracking-wider mt-2">Launched</span>
                             </div>
                         </div>
                         
@@ -684,7 +677,7 @@
                         <div id="tracked-ticket-outlet" class="text-left pt-4"></div>
                         
                         <div class="flex justify-center pt-4">
-                            <button onclick="window.print()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold px-8 py-3.5 rounded-full transition shadow-lg shadow-blue-500/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
+                            <button onclick="window.print()" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white font-bold px-8 py-3.5 rounded-full transition shadow-md shadow-brand-terracotta/20 text-xs tracking-wider uppercase flex items-center gap-1.5">
                                 <i data-lucide="printer" class="w-4 h-4"></i> Print Boarding Pass
                             </button>
                         </div>
@@ -694,101 +687,62 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-[#04060d]/90 backdrop-blur-xl text-slate-400 pt-20 pb-10 px-4 md:px-8 border-t border-white/15 relative z-10">
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-12 mb-8">
+        <footer class="bg-brand-navy text-brand-cream/80 pt-16 pb-8 px-4 md:px-8 border-t border-brand-navy/5 relative z-10 w-full mt-16">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 border-b border-brand-cream/10 pb-8 mb-6">
                 <div>
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="relative flex items-center justify-center shrink-0">
-                            <svg class="w-8 h-8" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Sleek luxury circle border -->
-                                <circle cx="50" cy="50" r="44" stroke="url(#footer-luxury-gold)" stroke-width="1.5" opacity="0.8"/>
-                                <!-- Golden Abstract A Monogram / Mountain Crest -->
-                                <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="url(#footer-luxury-gold)" filter="url(#footer-luxury-gold-shadow)"/>
-                                <!-- Inner Soaring Crest -->
-                                <path d="M50 35L62 60L50 52L38 60L50 35Z" fill="url(#footer-luxury-gold-light)"/>
-                                <!-- Bottom elegant dot -->
-                                <circle cx="50" cy="65" r="3" fill="url(#footer-luxury-gold)"/>
-                                <defs>
-                                    <linearGradient id="footer-luxury-gold" x1="24" y1="18" x2="76" y2="72" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#dfba6b"/>
-                                        <stop offset="50%" stop-color="#b89047"/>
-                                        <stop offset="100%" stop-color="#dfba6b"/>
-                                    </linearGradient>
-                                    <linearGradient id="footer-luxury-gold-light" x1="38" y1="35" x2="62" y2="60" gradientUnits="userSpaceOnUse">
-                                        <stop offset="0%" stop-color="#f8e8c9"/>
-                                        <stop offset="100%" stop-color="#dfba6b"/>
-                                    </linearGradient>
-                                    <filter id="footer-luxury-gold-shadow" x="15" y="10" width="70" height="70" filterUnits="userSpaceOnUse">
-                                        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#dfba6b" flood-opacity="0.25"/>
-                                    </filter>
-                                </defs>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-extrabold text-white tracking-tight leading-none">ANSU TOUR & TRAVELS</h3>
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="44" stroke="#C5A059" stroke-width="1.5" opacity="0.8"/>
+                            <path d="M50 18L76 72H64L50 42L36 72H24L50 18Z" fill="#C5A059"/>
+                            <circle cx="50" cy="65" r="3" fill="#C5A059"/>
+                        </svg>
+                        <span class="text-lg font-black text-brand-cream leading-none tracking-tight">ANSU TOUR & TRAVELS</span>
                     </div>
-                    <p class="mb-6 text-slate-400 text-sm">Experience absolute premium travel across India. Govt. approved logistics, high-quality stays, and custom local operations.</p>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Crafting premium customized tour packages and luxury retreats across India's most majestic natural landscapes.</p>
                     <div class="flex gap-4">
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=150" alt="Agra" class="w-full h-full object-cover" title="Agra (Taj Mahal)" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=150" alt="Ladakh" class="w-full h-full object-cover" title="Leh-Ladakh" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=150" alt="Kerala" class="w-full h-full object-cover" title="Kerala" />
                         </a>
-                        <a href="destinations.html" class="w-10 h-10 rounded-full overflow-hidden border border-white/10 hover:border-cyan-500 hover:scale-110 transition duration-300 shadow-md">
+                        <a href="destinations.html" class="w-8 h-8 rounded-full overflow-hidden border border-brand-cream/10 hover:border-brand-gold hover:scale-110 transition duration-300 shadow-md">
                             <img src="https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?auto=format&fit=crop&q=80&w=150" alt="Jaipur" class="w-full h-full object-cover" title="Jaipur" />
                         </a>
                     </div>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Quick Navigation</h4>
-                    <ul class="space-y-3 text-sm font-medium">
-                        <li><a href="index.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Home</a></li>
-                        <li><a href="destinations.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Destinations</a></li>
-                        <li><a href="tours.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Tour Packages</a></li>
-                        <li><a href="inquiry.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Reviews & Inquiry</a></li>
-                        <li><a href="booking.html" class="hover:text-cyan-400 text-slate-400 transition flex items-center gap-2"><span class="w-1.5 h-1.5 bg-cyan-500 rounded-full"></span> Book Online</a></li>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Quick Links</h4>
+                    <ul class="space-y-3 text-xs">
+                        <li><a href="index.html" class="hover:text-brand-gold transition">Home</a></li>
+                        <li><a href="tours.html" class="hover:text-brand-gold transition">Tour Packages</a></li>
+                        <li><a href="destinations.html" class="hover:text-brand-gold transition">Destinations</a></li>
+                        <li><a href="booking.html" class="hover:text-brand-gold transition">Book Online</a></li>
+                        <li><a href="track-booking.html" class="hover:text-brand-gold transition">Track Booking</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Contact Desk</h4>
-                    <ul class="space-y-4 text-sm text-slate-400">
-                        <li class="flex items-start gap-3">
-                            <i data-lucide="map-pin" class="text-cyan-500 shrink-0 mt-1 w-5 h-5"></i>
-                            <span>Kasba, Kolkata, West Bengal, 700042</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="phone" class="text-cyan-500 shrink-0 w-5 h-5"></i>
-                            <span>+91 73630 10254</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i data-lucide="mail" class="text-cyan-500 shrink-0 w-5 h-5"></i>
-                            <span>ansutourtravels@gmail.com</span>
-                        </li>
-                    </ul>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Contact Desk</h4>
+                    <p class="text-xs text-brand-cream/60 leading-relaxed mb-4">Salt Lake Sector V, Near Karunamoyee Metro station, Kolkata, West Bengal - 700091</p>
+                    <p class="text-xs font-bold text-brand-cream">Call: +91 73630 10254</p>
                 </div>
-                
                 <div>
-                    <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest border-l-2 border-cyan-500 pl-3">Adventure Newsletter</h4>
-                    <p class="mb-4 text-slate-400 text-sm">Subscribe to receive exclusive deals for India's hill stations.</p>
-                    <div class="relative mt-4">
-                        <input type="email" placeholder="Email Address" class="w-full bg-white/5 border border-white/10 rounded-full py-3.5 pl-6 pr-14 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent" />
-                        <button class="absolute right-1.5 top-1.5 bottom-1.5 w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center text-white hover:from-blue-700 hover:to-cyan-600 transition shadow-md shadow-blue-500/20">
-                            <i data-lucide="send" class="w-4 h-4"></i>
-                        </button>
+                    <h4 class="text-sm font-bold text-brand-gold mb-6 uppercase tracking-widest border-l-2 border-brand-terracotta pl-3">Newsletter</h4>
+                    <p class="text-xs text-brand-cream/60 mb-4">Subscribe to our newsletter to receive hidden travel offers.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Address" class="w-full bg-brand-cream/10 border border-brand-cream/10 rounded-l-xl px-4 py-2 text-brand-cream placeholder-brand-cream/40 text-xs focus:outline-none focus:ring-1 focus:ring-brand-gold focus:border-brand-gold" />
+                        <button class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-4 rounded-r-xl transition"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
             </div>
-            
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 pt-4">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-brand-cream/40 gap-4">
                 <p>&copy; 2026 ANSU TOUR & TRAVELS. All rights reserved.</p>
-                <div class="flex gap-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-slate-300 transition">Privacy Policy</a>
-                    <a href="#" class="hover:text-slate-300 transition">Terms of Service</a>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-brand-cream transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-brand-cream transition">Terms of Service</a>
                 </div>
             </div>
         </footer>
@@ -857,17 +811,17 @@
             plans.forEach(p => {
                 const el = document.getElementById(`plan-${p}`);
                 if (p === plan) {
-                    el.className = "cursor-pointer bg-slate-950/60 p-5 rounded-2xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] text-left hover:border-blue-500/50 transition-all duration-300";
+                    el.className = "cursor-pointer bg-brand-cream p-5 rounded-2xl border border-brand-terracotta/40 shadow-[0_0_15px_rgba(200,106,85,0.15)] text-left hover:border-brand-terracotta/50 transition-all duration-300";
                 } else {
-                    el.className = "cursor-pointer bg-slate-950/20 p-5 rounded-2xl border border-white/5 text-left hover:border-blue-500/30 transition-all duration-300";
+                    el.className = "cursor-pointer bg-white p-5 rounded-2xl border border-brand-navy/5 text-left hover:border-brand-terracotta/20 transition-all duration-300";
                 }
             });
 
             // Update Inclusions Box UI (Pointable layout with checks)
             const box = document.getElementById('plan-inclusions-box');
-            let listHtml = `<span class="font-bold text-white block mb-2">${inclusions[plan].title}</span><ul class="space-y-1.5">`;
+            let listHtml = `<span class="font-bold text-brand-navy block mb-2">${inclusions[plan].title}</span><ul class="space-y-1.5">`;
             inclusions[plan].list.forEach(item => {
-                listHtml += `<li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5"></i> <span>${item}</span></li>`;
+                listHtml += `<li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-terracotta shrink-0 mt-0.5"></i> <span class="text-brand-slate text-xs">${item}</span></li>`;
             });
             listHtml += '</ul>';
             box.innerHTML = listHtml;
@@ -879,38 +833,38 @@
             const isPrimary = index === 1;
             const labelText = isPrimary ? `Traveler #${index} (Primary)` : `Traveler #${index}`;
             const removeBtnHtml = isPrimary ? '' : `
-                <button type="button" onclick="removeTravelerField(${index})" class="flex items-center gap-1 text-[10px] text-red-400 hover:text-red-300 font-bold uppercase transition duration-300">
+                <button type="button" onclick="removeTravelerField(${index})" class="flex items-center gap-1 text-[10px] text-red-500 hover:text-red-650 font-bold uppercase transition duration-300">
                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove
                 </button>
             `;
             
             return `
-            <div class="bg-slate-950/60 p-5 rounded-2xl border border-white/5 space-y-4 traveler-form-card animate-fadeIn" id="traveler-card-${index}">
+            <div class="bg-brand-cream/80 p-5 rounded-2xl border border-brand-navy/5 space-y-4 traveler-form-card animate-fadeIn" id="traveler-card-${index}">
                 <div class="flex justify-between items-center">
-                    <h5 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                        <i data-lucide="user" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <h5 class="text-xs font-bold text-brand-navy uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="user" class="w-3.5 h-3.5 text-brand-terracotta"></i>
                         <span class="card-label">${labelText}</span>
                     </h5>
                     ${removeBtnHtml}
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Full Name *</label>
-                        <input type="text" ${isPrimary ? 'id="traveler-name"' : ''} placeholder="e.g. Rajesh Kumar" class="traveler-name w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1.5">Full Name *</label>
+                        <input type="text" ${isPrimary ? 'id="traveler-name"' : ''} placeholder="e.g. Rajesh Kumar" class="traveler-name w-full bg-white border border-brand-navy/10 rounded-xl px-4 py-2.5 text-xs text-brand-navy focus:outline-none focus:ring-1 focus:ring-brand-terracotta" required />
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Age *</label>
-                        <input type="number" min="1" max="120" placeholder="e.g. 28" class="traveler-age w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1.5">Age *</label>
+                        <input type="number" min="1" max="120" placeholder="e.g. 28" class="traveler-age w-full bg-white border border-brand-navy/10 rounded-xl px-4 py-2.5 text-xs text-brand-navy focus:outline-none focus:ring-1 focus:ring-brand-terracotta" required />
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Aadhaar ID No *</label>
-                        <input type="text" placeholder="12-digit Aadhaar Number" class="traveler-aadhaar w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1.5">Aadhaar ID No *</label>
+                        <input type="text" placeholder="12-digit Aadhaar Number" class="traveler-aadhaar w-full bg-white border border-brand-navy/10 rounded-xl px-4 py-2.5 text-xs text-brand-navy focus:outline-none focus:ring-1 focus:ring-brand-terracotta" required />
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Gender *</label>
-                        <select class="traveler-gender w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" required>
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1.5">Gender *</label>
+                        <select class="traveler-gender w-full bg-white border border-brand-navy/10 rounded-xl px-4 py-2.5 text-xs text-brand-navy focus:outline-none focus:ring-1 focus:ring-brand-terracotta" required>
                             <option value="" disabled selected>Select Gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -918,8 +872,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Difficulties / Notes (Optional)</label>
-                        <input type="text" placeholder="e.g. physical assistance needed" class="traveler-difficulties w-full bg-slate-950 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-slate-250 focus:outline-none focus:ring-1 focus:ring-blue-600" />
+                        <label class="block text-[10px] font-bold text-brand-slate uppercase tracking-wider mb-1.5">Difficulties / Notes (Optional)</label>
+                        <input type="text" placeholder="e.g. physical assistance needed" class="traveler-difficulties w-full bg-white border border-brand-navy/10 rounded-xl px-4 py-2.5 text-xs text-brand-navy focus:outline-none focus:ring-1 focus:ring-brand-terracotta" />
                     </div>
                 </div>
             </div>`;
@@ -1212,9 +1166,9 @@
             methods.forEach(m => {
                 const card = document.getElementById(`method-${m}`);
                 if (m === method) {
-                    card.className = "cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-blue-500/40 shadow-[0_0_15px_rgba(59,130,246,0.15)] flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
+                    card.className = "cursor-pointer bg-brand-cream p-4 rounded-xl border border-brand-terracotta/40 shadow-[0_0_15px_rgba(200,106,85,0.15)] flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
                 } else {
-                    card.className = "cursor-pointer bg-slate-950/60 p-4 rounded-xl border border-white/5 hover:border-cyan-500/30 flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
+                    card.className = "cursor-pointer bg-white p-4 rounded-xl border border-brand-navy/5 hover:border-brand-terracotta/30 flex flex-col items-center justify-center text-center gap-2 group transition-all duration-300";
                 }
             });
 
@@ -1539,13 +1493,13 @@
             const trackContainer = document.getElementById('track-flow-container');
 
             if (tab === 'book') {
-                btnBook.className = "bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300";
-                btnTrack.className = "bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300";
+                btnBook.className = "bg-brand-terracotta text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-md shadow-brand-terracotta/20 transition-all duration-300";
+                btnTrack.className = "bg-white border border-brand-navy/10 text-brand-slate font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-brand-terracotta/30 transition-all duration-300";
                 flowContainer.classList.remove('hidden');
                 trackContainer.classList.add('hidden');
             } else {
-                btnTrack.className = "bg-blue-600 border border-blue-400 text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-lg shadow-blue-500/20 transition-all duration-300";
-                btnBook.className = "bg-slate-950/60 border border-white/5 text-slate-400 font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-blue-500/30 transition-all duration-300";
+                btnTrack.className = "bg-brand-terracotta text-white font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase shadow-md shadow-brand-terracotta/20 transition-all duration-300";
+                btnBook.className = "bg-white border border-brand-navy/10 text-brand-slate font-bold px-6 py-3 rounded-full text-xs tracking-wider uppercase hover:border-brand-terracotta/30 transition-all duration-300";
                 flowContainer.classList.add('hidden');
                 trackContainer.classList.remove('hidden');
             }
