@@ -25,12 +25,15 @@
                     },
                     colors: {
                         brand: {
-                            navy: '#0C1A30',
-                            terracotta: '#C86A55',
-                            gold: '#C5A059',
-                            cream: '#FCFAF6',
-                            charcoal: '#1E293B',
-                            slate: '#5C6880',
+                            navy: 'var(--color-navy)',
+                            'navy-light': 'var(--color-navy-light)',
+                            terracotta: 'var(--color-terracotta)',
+                            'terracotta-dark': 'var(--color-terracotta-dark)',
+                            gold: 'var(--color-gold)',
+                            'gold-light': 'var(--color-gold-light)',
+                            cream: 'var(--color-cream)',
+                            slate: 'var(--color-text-secondary)',
+                            charcoal: 'var(--color-navy)',
                         }
                     }
                 }
@@ -43,11 +46,51 @@
 
     <style>
         :root {
-            --bg-color: #FCFAF6;
-            --accent-color: #0C1A30;
+            --color-navy: #0F1B2E;        /* primary dark background, headers, headline text */
+            --color-navy-light: #1A2942;  /* secondary dark surfaces, hover states */
+            --color-gold: #D4A64A;        /* accent, section labels, icons, borders, secondary buttons */
+            --color-gold-light: #E8C878;  /* hover state for gold elements */
+            --color-terracotta: #C97B4A;  /* primary CTA buttons, highlighted italic text */
+            --color-terracotta-dark: #B0602F; /* CTA button gradient end / hover */
+            --color-cream: #F5EFE6;       /* light background sections, text on dark */
+            --color-text-secondary: #B8C0CC; /* muted paragraph text on dark backgrounds */
+
+            --bg-color: var(--color-cream);
+            --accent-color: var(--color-navy);
             --loader-color: #F3EFE9;
-            --progress-color: #C86A55;
-            --glow-color: rgba(200, 106, 85, 0.1);
+            --progress-color: var(--color-terracotta);
+            --glow-color: rgba(201, 123, 74, 0.1);
+        }
+
+        /* Custom overrides for premium luxury theme */
+        .btn-primary-cta, .bg-brand-terracotta {
+            background: linear-gradient(135deg, var(--color-terracotta), var(--color-terracotta-dark)) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary-cta:hover, .bg-brand-terracotta:hover {
+            background: linear-gradient(135deg, var(--color-terracotta-dark), var(--color-terracotta)) !important;
+        }
+        
+        .btn-secondary-outline {
+            background-color: transparent !important;
+            border: 1px solid var(--color-gold) !important;
+            color: var(--color-gold) !important;
+        }
+        .btn-secondary-outline:hover {
+            background-color: rgba(212, 166, 74, 0.05) !important;
+            border-color: var(--color-gold-light) !important;
+            color: var(--color-gold-light) !important;
+        }
+
+        .eyebrow-label {
+            color: var(--color-gold) !important;
+            letter-spacing: 1px !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+        }
+
+        .border-brand-cream\/10, .border-white\/10 {
+            border-color: rgba(212, 166, 74, 0.3) !important;
         }
 
         html {
@@ -294,7 +337,7 @@
                 <!-- Hero Content -->
                 <div class="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-12 my-auto pt-6 pb-12">
                     <div class="lg:w-1/2 pr-8 z-10 bg-white/70 backdrop-blur-md p-8 md:p-14 rounded-[2.5rem] border border-brand-navy/5 shadow-xl shadow-brand-navy/5">
-                        <p class="text-brand-terracotta font-bold mb-4 tracking-widest uppercase text-xs">Exotic Holidays in India</p>
+                        <p class="eyebrow-label mb-4">Exotic Holidays in India</p>
                         <h1 class="text-5xl md:text-6xl font-serif font-semibold text-brand-navy leading-tight mb-6 tracking-tight">
                             Explore <span class="font-serif italic text-brand-terracotta">India's Majestic</span> Wonders
                         </h1>
@@ -303,8 +346,8 @@
                             <button onclick="location.href='tours.html'" class="bg-brand-terracotta hover:bg-brand-terracotta/90 text-white px-8 py-4 rounded-full font-bold transition shadow-lg shadow-brand-terracotta/20 text-sm uppercase tracking-wider">
                                 Explore Packages
                             </button>
-                            <button onclick="openAIChatbotModal()" class="bg-transparent border border-brand-navy/20 hover:border-brand-navy/40 text-brand-navy hover:bg-brand-navy/5 px-8 py-4 rounded-full font-bold transition text-sm uppercase tracking-wider flex items-center gap-2">
-                                <i data-lucide="sparkles" class="w-4.5 h-4.5 text-brand-gold"></i> Make Your Trip with AI
+                            <button onclick="openAIChatbotModal()" class="btn-secondary-outline px-8 py-4 rounded-full font-bold transition text-sm uppercase tracking-wider flex items-center gap-2">
+                                <i data-lucide="sparkles" class="w-4.5 h-4.5"></i> Make Your Trip with AI
                             </button>
                         </div>
                     </div>
@@ -425,7 +468,7 @@
             <!-- Why Choose Us Section -->
             <section class="w-full px-4 md:px-8 py-16 relative z-10 bg-brand-cream/50">
                 <div class="max-w-7xl mx-auto">
-                    <p class="text-brand-terracotta font-bold text-center uppercase tracking-widest text-xs mb-2 block">Our Signature Standards</p>
+                    <p class="eyebrow-label text-center mb-2 block">Our Signature Standards</p>
                     <h2 class="text-3xl md:text-4xl font-serif font-semibold text-brand-navy text-center mb-12">Why Discerning Travelers Choose Us</h2>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -462,7 +505,7 @@
             <!-- Interactive Section Hubs Grid -->
             <section class="w-full px-4 md:px-8 py-16 relative z-10">
                 <div class="max-w-7xl mx-auto text-center mb-12 bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-[2.5rem] border border-brand-navy/5 shadow-md">
-                    <p class="text-brand-terracotta font-bold mb-2 tracking-widest uppercase text-xs">Navigation Hub</p>
+                    <p class="eyebrow-label mb-2">Navigation Hub</p>
                     <h2 class="text-4xl font-serif font-semibold text-brand-navy leading-tight">Where would you like to go?</h2>
                     <p class="text-brand-slate text-sm mt-3 max-w-xl mx-auto">Choose a dedicated section below to discover top sights, view packages, submit custom inquiries, or book online instantly.</p>
                 </div>

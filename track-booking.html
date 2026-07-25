@@ -24,12 +24,15 @@
                     },
                     colors: {
                         brand: {
-                            navy: '#0C1A30',
-                            terracotta: '#C86A55',
-                            gold: '#C5A059',
-                            cream: '#FCFAF6',
-                            charcoal: '#1E293B',
-                            slate: '#5C6880',
+                            navy: 'var(--color-navy)',
+                            'navy-light': 'var(--color-navy-light)',
+                            terracotta: 'var(--color-terracotta)',
+                            'terracotta-dark': 'var(--color-terracotta-dark)',
+                            gold: 'var(--color-gold)',
+                            'gold-light': 'var(--color-gold-light)',
+                            cream: 'var(--color-cream)',
+                            slate: 'var(--color-text-secondary)',
+                            charcoal: 'var(--color-navy)',
                         }
                     }
                 }
@@ -42,11 +45,51 @@
     
     <style>
         :root {
-            --bg-color: #FCFAF6;
-            --accent-color: #0C1A30;
+            --color-navy: #0F1B2E;        /* primary dark background, headers, headline text */
+            --color-navy-light: #1A2942;  /* secondary dark surfaces, hover states */
+            --color-gold: #D4A64A;        /* accent, section labels, icons, borders, secondary buttons */
+            --color-gold-light: #E8C878;  /* hover state for gold elements */
+            --color-terracotta: #C97B4A;  /* primary CTA buttons, highlighted italic text */
+            --color-terracotta-dark: #B0602F; /* CTA button gradient end / hover */
+            --color-cream: #F5EFE6;       /* light background sections, text on dark */
+            --color-text-secondary: #B8C0CC; /* muted paragraph text on dark backgrounds */
+
+            --bg-color: var(--color-cream);
+            --accent-color: var(--color-navy);
             --loader-color: #F3EFE9;
-            --progress-color: #C86A55;
-            --glow-color: rgba(200, 106, 85, 0.1);
+            --progress-color: var(--color-terracotta);
+            --glow-color: rgba(201, 123, 74, 0.1);
+        }
+
+        /* Custom overrides for premium luxury theme */
+        .btn-primary-cta, .bg-brand-terracotta {
+            background: linear-gradient(135deg, var(--color-terracotta), var(--color-terracotta-dark)) !important;
+            color: #ffffff !important;
+        }
+        .btn-primary-cta:hover, .bg-brand-terracotta:hover {
+            background: linear-gradient(135deg, var(--color-terracotta-dark), var(--color-terracotta)) !important;
+        }
+        
+        .btn-secondary-outline {
+            background-color: transparent !important;
+            border: 1px solid var(--color-gold) !important;
+            color: var(--color-gold) !important;
+        }
+        .btn-secondary-outline:hover {
+            background-color: rgba(212, 166, 74, 0.05) !important;
+            border-color: var(--color-gold-light) !important;
+            color: var(--color-gold-light) !important;
+        }
+
+        .eyebrow-label {
+            color: var(--color-gold) !important;
+            letter-spacing: 1px !important;
+            font-weight: 500 !important;
+            text-transform: uppercase !important;
+        }
+
+        .border-brand-cream\/10, .border-white\/10 {
+            border-color: rgba(212, 166, 74, 0.3) !important;
         }
 
         body {
@@ -273,8 +316,8 @@
             
             <!-- Header Section -->
             <div class="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-                <span class="text-brand-terracotta font-semibold mb-2 inline-flex items-center uppercase tracking-widest text-xs">
-                    <span class="w-4 h-4 rounded-full bg-brand-terracotta/10 text-brand-terracotta flex items-center justify-center mr-2 text-[10px] font-bold">+</span> Booking Desk
+                <span class="eyebrow-label mb-2 inline-flex items-center">
+                    <span class="w-4 h-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold flex items-center justify-center mr-2 text-[10px] font-bold">+</span> Booking Desk
                 </span>
                 <h1 class="text-4xl md:text-5xl font-serif text-brand-navy mb-4 leading-tight">Track Your Journey</h1>
                 <p class="text-brand-slate text-sm">Stay updated on your upcoming retreat. Enter your booking credentials below to review your live status, timeline, and invoice details.</p>
